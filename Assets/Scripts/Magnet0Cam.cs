@@ -5,6 +5,7 @@ public class Magnet0Cam : MonoBehaviour
     public float SensitivityX = 400f;
     public float SensitivityY = 400f;
     public Transform Body;
+    public Transform CameraPos;
     private float _xRotation;
     private float _yRotation;
     private void Start()
@@ -15,6 +16,7 @@ public class Magnet0Cam : MonoBehaviour
 
     private void Update()
     {
+        transform.position = CameraPos.transform.position;
         var mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * SensitivityX;
         var mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * SensitivityY;
         _yRotation += mouseX;

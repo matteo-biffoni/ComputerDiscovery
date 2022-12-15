@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
 
@@ -25,9 +26,12 @@ public class HouseManager : MonoBehaviour
     public string FileName = "FileSystem";
 
     public Magnet0Movement Player;
+
+    public GameObject MainRoomGo;
     
     private void Start()
     {
+        Folder.MainRoomGo = MainRoomGo;
         var mainRoomPlayerDetector = transform.GetChild(0).AddComponent<PlayerDetector>();
         mainRoomPlayerDetector.SetFolderReferred(Folder.MainRoom);
         InstantiateScene(true);
@@ -115,6 +119,7 @@ public class Folder
     private readonly List<Folder> _children;
     private readonly string _name;
     public static readonly Folder MainRoom = new("Main Room", null);
+    public static GameObject MainRoomGo;
 
     private Folder(string name, Folder father)
     {
@@ -129,6 +134,16 @@ public class Folder
         father.AddChild(newFolder);
         WriteNewFolderStructureToFile();
         DirtyAfterInsertion = true;
+    }
+
+    public static bool IsMainRoomVisible()
+    {
+        return MainRoomGo.activeSelf;
+    }
+
+    public static void ShowMainRoom(bool show)
+    {
+        MainRoomGo.SetActiveRecursivelyExt(show);
     }
 
     public static Folder GetFolderFromAbsolutePath(string[] absolutePath, Folder root)
@@ -525,5 +540,18 @@ public class JsonFolder
     public override string ToString()
     {
         return ToJson(this);
+    }
+}
+
+public static class Utility
+{
+    
+    public static void SetActiveRecursivelyExt(this GameObject obj, bool state)
+    {
+        obj.SetActive(state);
+        foreach (Transform child in obj.transform)
+        {
+            SetActiveRecursivelyExt(child.gameObject, state);
+        }
     }
 }

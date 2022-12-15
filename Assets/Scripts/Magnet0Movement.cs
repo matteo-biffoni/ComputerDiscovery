@@ -6,8 +6,6 @@ public class Magnet0Movement : MonoBehaviour
     [Header("Movement")]
     public float MoveSpeed;
 
-    public GameObject MainRoom;
-
     //[Header("Key binds")]
     //public KeyCode InsertFolderKey = KeyCode.I;
     
@@ -23,8 +21,6 @@ public class Magnet0Movement : MonoBehaviour
     private Vector3 _moveDirection;
 
     private Rigidbody _rb;
-
-    public LayerMask RoomLayerMask;
 
     private Folder _roomIn; 
     private Collider _previousCollider;
@@ -102,14 +98,6 @@ public class Magnet0Movement : MonoBehaviour
             newRoom?.ActivateGreatGrandFather(false);
         }
         _roomIn = newRoom;
-        if (_roomIn != Folder.Root && _roomIn != Folder.MainRoom)
-        {
-            MainRoom.SetActiveRecursivelyExt(false);
-        }
-        else
-        {
-            MainRoom.SetActiveRecursivelyExt(true);
-        }
     }
 
     public Folder GetRoomIn()
@@ -209,18 +197,5 @@ public class Magnet0Movement : MonoBehaviour
     {
         _moveDirection = _bodyTransform.forward * _verticalInput + _bodyTransform.right * _horizontalInput;
         _rb.AddForce(_moveDirection.normalized * MoveSpeed, ForceMode.Force);
-    }
-}
-
-public static class Utility
-{
-    
-    public static void SetActiveRecursivelyExt(this GameObject obj, bool state)
-    {
-        obj.SetActive(state);
-        foreach (Transform child in obj.transform)
-        {
-            SetActiveRecursivelyExt(child.gameObject, state);
-        }
     }
 }

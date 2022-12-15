@@ -38,6 +38,14 @@ public class DoorController : MonoBehaviour
         var playerRoom = (other.gameObject.GetComponent(typeof(Magnet0Movement)) as Magnet0Movement)?.GetRoomIn();
         if (playerRoom != _room && playerRoom != _roomTo) return;
         _roomTo?.ActivateRoomComponents(true);
+        if (playerRoom == _roomTo && _room == Folder.Root && !Folder.IsMainRoomVisible())
+        {
+            Folder.ShowMainRoom(true);
+        }
+        else if (_room != Folder.Root && Folder.IsMainRoomVisible())
+        {
+            Folder.ShowMainRoom(false);
+        }
         _doorAnimator.SetBool(CloseDoor, false);
         _doorAnimator.SetBool(OpenDoor, true);
     }
@@ -51,7 +59,6 @@ public class DoorController : MonoBehaviour
         _doorAnimator.SetBool(CloseDoor, true);
         if (playerRoom == _room)
         {
-            //_room?.ActivateChildComponents(this, false);
             StartCoroutine(WaitForDoorToBeClosedAndDeactivateChildComponents());
         }
     }
