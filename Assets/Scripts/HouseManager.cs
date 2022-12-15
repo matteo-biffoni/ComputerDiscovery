@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
 
@@ -188,10 +188,10 @@ public class Folder
         return index != -1 ? _children[index] : null;
     }
 
-    public void ActivateChildComponents(DoorController controller, bool active)
+    /*public void ActivateChildComponents(DoorController controller, bool active)
     {
         GetChildrenFromDoorController(controller).ActivateRoomComponents(active);
-    }
+    }*/
 
     public Folder GetFather()
     {
@@ -244,7 +244,10 @@ public class Folder
             collider.enabled = false;
         }
         var playerDetector = container.AddComponent(typeof(PlayerDetector)) as PlayerDetector;
-        if (playerDetector != null) playerDetector.SetFolderReferred(folder);
+        if (playerDetector != null)
+        {
+            playerDetector.SetFolderReferred(folder);
+        }
         Vector3 offset;
         switch (direction)
         {
@@ -268,6 +271,7 @@ public class Folder
                 throw new ArgumentOutOfRangeException();
         }
         var roomPre = Object.Instantiate(roomsPrefabs[folder._children.Count], container.transform);
+        roomPre.transform.Find("Wall_North").Find("RoomLabel").GetComponent<TMP_Text>().text = folder._name;
         var entrancePre = Object.Instantiate(entrancesPrefabs[(int)entrance], container.transform);
         container.transform.Rotate(0f, (int) direction, 0f, Space.Self);
         container.transform.parent = parentTransform;

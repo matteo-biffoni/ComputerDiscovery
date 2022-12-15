@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class Magnet0Movement : MonoBehaviour
@@ -26,14 +24,11 @@ public class Magnet0Movement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    private Collider[] _roomColliders;
-
     public LayerMask RoomLayerMask;
 
     private Folder _roomIn; 
     private Collider _previousCollider;
 
-    //public TMP_Text PathIndicatorText;
     //public GameObject NewFolderMenu;
     //public TMP_InputField NewFolderInputField;
     //public TMP_Text ErrorText;
@@ -49,7 +44,6 @@ public class Magnet0Movement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _roomColliders = new Collider[1];
         _rigidbody = GetComponent(typeof(Rigidbody)) as Rigidbody;
         _bodyTransform = Body.GetComponent<Transform>();
         _bodyAnimator = Body.GetComponent<Animator>();
@@ -91,7 +85,6 @@ public class Magnet0Movement : MonoBehaviour
             newRoom?.ActivateGreatGrandFather(false);
         }
         _roomIn = newRoom;
-        //PathIndicatorText.text = _roomIn?.GetAbsolutePath();
         */
     }
 
@@ -117,7 +110,6 @@ public class Magnet0Movement : MonoBehaviour
         {
             MainRoom.SetActiveRecursivelyExt(true);
         }
-        //PathIndicatorText.text = _roomIn?.GetAbsolutePath();
     }
 
     public Folder GetRoomIn()
