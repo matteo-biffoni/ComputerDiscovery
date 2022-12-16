@@ -1,0 +1,221 @@
+{
+  "Name": "Desktop",
+  "Children": [
+    {
+      "Name": "Cartella1",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Name": "Cartella2",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Name": "Cartella3",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": []
+            },
+            {
+              "Name": "Cartella3",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Name": "Cartella 4",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Name": "Cartella2",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [
+                {
+                  "Name": "Cartella1",
+                  "Children": []
+                },
+                {
+                  "Name": "Cartella2",
+                  "Children": []
+                }
+              ]
+            },
+            {
+              "Name": "Cartella2",
+              "Children": []
+            },
+            {
+              "Name": "Cartella3",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Cartella3",
+      "Children": []
+    },
+    {
+      "Name": "Cartella4",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Name": "Cartella2",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [
+                {
+                  "Name": "Cartella1",
+                  "Children": [
+                    {
+                      "Name": "Cartella1",
+                      "Children": []
+                    },
+                    {
+                      "Name": "Cartella2",
+                      "Children": []
+                    }
+                  ]
+                },
+                {
+                  "Name": "Cartella2",
+                  "Children": []
+                }
+              ]
+            },
+            {
+              "Name": "Cartella2",
+              "Children": [
+                {
+                  "Name": "Cartella1",
+                  "Children": [
+                    {
+                      "Name": "Cartella1",
+                      "Children": [
+                        {
+                          "Name": "Cartella1",
+                          "Children": []
+                        },
+                        {
+                          "Name": "Cartella2",
+                          "Children": []
+                        },
+                        {
+                          "Name": "Cartella3",
+                          "Children": []
+                        }
+                      ]
+                    },
+                    {
+                      "Name": "Cartella2",
+                      "Children": []
+                    },
+                    {
+                      "Name": "Cartella3",
+                      "Children": []
+                    }
+                  ]
+                },
+                {
+                  "Name": "Cartella2",
+                  "Children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "Cartella3",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Name": "Cartella5",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": []
+        },
+        {
+          "Name": "Cartella2",
+          "Children": []
+        },
+        {
+          "Name": "Cartella3",
+          "Children": []
+        },
+        {
+          "Name": "Cartella4",
+          "Children": []
+        },
+        {
+          "Name": "Cartella5",
+          "Children": []
+        },
+        {
+          "Name": "Cartella6",
+          "Children": []
+        },
+        {
+          "Name": "Cartella7",
+          "Children": []
+        },
+        {
+          "Name": "Cartella8",
+          "Children": []
+        },
+        {
+          "Name": "Cartella9",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Name": "Cartella6",
+      "Children": []
+    }
+  ]
+}
