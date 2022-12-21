@@ -161,9 +161,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 7
   Body: {fileID: 3517450936309384296}
-  RoomLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &374140266663232548
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,7 +1476,6 @@ GameObject:
   - component: {fileID: 826550721792487027}
   - component: {fileID: 6261307956066848464}
   - component: {fileID: 1098555605921032129}
-  - component: {fileID: 1909200334719172991}
   m_Layer: 0
   m_Name: Body
   m_TagString: Player
@@ -1513,7 +1509,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6261307956066848464
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1530,7 +1526,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &1098555605921032129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1544,20 +1540,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WalkingSphere: {fileID: 6862248024714833424}
---- !u!136 &1909200334719172991
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3517450936309384296}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 3.12
-  m_Height: 8.388667
-  m_Direction: 1
-  m_Center: {x: -0.015959144, y: 8.090587, z: 0.08}
 --- !u!1 &3525365296064207901
 GameObject:
   m_ObjectHideFlags: 0
