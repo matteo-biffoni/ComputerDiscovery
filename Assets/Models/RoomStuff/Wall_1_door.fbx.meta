@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: muro
-    second: {fileID: 2100000, guid: 1b2372b979ccffa4b804eb6bc69e10ee, type: 2}
+    second: {fileID: 2100000, guid: 73a70bedb89844946afd141cd87db508, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
