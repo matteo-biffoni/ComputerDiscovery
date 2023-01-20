@@ -8,27 +8,27 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: foro_luce
-    second: {fileID: 2100000, guid: 95c41176d8c34044a905f3c4dc4823ca, type: 2}
+    second: {fileID: 2100000, guid: a71135f99f42bb248af7107f3fb1cdf5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ganci_scala
-    second: {fileID: 2100000, guid: 76c2e0a8ef4c5294d9ab3015ac81d13e, type: 2}
+    second: {fileID: 2100000, guid: 43e032f19d9b32e4c912b94d04c28489, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: muro
-    second: {fileID: 2100000, guid: 7f01ccef8dbee6c4e981145b6c0dbb5e, type: 2}
+    second: {fileID: 2100000, guid: 48896374254eaf4489a714368e5649ee, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: pavimento_scala
-    second: {fileID: 2100000, guid: 3085187f2be8e0447b8f6521db7c5151, type: 2}
+    second: {fileID: 2100000, guid: 7d1edeeead594f94eb546f4febf36418, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: vetro_scala
-    second: {fileID: 2100000, guid: 1d976b449c304084aaf4eb3996383626, type: 2}
+    second: {fileID: 2100000, guid: 507fafb93ef43b945aee65dbf8f94750, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

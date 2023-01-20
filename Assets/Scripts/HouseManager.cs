@@ -39,6 +39,10 @@ public class HouseManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Folder.InsertNewFile(new RoomFile("Ciao bello.png", "png", true), Folder.Root);
+        }
         if (!Folder.DirtyAfterInsertion) return;
         Folder.DirtyAfterInsertion = false;
         Destroy(Folder.Root.GetContainer());
@@ -109,6 +113,35 @@ public enum Entrance
     R2
 }
 
+public class RoomFile
+{
+    private readonly string _name;
+    private readonly string _format;
+    private readonly bool _integrity;
+
+    public RoomFile(string name, string format, bool integrity)
+    {
+        _name = name;
+        _format = format;
+        _integrity = integrity;
+    }
+
+    public string GetName()
+    {
+        return _name;
+    }
+
+    public string GetFormat()
+    {
+        return _format;
+    }
+
+    public bool GetIntegrity()
+    {
+        return _integrity;
+    }
+}
+
 public class Folder
 {
     public static bool DirtyAfterInsertion;
@@ -117,6 +150,7 @@ public class Folder
     private GameObject _container;
     private readonly Folder _father;
     private readonly List<Folder> _children;
+    private readonly List<RoomFile> _files;
     private readonly string _name;
     public static readonly Folder MainRoom = new("Main Room", null);
     public static GameObject MainRoomGo;
@@ -126,12 +160,20 @@ public class Folder
         _father = father;
         _name = name;
         _children = new List<Folder>();
+        _files = new List<RoomFile>();
     }
 
     public static void InsertNewFolder(string newFolderName, Folder father)
     {
         var newFolder = new Folder(newFolderName, father);
         father.AddChild(newFolder);
+        WriteNewFolderStructureToFile();
+        DirtyAfterInsertion = true;
+    }
+
+    public static void InsertNewFile(RoomFile newFile, Folder father)
+    {
+        father._files.Add(newFile);
         WriteNewFolderStructureToFile();
         DirtyAfterInsertion = true;
     }
@@ -470,6 +512,10 @@ public class Folder
     private static Folder ConvertJsonFolderStructureToFolderStructure(JsonFolder jsonFolder, Folder father)
     {
         var folder = new Folder(jsonFolder.Name, father);
+        foreach (var file in jsonFolder.Files)
+        {
+            folder._files.Add(new RoomFile(file.Name, file.Format, file.Integrity));
+        }
         foreach (var child in jsonFolder.Children)
         {
             folder.AddChild(ConvertJsonFolderStructureToFolderStructure(child, folder));
@@ -479,11 +525,22 @@ public class Folder
 
     private static JsonFolder ConvertFolderStructureToJsonFolderStructure(Folder folder)
     {
-        var jsonFolder = new JsonFolder()
+        var jsonFolder = new JsonFolder
         {
             Name = folder._name,
-            Children = new List<JsonFolder>()
+            Children = new List<JsonFolder>(),
+            Files = new List<JsonFile>()
         };
+        // ciclo per aggiungere i file di ogni cartella nella struttura json
+        foreach (var file in folder._files)
+        {
+            jsonFolder.Files.Add(new JsonFile
+            {
+                Name = file.GetName(),
+                Format = file.GetFormat(),
+                Integrity = file.GetIntegrity()
+            });
+        }
         foreach (var child in folder._children)
         {
             jsonFolder.Children.Add(ConvertFolderStructureToJsonFolderStructure(child));
@@ -497,6 +554,33 @@ internal class UnsupportedFileFormatException : Exception
     public UnsupportedFileFormatException(string message) : base(message) {}
 }
 
+public class JsonFile
+{
+    [JsonProperty("Name")]
+    public string Name { get; set; }
+    
+    [JsonProperty("Format")]
+    public string Format { get; set; }
+    
+    [JsonProperty("Integrity")]
+    public bool Integrity { get; set; }
+    
+    
+    private static JsonFile FromJson(string json)
+    {
+        return JsonConvert.DeserializeObject<JsonFile>(json);
+    }
+    private static string ToJson(JsonFile file)
+    {
+        return JsonConvert.SerializeObject(file, Formatting.Indented);
+    }
+
+    public override string ToString()
+    {
+        return ToJson(this);
+    }
+}
+
 public class JsonFolder
 {
     [JsonProperty("Name")]
@@ -504,6 +588,9 @@ public class JsonFolder
     
     [JsonProperty("Children")]
     public List<JsonFolder> Children { get; set; }
+    
+    [JsonProperty("Files")]
+    public List<JsonFile> Files { get; set; }
 
     private static JsonFolder FromJson(string json)
     {

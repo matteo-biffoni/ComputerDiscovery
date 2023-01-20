@@ -9,45 +9,56 @@
           "Children": [
             {
               "Name": "Cartella1",
-              "Children": []
+              "Children": [],
+              "Files": []
             },
             {
               "Name": "Cartella2",
-              "Children": []
+              "Children": [],
+              "Files": []
             }
-          ]
+          ],
+          "Files": []
         },
         {
           "Name": "Cartella2",
           "Children": [
             {
               "Name": "Cartella1",
-              "Children": []
+              "Children": [],
+              "Files": []
             }
-          ]
+          ],
+          "Files": []
         },
         {
           "Name": "Cartella3",
           "Children": [
             {
               "Name": "Cartella1",
-              "Children": []
+              "Children": [],
+              "Files": []
             },
             {
               "Name": "Cartella2",
-              "Children": []
+              "Children": [],
+              "Files": []
             },
             {
               "Name": "Cartella3",
-              "Children": []
+              "Children": [],
+              "Files": []
             }
-          ]
+          ],
+          "Files": []
         },
         {
           "Name": "Cartella 4",
-          "Children": []
+          "Children": [],
+          "Files": []
         }
-      ]
+      ],
+      "Files": []
     },
     {
       "Name": "Cartella2",
@@ -60,29 +71,37 @@
               "Children": [
                 {
                   "Name": "Cartella1",
-                  "Children": []
+                  "Children": [],
+                  "Files": []
                 },
                 {
                   "Name": "Cartella2",
-                  "Children": []
+                  "Children": [],
+                  "Files": []
                 }
-              ]
+              ],
+              "Files": []
             },
             {
               "Name": "Cartella2",
-              "Children": []
+              "Children": [],
+              "Files": []
             },
             {
               "Name": "Cartella3",
-              "Children": []
+              "Children": [],
+              "Files": []
             }
-          ]
+          ],
+          "Files": []
         }
-      ]
+      ],
+      "Files": []
     },
     {
       "Name": "Cartella3",
-      "Children": []
+      "Children": [],
+      "Files": []
     },
     {
       "Name": "Cartella4",
@@ -92,13 +111,16 @@
           "Children": [
             {
               "Name": "Cartella1",
-              "Children": []
+              "Children": [],
+              "Files": []
             },
             {
               "Name": "Cartella2",
-              "Children": []
+              "Children": [],
+              "Files": []
             }
-          ]
+          ],
+          "Files": []
         },
         {
           "Name": "Cartella2",
@@ -111,19 +133,24 @@
                   "Children": [
                     {
                       "Name": "Cartella1",
-                      "Children": []
+                      "Children": [],
+                      "Files": []
                     },
                     {
                       "Name": "Cartella2",
-                      "Children": []
+                      "Children": [],
+                      "Files": []
                     }
-                  ]
+                  ],
+                  "Files": []
                 },
                 {
                   "Name": "Cartella2",
-                  "Children": []
+                  "Children": [],
+                  "Files": []
                 }
-              ]
+              ],
+              "Files": []
             },
             {
               "Name": "Cartella2",
@@ -136,86 +163,121 @@
                       "Children": [
                         {
                           "Name": "Cartella1",
-                          "Children": []
+                          "Children": [],
+                          "Files": []
                         },
                         {
                           "Name": "Cartella2",
-                          "Children": []
+                          "Children": [],
+                          "Files": []
                         },
                         {
                           "Name": "Cartella3",
-                          "Children": []
+                          "Children": [],
+                          "Files": []
                         }
-                      ]
+                      ],
+                      "Files": []
                     },
                     {
                       "Name": "Cartella2",
-                      "Children": []
+                      "Children": [],
+                      "Files": []
                     },
                     {
                       "Name": "Cartella3",
-                      "Children": []
+                      "Children": [],
+                      "Files": []
                     }
-                  ]
+                  ],
+                  "Files": []
                 },
                 {
                   "Name": "Cartella2",
-                  "Children": []
+                  "Children": [],
+                  "Files": []
                 }
-              ]
+              ],
+              "Files": []
             }
-          ]
+          ],
+          "Files": []
         },
         {
           "Name": "Cartella3",
-          "Children": []
+          "Children": [],
+          "Files": []
         }
-      ]
+      ],
+      "Files": []
     },
     {
       "Name": "Cartella5",
       "Children": [
         {
           "Name": "Cartella1",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella2",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella3",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella4",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella5",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella6",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella7",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella8",
-          "Children": []
+          "Children": [],
+          "Files": []
         },
         {
           "Name": "Cartella9",
-          "Children": []
+          "Children": [],
+          "Files": []
         }
-      ]
+      ],
+      "Files": []
     },
     {
       "Name": "Cartella6",
-      "Children": []
+      "Children": [],
+      "Files": []
+    }
+  ],
+  "Files": [
+    {
+      "Name": "File1.png",
+      "Format": "png",
+      "Integrity": true
+    },
+    {
+      "Name": "File1.jpg",
+      "Format": "jpg",
+      "Integrity": false
     }
   ]
 }
