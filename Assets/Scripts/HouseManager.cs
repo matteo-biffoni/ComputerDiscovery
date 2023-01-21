@@ -41,7 +41,7 @@ public class HouseManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            Folder.InsertNewFile(new RoomFile("Ciao bello.png", "png", true), Folder.Root);
+            Folder.InsertNewFile(new RoomFile("Ciao bello.png", "png", true, 129.2f), Folder.Root);
         }
         if (!Folder.DirtyAfterInsertion) return;
         Folder.DirtyAfterInsertion = false;
@@ -118,12 +118,14 @@ public class RoomFile
     private readonly string _name;
     private readonly string _format;
     private readonly bool _integrity;
+    private readonly float _size;
 
-    public RoomFile(string name, string format, bool integrity)
+    public RoomFile(string name, string format, bool integrity, float size)
     {
         _name = name;
         _format = format;
         _integrity = integrity;
+        _size = size;
     }
 
     public string GetName()
@@ -139,6 +141,11 @@ public class RoomFile
     public bool GetIntegrity()
     {
         return _integrity;
+    }
+
+    public float GetSize()
+    {
+        return _size;
     }
 }
 
@@ -260,6 +267,11 @@ public class Folder
         return _name;
     }
 
+    public List<RoomFile> GetFiles()
+    {
+        return _files;
+    }
+
     // ReSharper disable Unity.PerformanceAnalysis
     public void ActivateGreatGrandFather(bool active)
     {
@@ -329,6 +341,9 @@ public class Folder
         }
         var roomPre = Object.Instantiate(roomsPrefabs[folder._children.Count], container.transform);
         roomPre.transform.Find("Wall_North").Find("RoomLabel").GetComponent<TMP_Text>().text = folder._name;
+        // prendo il Gameobject bacheca figlio della stanza per andare a settargli la folder a cui si riferisce
+        var bacheca = roomPre.transform.Find("Bacheca").GetComponent<BachecaFileController>();
+        bacheca.SetFolder(folder);
         var entrancePre = Object.Instantiate(entrancesPrefabs[(int)entrance], container.transform);
         container.transform.Rotate(0f, (int) direction, 0f, Space.Self);
         container.transform.parent = parentTransform;
@@ -514,7 +529,7 @@ public class Folder
         var folder = new Folder(jsonFolder.Name, father);
         foreach (var file in jsonFolder.Files)
         {
-            folder._files.Add(new RoomFile(file.Name, file.Format, file.Integrity));
+            folder._files.Add(new RoomFile(file.Name, file.Format, file.Integrity, file.Size));
         }
         foreach (var child in jsonFolder.Children)
         {
@@ -538,7 +553,8 @@ public class Folder
             {
                 Name = file.GetName(),
                 Format = file.GetFormat(),
-                Integrity = file.GetIntegrity()
+                Integrity = file.GetIntegrity(),
+                Size = file.GetSize()
             });
         }
         foreach (var child in folder._children)
@@ -564,6 +580,9 @@ public class JsonFile
     
     [JsonProperty("Integrity")]
     public bool Integrity { get; set; }
+    
+    [JsonProperty("Size")]
+    public float Size { get; set; }
     
     
     private static JsonFile FromJson(string json)
