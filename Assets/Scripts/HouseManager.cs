@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
+using Random = System.Random;
 
 public class HouseManager : MonoBehaviour
 {
@@ -28,20 +29,240 @@ public class HouseManager : MonoBehaviour
     public Magnet0Movement Player;
 
     public GameObject MainRoomGo;
+
+    private Folder _quest1;
+
+    private static List<string> imageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
+    private static List<string> docFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
+    private static List<string> multimediaFileNames = new () { "Recita", "Concerto", "Audizione", "Spettacolo", "Provino", "Shakira", "Beethoven", "John Lennon" };
     
+    public float MediumSizeMin = 10.0f;
+    public float LargeSizeMin = 50.0f;
+
+    public GameObject[] MP3s;
+    public GameObject[] ZIPs;
+    public GameObject[] MOVs;
+    public GameObject[] PDFs;
+    public GameObject[] JPEGs;
+    public GameObject[] PNGs;
+    public GameObject[] DOCs;
+    public GameObject[] TXTs;
+
     private void Start()
     {
         Folder.MainRoomGo = MainRoomGo;
         var mainRoomPlayerDetector = transform.GetChild(0).AddComponent<PlayerDetector>();
         mainRoomPlayerDetector.SetFolderReferred(Folder.MainRoom);
         InstantiateScene(true);
+        RetrieveQuest1();
+        SpawnObjectsForQuest1();
+    }
+
+    private GameObject PickPrefabFromFile(RoomFile file)
+    {
+        var sizeIndex = file.GetSize() >= MediumSizeMin ? (file.GetSize() >= LargeSizeMin ? 2 : 1) : 0;
+        switch (file.GetFormat())
+        {
+            case "mp3":
+                return MP3s[sizeIndex];
+            case "pdf":
+                return PDFs[sizeIndex];
+            case "zip":
+                return ZIPs[sizeIndex];
+            case "mov":
+                return MOVs[sizeIndex];
+            case "jpeg":
+                return JPEGs[sizeIndex];
+            case "png":
+                return PNGs[sizeIndex];
+            case "doc":
+                return DOCs[sizeIndex];
+            case "txt":
+                return TXTs[sizeIndex];
+        }
+        return null;
+    }
+    private void SpawnObjectsForQuest1()
+    {
+        Transform quest1ObjectsSpawner =
+            transform.Find("MainRoom").Find("MainRoom_Outside").Find("Quest1_ObjSpawners");
+        List<GameObject> objectSpawners = new List<GameObject>();
+        for (int i = 0; i < 8; i++)
+        {
+            objectSpawners.Add(quest1ObjectsSpawner.GetChild(i).gameObject);
+        }
+
+        Random random = new Random();
+        int indiceNome = random.Next(0, imageFileNames.Count);
+        string nomeImmagine1 = imageFileNames[indiceNome];
+        imageFileNames.Remove(nomeImmagine1);
+        indiceNome = random.Next(0, imageFileNames.Count);
+        string nomeImmagine2 = imageFileNames[indiceNome];
+        imageFileNames.Remove(nomeImmagine2);
+        nomeImmagine1 += ".png";
+        nomeImmagine2 += ".jpg";
+        Debug.Log(nomeImmagine1);
+        Debug.Log(nomeImmagine2);
+        var immagine1 = new RoomFile(nomeImmagine1, "png", true, random.Next(1, 150), null);
+        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", true, random.Next(1, 150), null);
+        indiceNome = random.Next(0, docFileNames.Count);
+        string nomeDocumento1 = docFileNames[indiceNome];
+        docFileNames.Remove(nomeDocumento1);
+        indiceNome = random.Next(0, docFileNames.Count);
+        string nomeDocumento2 = docFileNames[indiceNome];
+        docFileNames.Remove(nomeDocumento2);
+        indiceNome = random.Next(0, docFileNames.Count);
+        string nomeDocumento3 = docFileNames[indiceNome];
+        docFileNames.Remove(nomeDocumento3);
+        nomeDocumento1 += ".docx";
+        nomeDocumento2 += ".pdf";
+        nomeDocumento3 += ".txt";
+        Debug.Log(nomeDocumento1);
+        Debug.Log(nomeDocumento2);
+        Debug.Log(nomeDocumento3);
+        var documento1 = new RoomFile(nomeDocumento1, "doc", true, random.Next(1, 150), null);
+        var documento2 = new RoomFile(nomeDocumento2, "pdf", true, random.Next(1, 150), null);
+        var documento3 = new RoomFile(nomeDocumento3, "txt", true, random.Next(1, 150), null);
+        indiceNome = random.Next(0, multimediaFileNames.Count);
+        string nomeMultFile1 = multimediaFileNames[indiceNome];
+        multimediaFileNames.Remove(nomeMultFile1);
+        indiceNome = random.Next(0, multimediaFileNames.Count);
+        string nomeMultFile2 = multimediaFileNames[indiceNome];
+        multimediaFileNames.Remove(nomeMultFile2);
+        nomeMultFile1 += ".mp3";
+        nomeMultFile2 += ".mov";
+        Debug.Log(nomeMultFile1);
+        Debug.Log(nomeMultFile2);
+        var multFile1 = new RoomFile(nomeMultFile1, "mp3", true, random.Next(1, 150), null);
+        var multFile2 = new RoomFile(nomeMultFile2, "mov", true, random.Next(1, 150), null);
+        var fileBonus = new RoomFile("", "", true, 0f, null);
+        var nomeFileBonus = "";
+        var formatoBonusIndice = random.Next(0, 2);
+        switch (formatoBonusIndice)
+        {
+            case 0:
+                formatoBonusIndice = random.Next(0, 1);
+                indiceNome = random.Next(0, imageFileNames.Count);
+                nomeFileBonus = imageFileNames[indiceNome];
+                imageFileNames.Remove(nomeFileBonus);
+                switch (formatoBonusIndice)
+                {
+                    case 0:
+                        nomeFileBonus += ".png";
+                        fileBonus = new RoomFile(nomeFileBonus, "png", true, random.Next(1, 150), null);
+                        break;
+                    case 1:
+                        nomeFileBonus += ".jpg";
+                        fileBonus = new RoomFile(nomeFileBonus, "jpeg", true, random.Next(1, 150), null);
+                        break;
+                }
+                break;
+            case 1:
+                formatoBonusIndice = random.Next(0, 2);
+                indiceNome = random.Next(0, docFileNames.Count);
+                nomeFileBonus = docFileNames[indiceNome];
+                docFileNames.Remove(nomeFileBonus);
+                switch (formatoBonusIndice)
+                {
+                    case 0:
+                        nomeFileBonus += ".docx";
+                        fileBonus = new RoomFile(nomeFileBonus, "doc", true, random.Next(1, 150), null);
+                        break;
+                    case 1:
+                        nomeFileBonus += ".pdf";
+                        fileBonus = new RoomFile(nomeFileBonus, "pdf", true, random.Next(1, 150), null);
+                        break;
+                    case 2:
+                        nomeFileBonus += ".txt";
+                        fileBonus = new RoomFile(nomeFileBonus, "txt", true, random.Next(1, 150), null);
+                        break;
+                }
+                break;
+            case 2:
+                formatoBonusIndice = random.Next(0, 1);
+                indiceNome = random.Next(0, multimediaFileNames.Count);
+                nomeFileBonus = multimediaFileNames[indiceNome];
+                multimediaFileNames.Remove(nomeFileBonus);
+                switch (formatoBonusIndice)
+                {
+                    case 0:
+                        nomeFileBonus += ".mp3";
+                        fileBonus = new RoomFile(nomeFileBonus, "mp3", true, random.Next(1, 150), null);
+                        break;
+                    case 1:
+                        nomeFileBonus += ".mov";
+                        fileBonus = new RoomFile(nomeFileBonus, "mov", true, random.Next(1, 150), null);
+                        break;
+                }
+                break;
+        }
+
+        Debug.Log(nomeFileBonus);
+        // Ora gli 8 file sono: { immagine1, immagine2, documento1, documento2, documento3, multFile1, multFile2, fileBonus }
+        var extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        var objToSpawn = PickPrefabFromFile(immagine1);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(immagine2);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(documento1);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(documento2);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(documento3);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(multFile1);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(multFile2);
+        Instantiate(objToSpawn, extracted.transform);
+        extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
+        objectSpawners.Remove(extracted);
+        objToSpawn = PickPrefabFromFile(fileBonus);
+        Instantiate(objToSpawn, extracted.transform);
+    }
+
+    private void RetrieveQuest1()
+    {
+        _quest1 = Folder.RetrieveQuest1();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            Folder.InsertNewFile(new RoomFile("Ciao bello.png", "png", true, 129.2f), Folder.Root);
+            var questManager = GetComponent<QuestManager>();
+            var formatErrors = questManager.Quest1FormatChecker(Folder.Root);
+            if (formatErrors.Count == 0)
+            {
+                Debug.Log("Nessun file fuori posto");
+                if (questManager.Quest1CountChecker(_quest1, Folder.Root))
+                {
+                    Debug.Log("Hai finito");
+                }
+                else
+                {
+                    Debug.Log("Ti mancano ancora dei file da posizionare");
+                }
+            }
+            else
+            {
+                foreach (var error in formatErrors)
+                {
+                    Debug.Log(error);
+                }
+            }
         }
         if (!Folder.DirtyAfterInsertion) return;
         Folder.DirtyAfterInsertion = false;
@@ -119,13 +340,15 @@ public class RoomFile
     private readonly string _format;
     private readonly bool _integrity;
     private readonly float _size;
+    private readonly Folder _parent;
 
-    public RoomFile(string name, string format, bool integrity, float size)
+    public RoomFile(string name, string format, bool integrity, float size, Folder parent)
     {
         _name = name;
         _format = format;
         _integrity = integrity;
         _size = size;
+        _parent = parent;
     }
 
     public string GetName()
@@ -147,6 +370,16 @@ public class RoomFile
     {
         return _size;
     }
+
+    public Folder GetParent()
+    {
+        return _parent;
+    }
+    
+    public string GetAbsolutePath()
+    {
+        return _parent.GetAbsolutePath() + "/" + _name;
+    }
 }
 
 public class Folder
@@ -162,6 +395,22 @@ public class Folder
     public static readonly Folder MainRoom = new("Main Room", null);
     public static GameObject MainRoomGo;
 
+
+
+    public List<RoomFile> GetAllFiles()
+    {
+        var list = new List<RoomFile>();
+        foreach (var file in _files)
+        {
+            list.Add(file);
+        }
+
+        foreach (var child in _children)
+        {
+            list.AddRange(child.GetAllFiles());
+        }
+        return list;
+    }
     private Folder(string name, Folder father)
     {
         _father = father;
@@ -518,6 +767,12 @@ public class Folder
         return (Direction) (((int) parentDirection + (int) direction) % 360);
     }
 
+    public static Folder RetrieveQuest1()
+    {
+        var jsonFolderStructure = JsonFolder.FromFileName("Quest1");
+        return ConvertJsonFolderStructureToFolderStructure(jsonFolderStructure, null);
+    }
+
     public static Folder GenerateFolderStructureFromFile()
     {
         var jsonFolderStructure = JsonFolder.FromFileName(CurrentFileName);
@@ -529,7 +784,7 @@ public class Folder
         var folder = new Folder(jsonFolder.Name, father);
         foreach (var file in jsonFolder.Files)
         {
-            folder._files.Add(new RoomFile(file.Name, file.Format, file.Integrity, file.Size));
+            folder._files.Add(new RoomFile(file.Name, file.Format, file.Integrity, file.Size, folder));
         }
         foreach (var child in jsonFolder.Children)
         {
