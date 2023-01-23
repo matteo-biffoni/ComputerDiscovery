@@ -10,6 +10,10 @@ public class BachecaFileController : MonoBehaviour
     public GameObject[] ZIPs;
     public GameObject[] MOVs;
     public GameObject[] PDFs;
+    public GameObject[] JPEGs;
+    public GameObject[] PNGs;
+    public GameObject[] DOCs;
+    public GameObject[] TXTs;
 
     // Setto la variabile Folder e popolo la bacheca di conseguenza
     public void SetFolder(Folder folder)
@@ -48,6 +52,14 @@ public class BachecaFileController : MonoBehaviour
                 return ZIPs[sizeIndex];
             case "mov":
                 return MOVs[sizeIndex];
+            case "jpeg":
+                return JPEGs[sizeIndex];
+            case "png":
+                return PNGs[sizeIndex];
+            case "doc":
+                return DOCs[sizeIndex];
+            case "txt":
+                return TXTs[sizeIndex];
         }
         return null;
     }
