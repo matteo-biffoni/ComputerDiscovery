@@ -270,28 +270,46 @@
   ],
   "Files": [
     {
-      "Name": "File1.mp3",
-      "Format": "mp3",
+      "Name": "File1.doc",
+      "Format": "doc",
       "Integrity": true,
-      "Size": 104.3
+      "Size": 2
     },
     {
-      "Name": "File2.zip",
-      "Format": "zip",
+      "Name": "File2.doc",
+      "Format": "doc",
       "Integrity": false,
       "Size": 10.8
     },
     {
-      "Name": "File3.mov",
-      "Format": "mov",
+      "Name": "File3.doc",
+      "Format": "doc",
       "Integrity": false,
       "Size": 1102
     },
     {
-      "Name": "File4.pdf",
-      "Format": "pdf",
+      "Name": "File4.txt",
+      "Format": "txt",
       "Integrity": false,
       "Size": 7
+    },
+    {
+      "Name": "File5.txt",
+      "Format": "txt",
+      "Integrity": false,
+      "Size": 17
+    },
+    {
+      "Name": "File6.txt",
+      "Format": "txt",
+      "Integrity": false,
+      "Size": 166
+    },
+    {
+      "Name": "File7.jpg",
+      "Format": "jpeg",
+      "Integrity": false,
+      "Size": 123
     }
   ]
 }
