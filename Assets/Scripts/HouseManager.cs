@@ -61,26 +61,18 @@ public class HouseManager : MonoBehaviour
     private GameObject PickPrefabFromFile(RoomFile file)
     {
         var sizeIndex = file.GetSize() >= MediumSizeMin ? (file.GetSize() >= LargeSizeMin ? 2 : 1) : 0;
-        switch (file.GetFormat())
+        return file.GetFormat() switch
         {
-            case "mp3":
-                return MP3s[sizeIndex];
-            case "pdf":
-                return PDFs[sizeIndex];
-            case "zip":
-                return ZIPs[sizeIndex];
-            case "mov":
-                return MOVs[sizeIndex];
-            case "jpeg":
-                return JPEGs[sizeIndex];
-            case "png":
-                return PNGs[sizeIndex];
-            case "doc":
-                return DOCs[sizeIndex];
-            case "txt":
-                return TXTs[sizeIndex];
-        }
-        return null;
+            "mp3" => MP3s[sizeIndex],
+            "pdf" => PDFs[sizeIndex],
+            "zip" => ZIPs[sizeIndex],
+            "mov" => MOVs[sizeIndex],
+            "jpeg" => JPEGs[sizeIndex],
+            "png" => PNGs[sizeIndex],
+            "doc" => DOCs[sizeIndex],
+            "txt" => TXTs[sizeIndex],
+            _ => null
+        };
     }
     private void SpawnObjectsForQuest1()
     {
@@ -101,8 +93,6 @@ public class HouseManager : MonoBehaviour
         imageFileNames.Remove(nomeImmagine2);
         nomeImmagine1 += ".png";
         nomeImmagine2 += ".jpg";
-        Debug.Log(nomeImmagine1);
-        Debug.Log(nomeImmagine2);
         var immagine1 = new RoomFile(nomeImmagine1, "png", true, random.Next(1, 150), null);
         var immagine2 = new RoomFile(nomeImmagine2, "jpeg", true, random.Next(1, 150), null);
         indiceNome = random.Next(0, docFileNames.Count);
@@ -117,9 +107,6 @@ public class HouseManager : MonoBehaviour
         nomeDocumento1 += ".docx";
         nomeDocumento2 += ".pdf";
         nomeDocumento3 += ".txt";
-        Debug.Log(nomeDocumento1);
-        Debug.Log(nomeDocumento2);
-        Debug.Log(nomeDocumento3);
         var documento1 = new RoomFile(nomeDocumento1, "doc", true, random.Next(1, 150), null);
         var documento2 = new RoomFile(nomeDocumento2, "pdf", true, random.Next(1, 150), null);
         var documento3 = new RoomFile(nomeDocumento3, "txt", true, random.Next(1, 150), null);
@@ -131,8 +118,6 @@ public class HouseManager : MonoBehaviour
         multimediaFileNames.Remove(nomeMultFile2);
         nomeMultFile1 += ".mp3";
         nomeMultFile2 += ".mov";
-        Debug.Log(nomeMultFile1);
-        Debug.Log(nomeMultFile2);
         var multFile1 = new RoomFile(nomeMultFile1, "mp3", true, random.Next(1, 150), null);
         var multFile2 = new RoomFile(nomeMultFile2, "mov", true, random.Next(1, 150), null);
         var fileBonus = new RoomFile("", "", true, 0f, null);
@@ -196,41 +181,55 @@ public class HouseManager : MonoBehaviour
                 }
                 break;
         }
-
-        Debug.Log(nomeFileBonus);
         // Ora gli 8 file sono: { immagine1, immagine2, documento1, documento2, documento3, multFile1, multFile2, fileBonus }
         var extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         var objToSpawn = PickPrefabFromFile(immagine1);
-        Instantiate(objToSpawn, extracted.transform);
+        var instantiated = Instantiate(objToSpawn, extracted.transform);
+        var fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(immagine1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(immagine2);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(immagine2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(documento1);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(documento1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(documento2);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(documento2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(documento3);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(documento3);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(multFile1);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(multFile1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(multFile2);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(multFile2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(fileBonus);
-        Instantiate(objToSpawn, extracted.transform);
+        instantiated = Instantiate(objToSpawn, extracted.transform);
+        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
+        fileGrabber.SetFile(fileBonus);
     }
 
     private void RetrieveQuest1()
@@ -394,6 +393,7 @@ public class Folder
     private readonly string _name;
     public static readonly Folder MainRoom = new("Main Room", null);
     public static GameObject MainRoomGo;
+    private  BachecaFileController _bacheca;
 
 
 
@@ -423,6 +423,20 @@ public class Folder
     {
         var newFolder = new Folder(newFolderName, father);
         father.AddChild(newFolder);
+        WriteNewFolderStructureToFile();
+        DirtyAfterInsertion = true;
+    }
+
+    private void SetBacheca(BachecaFileController bachecaFileController)
+    {
+        _bacheca = bachecaFileController;
+    }
+
+    public void InsertFile(FileGrabber fileGrabber)
+    {
+        var file = fileGrabber.GetFile();
+        _files.Add(file);
+        
         WriteNewFolderStructureToFile();
         DirtyAfterInsertion = true;
     }
@@ -602,6 +616,7 @@ public class Folder
             InstantiateFolder(child, container.transform, tuple.Item1, roomsPrefabs, tuple.Item2, entrancesPrefabs, roomLength, roomHeight, roomLayer);
         }
         folder.SetContainer(container);
+        folder.SetBacheca(bacheca);
         roomPre.SetActive(false);
         entrancePre.SetActive(false);
     }

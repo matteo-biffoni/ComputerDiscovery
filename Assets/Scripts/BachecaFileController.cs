@@ -22,6 +22,13 @@ public class BachecaFileController : MonoBehaviour
         // che potevano essere eventualmente attivi
         foreach (Transform child in transform)
         {
+            foreach (Transform grandChild in child)
+            {
+                foreach (Transform grandGrandChild in grandChild)
+                {
+                    Destroy(grandGrandChild.gameObject);
+                }
+            }
             child.gameObject.SetActive(false);
         }
         // Recupero i file della cartella
@@ -42,25 +49,17 @@ public class BachecaFileController : MonoBehaviour
     private GameObject PickPrefabFromFile(RoomFile file)
     {
         var sizeIndex = file.GetSize() >= MediumSizeMin ? (file.GetSize() >= LargeSizeMin ? 2 : 1) : 0;
-        switch (file.GetFormat())
+        return file.GetFormat() switch
         {
-            case "mp3":
-                return MP3s[sizeIndex];
-            case "pdf":
-                return PDFs[sizeIndex];
-            case "zip":
-                return ZIPs[sizeIndex];
-            case "mov":
-                return MOVs[sizeIndex];
-            case "jpeg":
-                return JPEGs[sizeIndex];
-            case "png":
-                return PNGs[sizeIndex];
-            case "doc":
-                return DOCs[sizeIndex];
-            case "txt":
-                return TXTs[sizeIndex];
-        }
-        return null;
+            "mp3" => MP3s[sizeIndex],
+            "pdf" => PDFs[sizeIndex],
+            "zip" => ZIPs[sizeIndex],
+            "mov" => MOVs[sizeIndex],
+            "jpeg" => JPEGs[sizeIndex],
+            "png" => PNGs[sizeIndex],
+            "doc" => DOCs[sizeIndex],
+            "txt" => TXTs[sizeIndex],
+            _ => null
+        };
     }
 }

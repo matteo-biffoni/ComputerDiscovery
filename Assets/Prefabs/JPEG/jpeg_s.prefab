@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4014618471278957235}
   - component: {fileID: 7056321883069718}
   - component: {fileID: 2881713212595775964}
+  - component: {fileID: 4698169539030550967}
+  - component: {fileID: 4207861759975622918}
   m_Layer: 0
   m_Name: jpeg_s
   m_TagString: Untagged
@@ -85,3 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4698169539030550967
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4394698043668924425}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4704489, y: 0.47530705, z: 0.052652705}
+  m_Center: {x: 0.00750383, y: 0.010259629, z: 0.026266517}
+--- !u!114 &4207861759975622918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4394698043668924425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da568a814570bb8419dc261fc3a6eafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

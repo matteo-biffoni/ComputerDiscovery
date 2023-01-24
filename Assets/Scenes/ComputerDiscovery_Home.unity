@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 614714286}
   - component: {fileID: 614714285}
   - component: {fileID: 614714284}
+  - component: {fileID: 614714288}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -229,6 +230,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &614714288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614714283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c15c18322e31c1478294cc987868c12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RaycastDistance: 3
+  Player: {fileID: 1964724780}
 --- !u!4 &1162793944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 826550721792487027, guid: 99659a47430f9744687bccf090c470b9, type: 3}
@@ -330,6 +345,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1584105051, guid: 99659a47430f9744687bccf090c470b9, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 614714287}
+    - target: {fileID: 1584105051, guid: 99659a47430f9744687bccf090c470b9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1584105051, guid: 99659a47430f9744687bccf090c470b9, type: 3}
+      propertyPath: _raycastDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3730849297399692367, guid: 99659a47430f9744687bccf090c470b9, type: 3}
       propertyPath: m_Name
       value: Magnet0
