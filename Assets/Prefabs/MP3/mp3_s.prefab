@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 677374500384796676}
   - component: {fileID: 2575079844779688967}
   - component: {fileID: 3313313324751570628}
+  - component: {fileID: 4753530414904239713}
+  - component: {fileID: 1238956534168823971}
   m_Layer: 0
   m_Name: mp3_s
   m_TagString: Untagged
@@ -86,3 +88,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4753530414904239713
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074900378872244948}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0955584, y: 0.12558562, z: 2.0341935}
+  m_Center: {x: -0.047779202, y: 0.06279281, z: -0.0025249124}
+--- !u!114 &1238956534168823971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074900378872244948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da568a814570bb8419dc261fc3a6eafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

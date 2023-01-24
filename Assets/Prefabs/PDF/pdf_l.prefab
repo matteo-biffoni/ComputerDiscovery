@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1694230869759707955}
   - component: {fileID: 6633601575020435315}
   - component: {fileID: 4841246158799879872}
+  - component: {fileID: 7738015112309029385}
+  - component: {fileID: 130974628894342162}
   m_Layer: 0
   m_Name: pdf_l
   m_TagString: Untagged
@@ -86,3 +88,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7738015112309029385
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646141647146607900}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.55999994, y: 0.18627444, z: 0.7}
+  m_Center: {x: -0.01814659, y: 0.093137115, z: 0.000000029802322}
+--- !u!114 &130974628894342162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2646141647146607900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da568a814570bb8419dc261fc3a6eafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

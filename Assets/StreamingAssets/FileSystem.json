@@ -4,68 +4,22 @@
     {
       "Name": "Immagini",
       "Children": [],
-      "Files": [
-        {
-          "Name": "Cat.jpg",
-          "Format": "jpeg",
-          "Integrity": true,
-          "Size": 2.3
-        },
-        {
-          "Name": "Dog.png",
-          "Format": "png",
-          "Integrity": true,
-          "Size": 1.7
-        }
-      ]
+      "Files": []
     },
     {
       "Name": "Documenti",
       "Children": [],
-      "Files": [
-        {
-          "Name": "Appunti.pdf",
-          "Format": "pdf",
-          "Integrity": true,
-          "Size": 12.3
-        },
-        {
-          "Name": "Modulo.docx",
-          "Format": "doc",
-          "Integrity": true,
-          "Size": 7.1
-        },
-        {
-          "Name": "Lezione.txt",
-          "Format": "txt",
-          "Integrity": true,
-          "Size": 0.3
-        }
-      ]
+      "Files": []
     },
     {
       "Name": "Audio",
       "Children": [],
-      "Files": [
-        {
-          "Name": "Registrazione.mp3",
-          "Format": "mp3",
-          "Integrity": true,
-          "Size": 5
-        }
-      ]
+      "Files": []
     },
     {
       "Name": "Video",
       "Children": [],
-      "Files": [
-        {
-          "Name": "Recita.mov",
-          "Format": "mov",
-          "Integrity": true,
-          "Size": 200.5
-        }
-      ]
+      "Files": []
     }
   ],
   "Files": []
