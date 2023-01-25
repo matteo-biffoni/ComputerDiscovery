@@ -5,7 +5,7 @@ using UnityEngine;
 public class Magnet0Raycaster : MonoBehaviour
 {
     public float RaycastDistance;
-    public Magnet0Movement Player;
+    public PlayerNavigatorManager Player;
 
     private FileGrabber _grabbedFile;
 

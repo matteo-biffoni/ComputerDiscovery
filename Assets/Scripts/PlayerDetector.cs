@@ -13,7 +13,7 @@ public class PlayerDetector : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            (other.GetComponent(typeof(Magnet0Movement)) as Magnet0Movement)?.RoomInChanged(_folderReferred);
+            (other.GetComponent(typeof(PlayerNavigatorManager)) as PlayerNavigatorManager)?.SetRoomIn(_folderReferred);
         }
     }
 }
