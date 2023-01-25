@@ -84,7 +84,7 @@ public class Magnet0Movement : MonoBehaviour
         */
     }
 
-    public void RoomInChanged(Folder newRoom)
+    /*public void RoomInChanged(Folder newRoom)
     {
         var father = _roomIn?.GetFather();
         if (father != null && newRoom == father)
@@ -98,7 +98,7 @@ public class Magnet0Movement : MonoBehaviour
             newRoom?.ActivateGreatGrandFather(false);
         }
         _roomIn = newRoom;
-    }
+    }*/
 
     public Folder GetRoomIn()
     {

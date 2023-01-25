@@ -178,7 +178,6 @@ GameObject:
   - component: {fileID: 2036852182132926683}
   - component: {fileID: 1458411080600496958}
   - component: {fileID: 8143535942102340951}
-  - component: {fileID: 154942645933963127}
   - component: {fileID: 3213643098715716913}
   m_Layer: 0
   m_Name: Bacheca
@@ -291,18 +290,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 5.28
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &154942645933963127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523726201880873230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea9e28e87e2089543bb40feb3bf99faa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3213643098715716913
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ public class HouseManager : MonoBehaviour
 
     public string FileName = "FileSystem";
 
-    public Magnet0Movement Player;
+    public PlayerNavigatorManager Player;
 
     public GameObject MainRoomGo;
 
@@ -301,7 +301,7 @@ public class HouseManager : MonoBehaviour
                 newPlayerFolder.GetFather()?.GetFather()?.ActivateRoomComponents(true);
                 newPlayerFolder.GetFather()?.ActivateRoomComponents(true);
                 newPlayerFolder.ActivateRoomComponents(true);
-                Player.HouseLayoutChangingCompleted(newPlayerFolder);
+                //Player.HouseLayoutChangingCompleted(newPlayerFolder);
             }
         }
         catch (UnsupportedFileFormatException unsupportedFileFormatException)
@@ -536,13 +536,13 @@ public class Folder
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public void ActivateGreatGrandFather(bool active)
+    /*public void ActivateGreatGrandFather(bool active)
     {
         if (_father is { _father: { _father: {  } } })
         {
             _father._father._father.ActivateRoomComponents(active);
         }
-    }
+    }*/
     
     // ReSharper disable Unity.PerformanceAnalysis
     public static Folder GetFolderFromCollider(Folder folder, Collider collider)
@@ -556,6 +556,11 @@ public class Folder
     public bool IsChildNameAvailable(string name)
     {
         return _children.All(child => child._name != name.Trim());
+    }
+
+    public List<Folder> GetChildren()
+    {
+        return _children;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -603,6 +608,7 @@ public class Folder
                 throw new ArgumentOutOfRangeException();
         }
         var roomPre = Object.Instantiate(roomsPrefabs[folder._children.Count], container.transform);
+        SetFoldersForDoorControllers(roomPre, folder);
         roomPre.transform.Find("Wall_North").Find("RoomLabel").GetComponent<TMP_Text>().text = folder._name;
         // prendo il Gameobject bacheca figlio della stanza per andare a settargli la folder a cui si riferisce
         var bacheca = roomPre.transform.Find("Bacheca").GetComponent<BachecaFileController>();
@@ -619,6 +625,16 @@ public class Folder
         folder.SetBacheca(bacheca);
         roomPre.SetActive(false);
         entrancePre.SetActive(false);
+    }
+
+    private static void SetFoldersForDoorControllers(GameObject roomGo, Folder folder)
+    {
+        var doorControllers = roomGo.transform.GetComponentsInChildren<DoorController>();
+        for (var i = 0; i < doorControllers.Length; i++)
+        {
+            doorControllers[i].SetRoom(folder);
+            doorControllers[i].SetRoomTo(folder._children[i]);
+        }
     }
 
     private static (Direction, Entrance) ComputeAbsoluteDirectionAndEntranceForChildren(Folder folder, Folder children, Direction parentDirection)
