@@ -16,6 +16,18 @@ public class FirstPersonCharacterController : MonoBehaviour
     private Vector3 _velocity;
     private bool _isGrounded;
 
+    private bool _ignoreInput;
+
+    public void IgnoreInput()
+    {
+        _ignoreInput = true;
+    }
+
+    public void ReactivateInput()
+    {
+        _ignoreInput = false;
+    }
+    
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -30,19 +42,22 @@ public class FirstPersonCharacterController : MonoBehaviour
             _velocity.y = -2f;
         }
 
-        var mouseX = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
-        var mouseY = Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
-        transform.Rotate(Vector3.up, mouseX);
-        _cameraXRotation -= mouseY;
-        _cameraXRotation = Mathf.Clamp(_cameraXRotation, -90f, 90f);
-        CameraT.localRotation = Quaternion.Euler(_cameraXRotation, 0f, 0f);
+        if (!_ignoreInput)
+        {
+            var mouseX = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
+            var mouseY = Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
+            transform.Rotate(Vector3.up, mouseX);
+            _cameraXRotation -= mouseY;
+            _cameraXRotation = Mathf.Clamp(_cameraXRotation, -90f, 90f);
+            CameraT.localRotation = Quaternion.Euler(_cameraXRotation, 0f, 0f);
 
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
-        var tr = transform;
-        var move = (tr.right * h + tr.forward * v).normalized;
-        _characterController.Move(move * (Speed * Time.deltaTime));
-        
+            var h = Input.GetAxis("Horizontal");
+            var v = Input.GetAxis("Vertical");
+            var tr = transform;
+            var move = (tr.right * h + tr.forward * v).normalized;
+            _characterController.Move(move * (Speed * Time.deltaTime));
+        }
+
         _velocity.y += Gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }

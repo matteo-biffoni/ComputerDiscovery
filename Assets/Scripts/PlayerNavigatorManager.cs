@@ -17,4 +17,13 @@ public class PlayerNavigatorManager : MonoBehaviour
         _roomIn = roomIn;
         RoomVisibilityManager.ChangedRoom(oldRoom, _roomIn);
     }
+    
+    
+
+    public Vector3 OffsetInTheRoom()
+    {
+        var position = transform.position;
+        var roomPosition = _roomIn.GetContainer().transform.position;
+        return new Vector3(position.x - roomPosition.x, 0, position.z - roomPosition.z);
+    }
 }

@@ -15,6 +15,8 @@ using Random = System.Random;
 public class HouseManager : MonoBehaviour
 {
 
+    public GameObject BachecaLighter;
+    
     public float RoomLenght;
     public float RoomHeight;
 
@@ -265,16 +267,49 @@ public class HouseManager : MonoBehaviour
         }
         if (!Folder.DirtyAfterInsertion) return;
         Folder.DirtyAfterInsertion = false;
-        Destroy(Folder.Root.GetContainer());
-        StartCoroutine(DelayInstantiation());
+        StartCoroutine(DelayInstantiation(Folder.Root.GetContainer()));
     }
 
-    private IEnumerator DelayInstantiation()
+    private IEnumerator DelayInstantiation(GameObject oldRoot)
     {
+        var offsetPosition = Player.OffsetInTheRoom();
         yield return new WaitForFixedUpdate();
         InstantiateScene(false);
-        Player.gameObject.transform.position = Folder.GetFolderFromAbsolutePath(Player.GetRoomIn().GetAbsolutePath().Split("/"), Folder.Root)
-            .GetContainer().transform.position;
+        var folder = Folder.GetFolderFromAbsolutePath(Player.GetRoomIn().GetAbsolutePath().Split("/"), Folder.Root);
+        var newRoomPosition = folder.GetContainer().transform.position;
+        var p = Player.gameObject;
+        p.transform.position = new Vector3(newRoomPosition.x + offsetPosition.x,
+            p.transform.position.y, newRoomPosition.z + offsetPosition.z);
+        Destroy(oldRoot);
+
+        switch (Folder.LastOperation)
+        {
+            case Operation.FileCreated:
+                break;
+            case Operation.FileInserted:
+                //var bachecaLighter = Instantiate(BachecaLighter, folder.GetBacheca().transform);
+                //bachecaLighter.transform.localScale *= 3.2f;
+                //StartCoroutine(DeleteLight(bachecaLighter));
+                var listOfMaterials = folder.GetBacheca().transform.GetComponent<Renderer>().materials.ToList();
+                foreach (var material in listOfMaterials.Where(material => material.name == "Light"))
+                {
+                    material.SetColor("_EmissionColor", Color.red);
+                    break;
+                }
+                break;
+            case Operation.FolderCreated:
+                break;
+            case Operation.FolderMoved:
+                break;
+            case Operation.Nop:
+                break;
+        }
+    }
+
+    private IEnumerator DeleteLight(GameObject lightB)
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(lightB);
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -381,6 +416,15 @@ public class RoomFile
     }
 }
 
+public enum Operation
+{
+    Nop,
+    FileInserted,
+    FileCreated,
+    FolderMoved,
+    FolderCreated
+}
+
 public class Folder
 {
     public static bool DirtyAfterInsertion;
@@ -394,6 +438,8 @@ public class Folder
     public static readonly Folder MainRoom = new("Main Room", null);
     public static GameObject MainRoomGo;
     private  BachecaFileController _bacheca;
+    public static Operation LastOperation = Operation.Nop;
+    
 
 
 
@@ -424,6 +470,7 @@ public class Folder
         var newFolder = new Folder(newFolderName, father);
         father.AddChild(newFolder);
         WriteNewFolderStructureToFile();
+        LastOperation = Operation.FolderCreated;
         DirtyAfterInsertion = true;
     }
 
@@ -432,12 +479,19 @@ public class Folder
         _bacheca = bachecaFileController;
     }
 
+
+    public BachecaFileController GetBacheca()
+    {
+        return _bacheca;
+    }
+
     public void InsertFile(FileGrabber fileGrabber)
     {
         var file = fileGrabber.GetFile();
         _files.Add(file);
         
         WriteNewFolderStructureToFile();
+        LastOperation = Operation.FileInserted;
         DirtyAfterInsertion = true;
     }
 
@@ -445,6 +499,7 @@ public class Folder
     {
         father._files.Add(newFile);
         WriteNewFolderStructureToFile();
+        LastOperation = Operation.FileCreated;
         DirtyAfterInsertion = true;
     }
 
