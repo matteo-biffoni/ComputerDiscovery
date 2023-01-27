@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &193488562 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2381352905324845324, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+  m_PrefabInstance: {fileID: 2381352905153336681}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8313cb5b25a42284cb6d7022b886c34f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1862197108 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 168877636051713396, guid: 99659a47430f9744687bccf090c470b9, type: 3}
@@ -149,6 +160,10 @@ PrefabInstance:
       propertyPath: BachecaLighter
       value: 
       objectReference: {fileID: 100008, guid: 1ca16f2a31fb6a548ad8954bed1d321f, type: 3}
+    - target: {fileID: 2381352905324845324, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: TXTs.Array.data[2]
+      value: 
+      objectReference: {fileID: 1065806918249759117, guid: 0592b56a518fc604daf9a5d6e629d443, type: 3}
     - target: {fileID: 2381352905324845325, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
       propertyPath: m_Name
       value: House
@@ -206,6 +221,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 149664025427641268, guid: 99659a47430f9744687bccf090c470b9, type: 3}
+      propertyPath: House
+      value: 
+      objectReference: {fileID: 193488562}
     - target: {fileID: 3730849297399692367, guid: 99659a47430f9744687bccf090c470b9, type: 3}
       propertyPath: m_Name
       value: Magnet0

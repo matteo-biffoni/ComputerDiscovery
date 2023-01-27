@@ -60,7 +60,7 @@ public class HouseManager : MonoBehaviour
         SpawnObjectsForQuest1();
     }
 
-    private GameObject PickPrefabFromFile(RoomFile file)
+    public GameObject PickPrefabFromFile(RoomFile file)
     {
         var sizeIndex = file.GetSize() >= MediumSizeMin ? (file.GetSize() >= LargeSizeMin ? 2 : 1) : 0;
         return file.GetFormat() switch

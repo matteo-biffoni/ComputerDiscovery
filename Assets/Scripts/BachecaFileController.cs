@@ -41,7 +41,12 @@ public class BachecaFileController : MonoBehaviour
         // Per ogni file della cartella instanzio il modello corrispondente
         for (var i = 0; i < files.Count; i++)
         {
-            Instantiate(PickPrefabFromFile(files[i]), holderGo.transform.GetChild(i));
+            var instantiated = Instantiate(PickPrefabFromFile(files[i]), holderGo.transform.GetChild(i));
+            var fileGrabber = instantiated.GetComponent<FileGrabber>();
+            if (fileGrabber)
+            {
+                fileGrabber.SetFile(files[i]);
+            }
         }
     }
 

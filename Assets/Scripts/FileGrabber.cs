@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class FileGrabber : MonoBehaviour
@@ -12,6 +13,9 @@ public class FileGrabber : MonoBehaviour
     private bool _turnPlayer;
     private bool _moveTowardsBacheca;
     private GameObject _explosion;
+    private bool _labelVisibility;
+    public GameObject FileTextLabel;
+    private GameObject _instantiatedFileTextLabel;
 
     private void Update()
     {
@@ -48,6 +52,14 @@ public class FileGrabber : MonoBehaviour
         return _file;
     }
 
+    public void GrabFile(Transform cameraT)
+    {
+        _instantiatedFileTextLabel.transform.SetParent(cameraT);
+        _instantiatedFileTextLabel.transform.localPosition = new Vector3(0, -3, 6);
+        _instantiatedFileTextLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        _instantiatedFileTextLabel.transform.localScale *= 0.3f;
+    }
+
     public void DropFile(Transform player, Folder room, GameObject explosion)
     {
         _player = player;
@@ -65,5 +77,33 @@ public class FileGrabber : MonoBehaviour
         yield return new WaitForSeconds(1f);
         _player.GetComponent<FirstPersonCharacterController>().ReactivateInput();
         Destroy(gameObject);
+    }
+
+    public void TriggerLabel(bool value, Transform orientation)
+    {
+        if (value)
+        {
+            if (!_labelVisibility)
+            {
+                _instantiatedFileTextLabel = Instantiate(FileTextLabel, transform.parent);
+                _instantiatedFileTextLabel.GetComponent<TMP_Text>().text = _file.GetName();
+                _instantiatedFileTextLabel.transform.position = new Vector3(transform.position.x,
+                    transform.position.y + 0.35f, transform.position.z);
+                _instantiatedFileTextLabel.transform.position =
+                    Vector3.MoveTowards(_instantiatedFileTextLabel.transform.position, orientation.position, 0.1f);
+            }
+            _instantiatedFileTextLabel.transform.LookAt(orientation);
+            _instantiatedFileTextLabel.transform.Rotate(0, 180, 0);
+            //if (!_labelVisibility)
+            //{
+                
+                //_instantiatedFileTextLabel.transform.localPosition = new Vector3(0f, 0.5f, 0f);
+            //}
+        }
+        else if (_labelVisibility)
+        {
+            Destroy(_instantiatedFileTextLabel);
+        }
+        _labelVisibility = value;
     }
 }

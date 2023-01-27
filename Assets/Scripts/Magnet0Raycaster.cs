@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using CartoonFX;
+using TMPro;
 using UnityEngine;
 
 public class Magnet0Raycaster : MonoBehaviour
 {
+    public HouseManager House;
     public float RaycastDistance;
     public PlayerNavigatorManager Player;
 
@@ -36,16 +38,18 @@ public class Magnet0Raycaster : MonoBehaviour
             if (_previousPointedFile != null && _previousPointedFile != fileGrabber)
             {
                 _previousPointedFile.transform.GetComponent<Outline>().OutlineWidth = 0f;
+                _previousPointedFile.TriggerLabel(false, null);
             }
             if (fileGrabber)
             {
                 _previousPointedFile = fileGrabber;
                 fileGrabber.transform.GetComponent<Outline>().OutlineWidth = 7f;
+                fileGrabber.TriggerLabel(true, Player.transform.GetComponentInChildren<Camera>().transform);
                 if (Input.GetMouseButtonDown(0))
                 {
                     fileGrabber.transform.GetComponent<Outline>().OutlineWidth = 0f;
                     GrabFile(fileGrabber);
-                    
+                    fileGrabber.GrabFile(Player.transform.GetComponentInChildren<Camera>().transform);
                     //Debug.Log($"Raycast Hit Gameobject: {hit.transform.name}");
                 }
             }
@@ -53,6 +57,7 @@ public class Magnet0Raycaster : MonoBehaviour
         else if (_previousPointedFile != null)
         {
             _previousPointedFile.transform.GetComponent<Outline>().OutlineWidth = 0f;
+            _previousPointedFile.TriggerLabel(false, null);
             _previousPointedFile = null;
         }
         //Debug.DrawRay(transform.position, transform.forward * _raycastDistance, Color.red);
@@ -62,12 +67,17 @@ public class Magnet0Raycaster : MonoBehaviour
     {
         _grabbedFile = fileGrabber;
         // Settare la posizione corretta invece che transform
-        fileGrabber.transform.SetParent(transform.Find("ObjHolder"));
-        fileGrabber.transform.localPosition = new Vector3(0f, 0f, 0f);
-        var defaultRotation = fileGrabber.transform.rotation.eulerAngles;
-        fileGrabber.transform.localRotation = Quaternion.Euler(60f, 150f, -30f);
-        fileGrabber.transform.Rotate(defaultRotation);
-        fileGrabber.transform.localScale *= 0.75f;
+        //var model = House.PickPrefabFromFile(fileGrabber.GetFile());
+        //var defaultRotation = model.transform.rotation.eulerAngles;
+        //Debug.Log(defaultRotation);
+        fileGrabber.transform.parent.SetParent(transform.Find("ObjHolder"));
+        //fileGrabber.transform.localPosition = new Vector3(0f, 0f, 0f);
+        //fileGrabber.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        //fileGrabber.transform.Rotate(defaultRotation);
+        //fileGrabber.transform.Rotate(18f, -185f, 60f);
+        //fileGrabber.transform.localRotation = Quaternion.Euler(fileGrabber.transform.localRotation.eulerAngles.x + 18f, fileGrabber.transform.localRotation.eulerAngles.y - 185f, fileGrabber.transform.localRotation.eulerAngles.z + 60f);
+        //fileGrabber.transform.localScale *= 0.75f;
+        //Debug.Log(fileGrabber.transform.localRotation.eulerAngles);
     }
 
     private void DropFile()
