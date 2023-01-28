@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f1b530acf38c5ef42878eaa857dd0993
+guid: 7bf5024ae4d956544b58a36cfa7ce801
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,33 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: calamita
-    second: {fileID: 2100000, guid: a20fe87a7d1c03840b708a21ddbab229, type: 2}
+      name: Calamite
+    second: {fileID: 2100000, guid: cd3d5cdd1c2f4004986b419c95513b84, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: calamita.003
-    second: {fileID: 2100000, guid: a20fe87a7d1c03840b708a21ddbab229, type: 2}
+      name: Cornice
+    second: {fileID: 2100000, guid: 1b628cb2a0ab2c442b556acbdec1f278, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: fogli
-    second: {fileID: 2100000, guid: 046ec0eb1acd0e4419644c8d9ee8b806, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: fogli.002
-    second: {fileID: 2100000, guid: 046ec0eb1acd0e4419644c8d9ee8b806, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: parte_superiore
-    second: {fileID: 2100000, guid: ff90dfcb25e32f34e88dc62594d9fe68, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: parte_superiore.002
-    second: {fileID: 2100000, guid: ff90dfcb25e32f34e88dc62594d9fe68, type: 2}
+      name: Immagine
+    second: {fileID: 2100000, guid: 767ebaac2acb24641a180e82ce5147d2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

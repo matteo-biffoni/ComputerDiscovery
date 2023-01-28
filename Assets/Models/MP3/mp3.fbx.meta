@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 31d8b3ab01c52e34aae95562aed0c8dc
+guid: ecf72f23015ba654082b52d25dfae82d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -7,18 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Calamite
-    second: {fileID: 2100000, guid: e0d9da2cc83c9ba42b746bc571455e69, type: 2}
+      name: CD_Material
+    second: {fileID: 2100000, guid: 2ab075cb743bba841adf9abcf01b25cf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Cornice
-    second: {fileID: 2100000, guid: 870805ce42fd9ff4cb67cc9439319995, type: 2}
+      name: Plastic_Green_Material
+    second: {fileID: 2100000, guid: 97b600796ca97024dbc6b31ce9f2eb6e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Immagine
-    second: {fileID: 2100000, guid: f45fd822296e70341a99a8f7d5f5984e, type: 2}
+      name: Plastic_Grey_Material
+    second: {fileID: 2100000, guid: a82daa7183791ac42a30e4928846517a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Transparent_Material
+    second: {fileID: 2100000, guid: 8565a0032dd140848be308aa2f4c426a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

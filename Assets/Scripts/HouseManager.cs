@@ -7,15 +7,12 @@ using Newtonsoft.Json;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
 public class HouseManager : MonoBehaviour
 {
-
-    public GameObject BachecaLighter;
     
     public float RoomLenght;
     public float RoomHeight;
@@ -34,21 +31,21 @@ public class HouseManager : MonoBehaviour
 
     private Folder _quest1;
 
-    private static List<string> imageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
-    private static List<string> docFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
-    private static List<string> multimediaFileNames = new () { "Recita", "Concerto", "Audizione", "Spettacolo", "Provino", "Shakira", "Beethoven", "John Lennon" };
+    private static readonly List<string> ImageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
+    private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
+    private static readonly List<string> MultimediaFileNames = new () { "Recita", "Concerto", "Audizione", "Spettacolo", "Provino", "Shakira", "Beethoven", "John Lennon" };
     
     public float MediumSizeMin = 10.0f;
     public float LargeSizeMin = 50.0f;
 
-    public GameObject[] MP3s;
-    public GameObject[] ZIPs;
-    public GameObject[] MOVs;
-    public GameObject[] PDFs;
-    public GameObject[] JPEGs;
-    public GameObject[] PNGs;
-    public GameObject[] DOCs;
-    public GameObject[] TXTs;
+    public GameObject[] Mp3S;
+    public GameObject[] ZiPs;
+    public GameObject[] MoVs;
+    public GameObject[] PdFs;
+    public GameObject[] JpeGs;
+    public GameObject[] PnGs;
+    public GameObject[] DoCs;
+    public GameObject[] TxTs;
 
     private void Start()
     {
@@ -65,73 +62,73 @@ public class HouseManager : MonoBehaviour
         var sizeIndex = file.GetSize() >= MediumSizeMin ? (file.GetSize() >= LargeSizeMin ? 2 : 1) : 0;
         return file.GetFormat() switch
         {
-            "mp3" => MP3s[sizeIndex],
-            "pdf" => PDFs[sizeIndex],
-            "zip" => ZIPs[sizeIndex],
-            "mov" => MOVs[sizeIndex],
-            "jpeg" => JPEGs[sizeIndex],
-            "png" => PNGs[sizeIndex],
-            "doc" => DOCs[sizeIndex],
-            "txt" => TXTs[sizeIndex],
+            "mp3" => Mp3S[sizeIndex],
+            "pdf" => PdFs[sizeIndex],
+            "zip" => ZiPs[sizeIndex],
+            "mov" => MoVs[sizeIndex],
+            "jpeg" => JpeGs[sizeIndex],
+            "png" => PnGs[sizeIndex],
+            "doc" => DoCs[sizeIndex],
+            "txt" => TxTs[sizeIndex],
             _ => null
         };
     }
     private void SpawnObjectsForQuest1()
     {
-        Transform quest1ObjectsSpawner =
+        var quest1ObjectsSpawner =
             transform.Find("MainRoom").Find("MainRoom_Outside").Find("Quest1_ObjSpawners");
-        List<GameObject> objectSpawners = new List<GameObject>();
-        for (int i = 0; i < 8; i++)
+        var objectSpawners = new List<GameObject>();
+        for (var i = 0; i < 8; i++)
         {
             objectSpawners.Add(quest1ObjectsSpawner.GetChild(i).gameObject);
         }
 
-        Random random = new Random();
-        int indiceNome = random.Next(0, imageFileNames.Count);
-        string nomeImmagine1 = imageFileNames[indiceNome];
-        imageFileNames.Remove(nomeImmagine1);
-        indiceNome = random.Next(0, imageFileNames.Count);
-        string nomeImmagine2 = imageFileNames[indiceNome];
-        imageFileNames.Remove(nomeImmagine2);
+        var random = new Random();
+        var indiceNome = random.Next(0, ImageFileNames.Count);
+        var nomeImmagine1 = ImageFileNames[indiceNome];
+        ImageFileNames.Remove(nomeImmagine1);
+        indiceNome = random.Next(0, ImageFileNames.Count);
+        var nomeImmagine2 = ImageFileNames[indiceNome];
+        ImageFileNames.Remove(nomeImmagine2);
         nomeImmagine1 += ".png";
         nomeImmagine2 += ".jpg";
         var immagine1 = new RoomFile(nomeImmagine1, "png", true, random.Next(1, 150), null);
         var immagine2 = new RoomFile(nomeImmagine2, "jpeg", true, random.Next(1, 150), null);
-        indiceNome = random.Next(0, docFileNames.Count);
-        string nomeDocumento1 = docFileNames[indiceNome];
-        docFileNames.Remove(nomeDocumento1);
-        indiceNome = random.Next(0, docFileNames.Count);
-        string nomeDocumento2 = docFileNames[indiceNome];
-        docFileNames.Remove(nomeDocumento2);
-        indiceNome = random.Next(0, docFileNames.Count);
-        string nomeDocumento3 = docFileNames[indiceNome];
-        docFileNames.Remove(nomeDocumento3);
+        indiceNome = random.Next(0, DocFileNames.Count);
+        var nomeDocumento1 = DocFileNames[indiceNome];
+        DocFileNames.Remove(nomeDocumento1);
+        indiceNome = random.Next(0, DocFileNames.Count);
+        var nomeDocumento2 = DocFileNames[indiceNome];
+        DocFileNames.Remove(nomeDocumento2);
+        indiceNome = random.Next(0, DocFileNames.Count);
+        var nomeDocumento3 = DocFileNames[indiceNome];
+        DocFileNames.Remove(nomeDocumento3);
         nomeDocumento1 += ".docx";
         nomeDocumento2 += ".pdf";
         nomeDocumento3 += ".txt";
         var documento1 = new RoomFile(nomeDocumento1, "doc", true, random.Next(1, 150), null);
         var documento2 = new RoomFile(nomeDocumento2, "pdf", true, random.Next(1, 150), null);
         var documento3 = new RoomFile(nomeDocumento3, "txt", true, random.Next(1, 150), null);
-        indiceNome = random.Next(0, multimediaFileNames.Count);
-        string nomeMultFile1 = multimediaFileNames[indiceNome];
-        multimediaFileNames.Remove(nomeMultFile1);
-        indiceNome = random.Next(0, multimediaFileNames.Count);
-        string nomeMultFile2 = multimediaFileNames[indiceNome];
-        multimediaFileNames.Remove(nomeMultFile2);
+        indiceNome = random.Next(0, MultimediaFileNames.Count);
+        var nomeMultFile1 = MultimediaFileNames[indiceNome];
+        MultimediaFileNames.Remove(nomeMultFile1);
+        indiceNome = random.Next(0, MultimediaFileNames.Count);
+        var nomeMultFile2 = MultimediaFileNames[indiceNome];
+        MultimediaFileNames.Remove(nomeMultFile2);
         nomeMultFile1 += ".mp3";
         nomeMultFile2 += ".mov";
         var multFile1 = new RoomFile(nomeMultFile1, "mp3", true, random.Next(1, 150), null);
         var multFile2 = new RoomFile(nomeMultFile2, "mov", true, random.Next(1, 150), null);
         var fileBonus = new RoomFile("", "", true, 0f, null);
-        var nomeFileBonus = "";
+        string nomeFileBonus;
         var formatoBonusIndice = random.Next(0, 2);
         switch (formatoBonusIndice)
         {
             case 0:
                 formatoBonusIndice = random.Next(0, 1);
-                indiceNome = random.Next(0, imageFileNames.Count);
-                nomeFileBonus = imageFileNames[indiceNome];
-                imageFileNames.Remove(nomeFileBonus);
+                indiceNome = random.Next(0, ImageFileNames.Count);
+                nomeFileBonus = ImageFileNames[indiceNome];
+                ImageFileNames.Remove(nomeFileBonus);
                 switch (formatoBonusIndice)
                 {
                     case 0:
@@ -146,9 +143,9 @@ public class HouseManager : MonoBehaviour
                 break;
             case 1:
                 formatoBonusIndice = random.Next(0, 2);
-                indiceNome = random.Next(0, docFileNames.Count);
-                nomeFileBonus = docFileNames[indiceNome];
-                docFileNames.Remove(nomeFileBonus);
+                indiceNome = random.Next(0, DocFileNames.Count);
+                nomeFileBonus = DocFileNames[indiceNome];
+                DocFileNames.Remove(nomeFileBonus);
                 switch (formatoBonusIndice)
                 {
                     case 0:
@@ -167,9 +164,9 @@ public class HouseManager : MonoBehaviour
                 break;
             case 2:
                 formatoBonusIndice = random.Next(0, 1);
-                indiceNome = random.Next(0, multimediaFileNames.Count);
-                nomeFileBonus = multimediaFileNames[indiceNome];
-                multimediaFileNames.Remove(nomeFileBonus);
+                indiceNome = random.Next(0, MultimediaFileNames.Count);
+                nomeFileBonus = MultimediaFileNames[indiceNome];
+                MultimediaFileNames.Remove(nomeFileBonus);
                 switch (formatoBonusIndice)
                 {
                     case 0:
@@ -244,18 +241,13 @@ public class HouseManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.N))
         {
             var questManager = GetComponent<QuestManager>();
-            var formatErrors = questManager.Quest1FormatChecker(Folder.Root);
+            var formatErrors = QuestManager.Quest1FormatChecker(Folder.Root);
             if (formatErrors.Count == 0)
             {
                 Debug.Log("Nessun file fuori posto");
-                if (questManager.Quest1CountChecker(_quest1, Folder.Root))
-                {
-                    Debug.Log("Hai finito");
-                }
-                else
-                {
-                    Debug.Log("Ti mancano ancora dei file da posizionare");
-                }
+                Debug.Log(QuestManager.Quest1CountChecker(_quest1, Folder.Root)
+                    ? "Hai finito"
+                    : "Ti mancano ancora dei file da posizionare");
             }
             else
             {
@@ -270,46 +262,41 @@ public class HouseManager : MonoBehaviour
         StartCoroutine(DelayInstantiation(Folder.Root.GetContainer()));
     }
 
-    private IEnumerator DelayInstantiation(GameObject oldRoot)
+    private IEnumerator DelayInstantiation(Object oldRoot)
     {
-        var offsetPosition = Player.OffsetInTheRoom();
-        yield return new WaitForFixedUpdate();
-        InstantiateScene(false);
-        var folder = Folder.GetFolderFromAbsolutePath(Player.GetRoomIn().GetAbsolutePath().Split("/"), Folder.Root);
-        var newRoomPosition = folder.GetContainer().transform.position;
-        var p = Player.gameObject;
-        p.transform.position = new Vector3(newRoomPosition.x + offsetPosition.x,
-            p.transform.position.y, newRoomPosition.z + offsetPosition.z);
-        Destroy(oldRoot);
-
-        switch (Folder.LastOperation)
+        if (Player.GetRoomIn() != Folder.MainRoom)
         {
-            case Operation.FileCreated:
-                break;
-            case Operation.FileInserted:
-                //var bachecaLighter = Instantiate(BachecaLighter, folder.GetBacheca().transform);
-                //bachecaLighter.transform.localScale *= 3.2f;
-                //StartCoroutine(DeleteLight(bachecaLighter));
-                var listOfMaterials = folder.GetBacheca().transform.GetComponent<Renderer>().materials.ToList();
-                foreach (var material in listOfMaterials.Where(material => material.name == "Light"))
-                {
-                    material.SetColor("_EmissionColor", Color.red);
+            var offsetPosition = Player.OffsetInTheRoom();
+            yield return new WaitForFixedUpdate();
+            InstantiateScene(false);
+            var folder = Folder.GetFolderFromAbsolutePath(Player.GetRoomIn().GetAbsolutePath().Split("/"), Folder.Root);
+            var newRoomPosition = folder.GetContainer().transform.position;
+            var p = Player.gameObject;
+            p.transform.position = new Vector3(newRoomPosition.x + offsetPosition.x,
+                p.transform.position.y, newRoomPosition.z + offsetPosition.z);
+            Destroy(oldRoot);
+            /*switch (Folder.LastOperation)
+            {
+                case Operation.FileCreated:
                     break;
-                }
-                break;
-            case Operation.FolderCreated:
-                break;
-            case Operation.FolderMoved:
-                break;
-            case Operation.Nop:
-                break;
+                case Operation.FileInserted:
+                    break;
+                case Operation.FolderCreated:
+                    break;
+                case Operation.FolderMoved:
+                    break;
+                case Operation.Nop:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }*/
         }
-    }
-
-    private IEnumerator DeleteLight(GameObject lightB)
-    {
-        yield return new WaitForSeconds(1f);
-        Destroy(lightB);
+        else
+        {
+            yield return new WaitForFixedUpdate();
+            InstantiateScene(false);
+            Destroy(oldRoot);
+        }
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -333,10 +320,10 @@ public class HouseManager : MonoBehaviour
             else
             {
                 var newPlayerFolder = Folder.GetFolderFromAbsolutePath(Player.GetRoomIn().GetAbsolutePath().Split("/"), Folder.Root);
-                newPlayerFolder.GetFather()?.GetFather()?.ActivateRoomComponents(true);
-                newPlayerFolder.GetFather()?.ActivateRoomComponents(true);
-                newPlayerFolder.ActivateRoomComponents(true);
-                //Player.HouseLayoutChangingCompleted(newPlayerFolder);
+                newPlayerFolder?.GetFather()?.GetFather()?.ActivateRoomComponents(true);
+                newPlayerFolder?.GetFather()?.ActivateRoomComponents(true);
+                newPlayerFolder?.ActivateRoomComponents(true);
+                if (newPlayerFolder == null) Folder.Root.ActivateRoomComponents(true);
             }
         }
         catch (UnsupportedFileFormatException unsupportedFileFormatException)
@@ -488,8 +475,12 @@ public class Folder
     public void InsertFile(FileGrabber fileGrabber)
     {
         var file = fileGrabber.GetFile();
-        _files.Add(file);
-        
+        var comingFrom = file.GetParent();
+        if (comingFrom != this)
+        {
+            _files.Add(file);
+            comingFrom?.GetFiles().Remove(file);
+        }
         WriteNewFolderStructureToFile();
         LastOperation = Operation.FileInserted;
         DirtyAfterInsertion = true;
@@ -926,6 +917,7 @@ public class JsonFile
     public float Size { get; set; }
     
     
+    // ReSharper disable once UnusedMember.Local
     private static JsonFile FromJson(string json)
     {
         return JsonConvert.DeserializeObject<JsonFile>(json);

@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
 
-    public List<string> Quest1FormatChecker(Folder actualFolderStructure)
+    public static List<string> Quest1FormatChecker(Folder actualFolderStructure)
     {
         var resList = new List<string>();
         var filesActual = actualFolderStructure.GetAllFiles();
@@ -61,7 +60,7 @@ public class QuestManager : MonoBehaviour
         }
         return resList;
     }
-    public bool Quest1CountChecker(Folder quest1, Folder actualFolderStructure)
+    public static bool Quest1CountChecker(Folder quest1, Folder actualFolderStructure)
     {
         return quest1.GetAllFiles().Count == actualFolderStructure.GetAllFiles().Count;
     }

@@ -145,10 +145,6 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1862197108}
-    - target: {fileID: 2381352905324845324, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
-      propertyPath: BachecaLighter
-      value: 
-      objectReference: {fileID: 100008, guid: 1ca16f2a31fb6a548ad8954bed1d321f, type: 3}
     - target: {fileID: 2381352905324845325, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
       propertyPath: m_Name
       value: House

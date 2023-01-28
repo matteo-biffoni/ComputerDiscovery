@@ -6,14 +6,14 @@ public class BachecaFileController : MonoBehaviour
     public float MediumSizeMin = 10.0f;
     public float LargeSizeMin = 50.0f;
 
-    public GameObject[] MP3s;
-    public GameObject[] ZIPs;
-    public GameObject[] MOVs;
-    public GameObject[] PDFs;
-    public GameObject[] JPEGs;
-    public GameObject[] PNGs;
-    public GameObject[] DOCs;
-    public GameObject[] TXTs;
+    public GameObject[] Mp3S;
+    public GameObject[] ZiPs;
+    public GameObject[] MoVs;
+    public GameObject[] PdFs;
+    public GameObject[] JpeGs;
+    public GameObject[] PnGs;
+    public GameObject[] DoCs;
+    public GameObject[] TxTs;
 
     // Setto la variabile Folder e popolo la bacheca di conseguenza
     public void SetFolder(Folder folder)
@@ -41,7 +41,12 @@ public class BachecaFileController : MonoBehaviour
         // Per ogni file della cartella instanzio il modello corrispondente
         for (var i = 0; i < files.Count; i++)
         {
-            Instantiate(PickPrefabFromFile(files[i]), holderGo.transform.GetChild(i));
+            var instantiated = Instantiate(PickPrefabFromFile(files[i]), holderGo.transform.GetChild(i));
+            var fileGrabber = instantiated.GetComponent<FileGrabber>();
+            if (fileGrabber)
+            {
+                fileGrabber.SetFile(files[i]);
+            }
         }
     }
 
@@ -51,14 +56,14 @@ public class BachecaFileController : MonoBehaviour
         var sizeIndex = file.GetSize() >= MediumSizeMin ? (file.GetSize() >= LargeSizeMin ? 2 : 1) : 0;
         return file.GetFormat() switch
         {
-            "mp3" => MP3s[sizeIndex],
-            "pdf" => PDFs[sizeIndex],
-            "zip" => ZIPs[sizeIndex],
-            "mov" => MOVs[sizeIndex],
-            "jpeg" => JPEGs[sizeIndex],
-            "png" => PNGs[sizeIndex],
-            "doc" => DOCs[sizeIndex],
-            "txt" => TXTs[sizeIndex],
+            "mp3" => Mp3S[sizeIndex],
+            "pdf" => PdFs[sizeIndex],
+            "zip" => ZiPs[sizeIndex],
+            "mov" => MoVs[sizeIndex],
+            "jpeg" => JpeGs[sizeIndex],
+            "png" => PnGs[sizeIndex],
+            "doc" => DoCs[sizeIndex],
+            "txt" => TxTs[sizeIndex],
             _ => null
         };
     }

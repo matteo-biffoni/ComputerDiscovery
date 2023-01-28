@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: calamita.002
+    second: {fileID: 2100000, guid: f8f38121c4d9f1041b5c00814a531e84, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: cover
     second: {fileID: 2100000, guid: aabec7d85627f884ab4b2fc64b295080, type: 2}
   - first:
