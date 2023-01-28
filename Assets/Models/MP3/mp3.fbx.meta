@@ -3,7 +3,27 @@ guid: ecf72f23015ba654082b52d25dfae82d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CD_Material
+    second: {fileID: 2100000, guid: 2ab075cb743bba841adf9abcf01b25cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Green_Material
+    second: {fileID: 2100000, guid: 97b600796ca97024dbc6b31ce9f2eb6e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Grey_Material
+    second: {fileID: 2100000, guid: a82daa7183791ac42a30e4928846517a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic_Transparent_Material
+    second: {fileID: 2100000, guid: 8565a0032dd140848be308aa2f4c426a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -32,7 +52,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1

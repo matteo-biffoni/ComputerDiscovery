@@ -12,12 +12,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Calamite.001
+    second: {fileID: 2100000, guid: e0d9da2cc83c9ba42b746bc571455e69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Cornice
     second: {fileID: 2100000, guid: 870805ce42fd9ff4cb67cc9439319995, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Cornice.001
+    second: {fileID: 2100000, guid: 870805ce42fd9ff4cb67cc9439319995, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Immagine
+    second: {fileID: 2100000, guid: f45fd822296e70341a99a8f7d5f5984e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Immagine.001
     second: {fileID: 2100000, guid: f45fd822296e70341a99a8f7d5f5984e, type: 2}
   materials:
     materialImportMode: 2

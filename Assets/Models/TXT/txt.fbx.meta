@@ -12,12 +12,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: calamita.003
+    second: {fileID: 2100000, guid: a20fe87a7d1c03840b708a21ddbab229, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: fogli
     second: {fileID: 2100000, guid: 046ec0eb1acd0e4419644c8d9ee8b806, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: fogli.002
+    second: {fileID: 2100000, guid: 046ec0eb1acd0e4419644c8d9ee8b806, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: parte_superiore
+    second: {fileID: 2100000, guid: ff90dfcb25e32f34e88dc62594d9fe68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: parte_superiore.002
     second: {fileID: 2100000, guid: ff90dfcb25e32f34e88dc62594d9fe68, type: 2}
   materials:
     materialImportMode: 2

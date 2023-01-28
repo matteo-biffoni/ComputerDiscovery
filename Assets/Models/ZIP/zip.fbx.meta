@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Metal_Material.001
+    second: {fileID: 2100000, guid: 593dbd66b56d2be4bb72462ee7479ad1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Plastic_Dark_Material
     second: {fileID: 2100000, guid: b13b0850c64e00743ae9723482d1810c, type: 2}
   - first:
