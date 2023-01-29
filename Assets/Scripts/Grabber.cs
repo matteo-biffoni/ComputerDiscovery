@@ -2,9 +2,10 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class FileGrabber : MonoBehaviour
+
+public class Grabber : MonoBehaviour
 {
-    private RoomFile _file;
+    private Grabbable _file;
     private Transform _player;
     private Folder _destinationRoom;
     private Vector3 _bachecaTarget;
@@ -14,6 +15,12 @@ public class FileGrabber : MonoBehaviour
     private bool _labelVisibility;
     public GameObject FileTextLabel;
     private GameObject _instantiatedFileTextLabel;
+    public Outline Outlined;
+
+    private void Start()
+    {
+        if (Outlined == null) Outlined = GetComponent<Outline>();
+    }
 
     private void Update()
     {
@@ -30,40 +37,74 @@ public class FileGrabber : MonoBehaviour
         }
         if (_moveTowardsBacheca)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _bachecaTarget,Time.deltaTime * 8f);
-            if (Vector3.Distance(transform.position, _bachecaTarget) < 0.001f)
+            Transform t = null;
+            switch (_file)
             {
-                _moveTowardsBacheca = false;
-                Instantiate(_explosion, transform);
-                StartCoroutine(Finish());
+                case Folder:
+                    t = transform.parent.parent.parent.parent;
+                    break;
+                case RoomFile:
+                    t = transform;
+                    break;
+            }
+
+            if (t != null)
+            {
+                t.position = Vector3.MoveTowards(t.position, _bachecaTarget, Time.deltaTime * 8f);
+                if (Vector3.Distance(t.position, _bachecaTarget) < 0.001f)
+                {
+                    _moveTowardsBacheca = false;
+                    Instantiate(_explosion, transform);
+                    StartCoroutine(Finish());
+                }
             }
         }
     }
 
-    public void SetFile(RoomFile file)
+    public void SetReferred(Grabbable file)
     {
         _file = file;
     }
 
-    public RoomFile GetFile()
+    public Grabbable GetReferred()
     {
         return _file;
     }
 
-    public void GrabFile(Transform cameraT, Transform objHolder)
+    public void GrabReferred(Transform cameraT, Transform objHolder)
     {
         _instantiatedFileTextLabel.transform.SetParent(cameraT);
         _instantiatedFileTextLabel.transform.localPosition = new Vector3(0, -3, 6);
         _instantiatedFileTextLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
         _instantiatedFileTextLabel.transform.localScale *= 0.3f;
         Transform t;
-        (t = transform).SetParent(objHolder);
-        t.localPosition = new Vector3(0f, 0f, 0f);
-        t.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        t.localScale *= 0.75f;
+        switch (_file)
+        {
+            case Folder folder:
+                folder.GetParent().RemoveChild(folder, Operation.FolderMoving);
+                t = transform.parent.parent.parent.parent;
+                t.GetComponent<BoxCollider>().enabled = false;
+                // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+                t.GetComponent<Animator>().SetBool("closeDoor", true);
+                // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+                t.GetComponent<Animator>().SetBool("openDoor", false);
+                t.GetComponent<DoorController>().enabled = false;
+                t.SetParent(objHolder);
+                t.localPosition = new Vector3(0f, 0f, 2f);
+                t.localRotation = Quaternion.Euler(180f, -90f, 120f);
+                t.localScale *= 0.25f;
+                break;
+            case RoomFile:
+                t = transform;
+                t.SetParent(objHolder);
+                t.localPosition = new Vector3(0f, 0f, 0f);
+                t.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                t.localScale *= 0.75f;
+                break;
+        }
     }
 
-    public void DropFile(Transform player, Folder room, GameObject explosion)
+    public void DropReferred(Transform player, Folder room, GameObject explosion)
     {
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
@@ -76,10 +117,18 @@ public class FileGrabber : MonoBehaviour
 
     private IEnumerator Finish()
     {
-        _destinationRoom.InsertFile(this);
+        _destinationRoom.InsertFileOrFolder(this);
         yield return new WaitForSeconds(1f);
         _player.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-        Destroy(gameObject);
+        switch (_file)
+        {
+            case Folder:
+                Destroy(transform.parent.parent.parent.parent.gameObject);
+                break;
+            case RoomFile:
+                Destroy(gameObject);
+                break;
+        }
     }
 
     public void TriggerLabel(bool value, Transform orientation)
@@ -91,6 +140,7 @@ public class FileGrabber : MonoBehaviour
                 var t = transform;
                 var tPosition = t.position;
                 _instantiatedFileTextLabel = Instantiate(FileTextLabel, t.parent);
+                if (_file is Folder) _instantiatedFileTextLabel.transform.localScale *= 0.002f;
                 _instantiatedFileTextLabel.GetComponent<TMP_Text>().text = _file.GetName();
                 var position = new Vector3(tPosition.x, tPosition.y + 0.2f, tPosition.z);
                 position = Vector3.MoveTowards(position, orientation.position, 0.1f);

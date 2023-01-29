@@ -185,50 +185,50 @@ public class HouseManager : MonoBehaviour
         objectSpawners.Remove(extracted);
         var objToSpawn = PickPrefabFromFile(immagine1);
         var instantiated = Instantiate(objToSpawn, extracted.transform);
-        var fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(immagine1);
+        var fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(immagine1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(immagine2);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(immagine2);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(immagine2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(documento1);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(documento1);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(documento1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(documento2);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(documento2);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(documento2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(documento3);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(documento3);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(documento3);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(multFile1);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(multFile1);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(multFile1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(multFile2);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(multFile2);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(multFile2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(fileBonus);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        fileGrabber = instantiated.transform.GetComponent<FileGrabber>();
-        fileGrabber.SetFile(fileBonus);
+        fileGrabber = instantiated.transform.GetComponent<Grabber>();
+        fileGrabber.SetReferred(fileBonus);
     }
 
     private void RetrieveQuest1()
@@ -240,7 +240,6 @@ public class HouseManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.N))
         {
-            var questManager = GetComponent<QuestManager>();
             var formatErrors = QuestManager.Quest1FormatChecker(Folder.Root);
             if (formatErrors.Count == 0)
             {
@@ -320,8 +319,8 @@ public class HouseManager : MonoBehaviour
             else
             {
                 var newPlayerFolder = Folder.GetFolderFromAbsolutePath(Player.GetRoomIn().GetAbsolutePath().Split("/"), Folder.Root);
-                newPlayerFolder?.GetFather()?.GetFather()?.ActivateRoomComponents(true);
-                newPlayerFolder?.GetFather()?.ActivateRoomComponents(true);
+                newPlayerFolder?.GetParent()?.GetParent()?.ActivateRoomComponents(true);
+                newPlayerFolder?.GetParent()?.ActivateRoomComponents(true);
                 newPlayerFolder?.ActivateRoomComponents(true);
                 if (newPlayerFolder == null) Folder.Root.ActivateRoomComponents(true);
             }
@@ -355,7 +354,14 @@ public enum Entrance
     R2
 }
 
-public class RoomFile
+public abstract class Grabbable
+{
+    public abstract Folder GetParent();
+
+    public abstract string GetName();
+}
+
+public class RoomFile : Grabbable
 {
     private readonly string _name;
     private readonly string _format;
@@ -372,7 +378,7 @@ public class RoomFile
         _parent = parent;
     }
 
-    public string GetName()
+    public override string GetName()
     {
         return _name;
     }
@@ -392,7 +398,7 @@ public class RoomFile
         return _size;
     }
 
-    public Folder GetParent()
+    public override Folder GetParent()
     {
         return _parent;
     }
@@ -406,13 +412,14 @@ public class RoomFile
 public enum Operation
 {
     Nop,
-    FileInserted,
+    FileOrFolderInserted,
     FileCreated,
+    FolderMoving,
     FolderMoved,
     FolderCreated
 }
 
-public class Folder
+public class Folder : Grabbable
 {
     public static bool DirtyAfterInsertion;
     public static string CurrentFileName;
@@ -425,7 +432,7 @@ public class Folder
     public static readonly Folder MainRoom = new("Main Room", null);
     public static GameObject MainRoomGo;
     private  BachecaFileController _bacheca;
-    public static Operation LastOperation = Operation.Nop;
+    private static Operation _lastOperation = Operation.Nop;
     
 
 
@@ -457,7 +464,7 @@ public class Folder
         var newFolder = new Folder(newFolderName, father);
         father.AddChild(newFolder);
         WriteNewFolderStructureToFile();
-        LastOperation = Operation.FolderCreated;
+        _lastOperation = Operation.FolderCreated;
         DirtyAfterInsertion = true;
     }
 
@@ -472,17 +479,25 @@ public class Folder
         return _bacheca;
     }
 
-    public void InsertFile(FileGrabber fileGrabber)
+    public void InsertFileOrFolder(Grabber fileGrabber)
     {
-        var file = fileGrabber.GetFile();
+        var file = fileGrabber.GetReferred();
         var comingFrom = file.GetParent();
         if (comingFrom != this)
         {
-            _files.Add(file);
-            comingFrom?.GetFiles().Remove(file);
+            switch (file)
+            {
+                case Folder folder:
+                    _children.Add(folder);
+                    break;
+                case RoomFile roomFile:
+                    _files.Add(roomFile);
+                    comingFrom?.GetFiles().Remove(roomFile);
+                    break;
+            }
         }
+        _lastOperation = Operation.FileOrFolderInserted;
         WriteNewFolderStructureToFile();
-        LastOperation = Operation.FileInserted;
         DirtyAfterInsertion = true;
     }
 
@@ -490,7 +505,7 @@ public class Folder
     {
         father._files.Add(newFile);
         WriteNewFolderStructureToFile();
-        LastOperation = Operation.FileCreated;
+        _lastOperation = Operation.FileCreated;
         DirtyAfterInsertion = true;
     }
 
@@ -522,6 +537,14 @@ public class Folder
     public int GetChildrenCount()
     {
         return _children.Count;
+    }
+
+    public void RemoveChild(Folder folder, Operation operation)
+    {
+        _children.Remove(folder);
+        _lastOperation = operation;
+        WriteNewFolderStructureToFile();
+        DirtyAfterInsertion = true;
     }
 
     private void AddChild(Folder folder)
@@ -566,12 +589,12 @@ public class Folder
         GetChildrenFromDoorController(controller).ActivateRoomComponents(active);
     }*/
 
-    public Folder GetFather()
+    public override Folder GetParent()
     {
         return _father;
     }
 
-    public string GetName()
+    public override string GetName()
     {
         return _name;
     }
@@ -680,6 +703,12 @@ public class Folder
         {
             doorControllers[i].SetRoom(folder);
             doorControllers[i].SetRoomTo(folder._children[i]);
+        }
+
+        var doorGrabbers = roomGo.transform.GetComponentsInChildren<Grabber>();
+        for (var i = 0; i < doorGrabbers.Length; i++)
+        {
+            doorGrabbers[i].SetReferred(folder._children[i]);
         }
     }
 
