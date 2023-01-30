@@ -102,6 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FileTextLabel: {fileID: 5813823793815039770, guid: bdf6d8558c3921a47816bb4363c9fe4d, type: 3}
+  Outlined: {fileID: 0}
+  ObjMenuCanvas: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
 --- !u!114 &2963554083616908734
 MonoBehaviour:
   m_ObjectHideFlags: 0
