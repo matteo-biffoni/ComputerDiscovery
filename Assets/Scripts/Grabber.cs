@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 
 public class Grabber : MonoBehaviour
@@ -19,6 +18,7 @@ public class Grabber : MonoBehaviour
     private GameObject _instantiatedFileTextLabel;
     public Outline Outlined;
     [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
+    public GameObject TrashItemCanvasPrefab;
 
     private void Start()
     {
@@ -58,10 +58,40 @@ public class Grabber : MonoBehaviour
                 {
                     _moveTowardsBacheca = false;
                     Instantiate(_explosion, transform);
-                    StartCoroutine(Finish());
+                    StartCoroutine(Finish(false));
                 }
             }
         }
+    }
+
+    public void Recover()
+    {
+        _file.Recover();
+        switch (_file)
+        {
+            case Folder:
+                Destroy(transform.parent.parent.parent.parent.gameObject);
+                break;
+            case RoomFile:
+                Destroy(gameObject);
+                break;
+        }
+        Destroy(_instantiatedFileTextLabel);
+    }
+
+    public void PermDelete()
+    {
+        _file.PermDelete();
+        switch (_file)
+        {
+            case Folder:
+                Destroy(transform.parent.parent.parent.parent.gameObject);
+                break;
+            case RoomFile:
+                Destroy(gameObject);
+                break;
+        }
+        Destroy(_instantiatedFileTextLabel);
     }
 
     public void SetReferred(Grabbable file)
@@ -121,6 +151,7 @@ public class Grabber : MonoBehaviour
 
     public void Delete()
     {
+        Debug.Log("Grabber.Delete");
         _file.Delete();
         switch (_file)
         {
@@ -136,6 +167,14 @@ public class Grabber : MonoBehaviour
     public void Rename()
     {
         
+    }
+
+    public GameObject ShowTrashItemMenu(Transform player)
+    {
+        _player = player;
+        _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
+        Cursor.lockState = CursorLockMode.None;
+        return Instantiate(TrashItemCanvasPrefab);
     }
 
     public GameObject ShowObjectMenu(Transform player)
@@ -190,9 +229,9 @@ public class Grabber : MonoBehaviour
         _turnPlayer = true;
     }
 
-    private IEnumerator Finish()
+    private IEnumerator Finish(bool isRecovering)
     {
-        _destinationRoom.InsertFileOrFolder(this);
+        _destinationRoom.InsertFileOrFolder(_file, isRecovering);
         yield return new WaitForSeconds(1f);
         _player.GetComponent<FirstPersonCharacterController>().ReactivateInput();
         switch (_file)

@@ -102,7 +102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FileTextLabel: {fileID: 5813823793815039770, guid: bdf6d8558c3921a47816bb4363c9fe4d, type: 3}
   Outlined: {fileID: 0}
-  ObjMenuCanvas: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
+  ObjMenuCanvasPrefab: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
+  TrashItemCanvasPrefab: {fileID: 6557196937122604504, guid: e9e1a65c5afc3a744875d7eccf0cb00d, type: 3}
 --- !u!114 &6884484495984121065
 MonoBehaviour:
   m_ObjectHideFlags: 0

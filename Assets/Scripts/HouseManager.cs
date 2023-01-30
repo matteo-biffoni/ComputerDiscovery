@@ -370,6 +370,14 @@ public abstract class Grabbable
     public abstract void Delete();
 
     public abstract string GetAbsolutePath();
+
+    public abstract void PermDelete();
+
+    public abstract void SetParentOnDeletionAbsolutePath(string folder);
+
+    public abstract void Recover();
+
+    public abstract Grabbable GetACopy();
 }
 
 public class RoomFile : Grabbable
@@ -379,6 +387,7 @@ public class RoomFile : Grabbable
     private readonly bool _integrity;
     private readonly float _size;
     private Folder _parent;
+    private string _parentOnDeletionAbsolutePath;
 
     public RoomFile(string name, string format, bool integrity, float size, Folder parent)
     {
@@ -421,12 +430,32 @@ public class RoomFile : Grabbable
 
     public override void Delete()
     {
-        _parent.DeleteFile(this);
+        _parent.DeleteFile(this, false);
     }
 
     public override void SetParent(Folder folder)
     {
         _parent = folder;
+    }
+
+    public override void PermDelete()
+    {
+        _parent.DeleteFile(this, true);
+    }
+
+    public override void SetParentOnDeletionAbsolutePath(string folder)
+    {
+        _parentOnDeletionAbsolutePath = folder;
+    }
+
+    public override void Recover()
+    {
+        Folder.GetFolderFromAbsolutePath(_parentOnDeletionAbsolutePath.Split("/"), Folder.Root)?.InsertFileOrFolder(this, true);
+    }
+
+    public override Grabbable GetACopy()
+    {
+        return new RoomFile(_name, _format, _integrity, _size, null);
     }
 }
 
@@ -436,9 +465,11 @@ public enum Operation
     FileOrFolderInserted,
     FileCreated,
     FileDeleted,
+    FilePermDeleted,
     FolderMoving,
     FolderMoved,
     FolderDeleted,
+    FolderPermDeleted,
     FolderCreated
 }
 
@@ -455,10 +486,24 @@ public class Folder : Grabbable
     private readonly string _name;
     public static readonly Folder MainRoom = new("Main Room", null);
     public static GameObject MainRoomGo;
-    private  BachecaFileController _bacheca;
+    private BachecaFileController _bacheca;
     private static Operation _lastOperation = Operation.Nop;
-    
+    private string _parentOnDeletionAbsolutePath;
 
+    public override Grabbable GetACopy()
+    {
+        var f = new Folder(_name, null);
+        foreach (var child in _children)
+        {
+            f._children.Add(child.GetACopy() as Folder);
+        }
+        foreach (var file in _files)
+        {
+            f._files.Add(file.GetACopy() as RoomFile);
+        }
+        f._parentOnDeletionAbsolutePath = null;
+        return f;
+    }
 
 
     public List<RoomFile> GetAllFiles()
@@ -492,16 +537,30 @@ public class Folder : Grabbable
         DirtyAfterInsertion = true;
     }
 
-    public void DeleteFile(RoomFile file)
+    public void DeleteFile(RoomFile file, bool perm)
     {
+        if (!perm) file.SetParentOnDeletionAbsolutePath(file.GetParent().GetAbsolutePath());
         if (_files.Remove(file))
         {
-            TrashBin._files.Add(file);
-            file.SetParent(TrashBin);
-            _lastOperation = Operation.FileDeleted;
+            if (!perm)
+            {
+                TrashBin._files.Add(file);
+                file.SetParent(TrashBin);
+                _lastOperation = Operation.FileDeleted;
+            }
+            else
+            {
+                file.SetParent(null);
+                _lastOperation = Operation.FilePermDeleted;
+            }
             WriteNewFolderStructureToFile();
             DirtyAfterInsertion = true;
         }
+    }
+
+    public override void SetParentOnDeletionAbsolutePath(string folder)
+    {
+        _parentOnDeletionAbsolutePath = folder;
     }
 
     public override void SetParent(Folder folder)
@@ -509,13 +568,22 @@ public class Folder : Grabbable
         _father = folder;
     }
 
-    private void DeleteFolder(Folder folder)
+    private void DeleteFolder(Folder folder, bool perm)
     {
+        if (!perm) folder.SetParentOnDeletionAbsolutePath(folder.GetParent().GetAbsolutePath());
         if (_children.Remove(folder))
         {
-            TrashBin._children.Add(folder);
-            folder.SetParent(TrashBin);
-            _lastOperation = Operation.FolderDeleted;
+            if (!perm)
+            {
+                TrashBin._children.Add(folder);
+                folder.SetParent(TrashBin);
+                _lastOperation = Operation.FolderDeleted;
+            }
+            else
+            {
+                folder.SetParent(null);
+                _lastOperation = Operation.FolderPermDeleted;
+            }
             WriteNewFolderStructureToFile();
             DirtyAfterInsertion = true;
         }
@@ -523,7 +591,12 @@ public class Folder : Grabbable
 
     public override void Delete()
     {
-        _father.DeleteFolder(this);
+        _father.DeleteFolder(this, false);
+    }
+
+    public override void PermDelete()
+    {
+        _father.DeleteFolder(this, true);
     }
 
     private void SetBacheca(BachecaFileController bachecaFileController)
@@ -537,9 +610,13 @@ public class Folder : Grabbable
         return _bacheca;
     }
 
-    public void InsertFileOrFolder(Grabber fileGrabber)
+    public override void Recover()
     {
-        var file = fileGrabber.GetReferred();
+        GetFolderFromAbsolutePath(_parentOnDeletionAbsolutePath.Split("/"), Root)?.InsertFileOrFolder(this, true);
+    }
+
+    public void InsertFileOrFolder(Grabbable file, bool isRecovering)
+    {
         var comingFrom = file.GetParent();
         if (comingFrom != this)
         {
@@ -547,12 +624,22 @@ public class Folder : Grabbable
             {
                 case Folder folder:
                     _children.Add(folder);
+                    if (isRecovering)
+                    {
+                        file.SetParentOnDeletionAbsolutePath(null);
+                    }
+                    comingFrom?.GetChildren().Remove(folder);
                     break;
                 case RoomFile roomFile:
                     _files.Add(roomFile);
+                    if (isRecovering)
+                    {
+                        file.SetParentOnDeletionAbsolutePath(null);
+                    }
                     comingFrom?.GetFiles().Remove(roomFile);
                     break;
             }
+            file.SetParent(this);
         }
         _lastOperation = Operation.FileOrFolderInserted;
         WriteNewFolderStructureToFile();

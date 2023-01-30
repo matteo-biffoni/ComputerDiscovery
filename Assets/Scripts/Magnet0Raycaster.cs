@@ -49,6 +49,7 @@ public class Magnet0Raycaster : MonoBehaviour
                 fileGrabber.TriggerLabel(true, Player.transform.GetComponentInChildren<Camera>().transform);
                 if (Input.GetMouseButtonDown(0))
                 {
+                    if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
                     fileGrabber.Outlined.OutlineWidth = 0f;
                     _grabbedFile = fileGrabber;
                     _grabbedFile.GrabReferred(Player.transform.GetComponentInChildren<Camera>().transform, transform.Find("ObjHolder"));
@@ -56,24 +57,50 @@ public class Magnet0Raycaster : MonoBehaviour
                 else if (Input.GetMouseButtonDown(1))
                 {
                     _showingObjMenu = true;
-                    var menu = fileGrabber.ShowObjectMenu(Player.transform);
-                    var copyButton = menu.transform.Find("CopyButton").GetComponent<Button>();
-                    copyButton.onClick.AddListener(delegate { 
-                        Copy(fileGrabber);
-                        Destroy(menu);
-                        _showingObjMenu = false;
-                        Cursor.lockState = CursorLockMode.Locked;
-                        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                    });
-                    var deleteButton = menu.transform.Find("DeleteButton").GetComponent<Button>();
-                    deleteButton.onClick.AddListener(delegate
+                    if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
                     {
-                        Delete(fileGrabber);
-                        Destroy(menu);
-                        _showingObjMenu = false;
-                        Cursor.lockState = CursorLockMode.Locked;
-                        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                    });
+                        var menu = fileGrabber.ShowTrashItemMenu(Player.transform);
+                        var recover = menu.transform.Find("RecoverButton").GetComponent<Button>();
+                        recover.onClick.AddListener(delegate
+                        {
+                            Recover(fileGrabber);
+                            Destroy(menu);
+                            _showingObjMenu = false;
+                            Cursor.lockState = CursorLockMode.Locked;
+                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                        });
+                        var permDelete = menu.transform.Find("PermDeleteButton").GetComponent<Button>();
+                        permDelete.onClick.AddListener(delegate
+                        {
+                            PermDelete(fileGrabber);
+                            Destroy(menu);
+                            _showingObjMenu = false;
+                            Cursor.lockState = CursorLockMode.Locked;
+                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                        });
+                    }
+                    else
+                    {
+                        var menu = fileGrabber.ShowObjectMenu(Player.transform);
+                        var copyButton = menu.transform.Find("CopyButton").GetComponent<Button>();
+                        copyButton.onClick.AddListener(delegate
+                        {
+                            Copy(fileGrabber);
+                            Destroy(menu);
+                            _showingObjMenu = false;
+                            Cursor.lockState = CursorLockMode.Locked;
+                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                        });
+                        var deleteButton = menu.transform.Find("DeleteButton").GetComponent<Button>();
+                        deleteButton.onClick.AddListener(delegate
+                        {
+                            Delete(fileGrabber);
+                            Destroy(menu);
+                            _showingObjMenu = false;
+                            Cursor.lockState = CursorLockMode.Locked;
+                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                        });
+                    }
                 }
             }
         }
@@ -85,11 +112,21 @@ public class Magnet0Raycaster : MonoBehaviour
         }
     }
 
+    private void Recover(Grabber grabber)
+    {
+        grabber.Recover();
+    }
+
+    private void PermDelete(Grabber grabber)
+    {
+        grabber.PermDelete();
+    }
+
     private void Copy(Grabber fileGrabber)
     {
         fileGrabber.Outlined.OutlineWidth = 0f;
         _grabbedFile = fileGrabber.Copy(Player.transform.GetComponentInChildren<Camera>().transform, transform.Find("ObjHolder"));
-        _grabbedFile.SetReferred(fileGrabber.GetReferred());
+        _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy());
     }
 
     private void Delete(Grabber grabber)
