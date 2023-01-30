@@ -31,6 +31,8 @@ public class HouseManager : MonoBehaviour
 
     private Folder _quest1;
 
+    public int actualQuest = 1;
+
     private static readonly List<string> ImageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
     private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
     private static readonly List<string> MultimediaFileNames = new () { "Recita", "Concerto", "Audizione", "Spettacolo", "Provino", "Shakira", "Beethoven", "John Lennon" };
