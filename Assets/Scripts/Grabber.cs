@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 
 public class Grabber : MonoBehaviour
@@ -16,6 +18,7 @@ public class Grabber : MonoBehaviour
     public GameObject FileTextLabel;
     private GameObject _instantiatedFileTextLabel;
     public Outline Outlined;
+    [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
 
     private void Start()
     {
@@ -71,6 +74,78 @@ public class Grabber : MonoBehaviour
         return _file;
     }
 
+    public Grabber Copy(Transform cameraT, Transform objHolder)
+    {
+        _instantiatedFileTextLabel.transform.SetParent(cameraT);
+        _instantiatedFileTextLabel.transform.localPosition = new Vector3(0, -3, 6);
+        _instantiatedFileTextLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        _instantiatedFileTextLabel.transform.localScale *= 0.3f;
+        Transform t;
+        GameObject duplicate;
+        switch (_file)
+        {
+            case Folder:
+                t = transform.parent.parent.parent.parent;
+                duplicate = Instantiate(t.gameObject, objHolder);
+                duplicate.transform.GetComponent<BoxCollider>().enabled = false;
+                // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+                duplicate.transform.GetComponent<Animator>().SetBool("openDoor", true);
+                // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+                duplicate.transform.GetComponent<Animator>().SetBool("closeDoor", false);
+                StartCoroutine(CloseDoorWhenCopying(duplicate.transform.GetComponent<Animator>()));
+                duplicate.transform.GetComponent<DoorController>().enabled = false;
+                duplicate.transform.localPosition = new Vector3(0f, 0f, 2f);
+                duplicate.transform.localRotation = Quaternion.Euler(180f, -90f, 120f);
+                duplicate.transform.localScale *= 3f;
+                return duplicate.transform.GetComponentInChildren<Grabber>();
+            case RoomFile:
+                t = transform;
+                duplicate = Instantiate(t.gameObject, objHolder);
+                duplicate.transform.localPosition = new Vector3(0f, 0f, 0f);
+                duplicate.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                duplicate.transform.localScale *= 5f;
+                return duplicate.transform.GetComponent<Grabber>();
+        }
+        return null;
+    }
+
+    private IEnumerator CloseDoorWhenCopying(Animator animator)
+    {
+        yield return new WaitForFixedUpdate();
+        
+        // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+        animator.SetBool("openDoor", false);
+        // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+        animator.SetBool("closeDoor", true);
+    }
+
+    public void Delete()
+    {
+        _file.Delete();
+        switch (_file)
+        {
+            case Folder:
+                Destroy(transform.parent.parent.parent.parent.gameObject);
+                break;
+            case RoomFile:
+                Destroy(gameObject);
+                break;
+        }
+    }
+
+    public void Rename()
+    {
+        
+    }
+
+    public GameObject ShowObjectMenu(Transform player)
+    {
+        _player = player;
+        _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
+        Cursor.lockState = CursorLockMode.None;
+        return Instantiate(ObjMenuCanvasPrefab);
+    }
+
     public void GrabReferred(Transform cameraT, Transform objHolder)
     {
         _instantiatedFileTextLabel.transform.SetParent(cameraT);
@@ -92,7 +167,7 @@ public class Grabber : MonoBehaviour
                 t.SetParent(objHolder);
                 t.localPosition = new Vector3(0f, 0f, 2f);
                 t.localRotation = Quaternion.Euler(180f, -90f, 120f);
-                t.localScale *= 0.25f;
+                t.localScale *= 0.15f;
                 break;
             case RoomFile:
                 t = transform;

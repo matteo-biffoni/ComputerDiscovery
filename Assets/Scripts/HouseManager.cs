@@ -29,6 +29,8 @@ public class HouseManager : MonoBehaviour
 
     public GameObject MainRoomGo;
 
+    public TrashBinController TrashBinController;
+
     private Folder _quest1;
 
     private static readonly List<string> ImageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
@@ -312,6 +314,7 @@ public class HouseManager : MonoBehaviour
             Folder.InstantiateFolder(desktop, transform, Direction.North, RoomsPrefabs, Entrance.None, EntrancesPrefabs,
                 RoomLenght, RoomHeight, (int)Mathf.Log(RoomLayer.value, 2));
             Folder.Root = desktop;
+            TrashBinController.PopulateTrashBin();
             if (firstTime)
             {
                 Folder.Root.ActivateRoomComponents(true);
@@ -358,7 +361,13 @@ public abstract class Grabbable
 {
     public abstract Folder GetParent();
 
+    public abstract void SetParent(Folder folder);
+
     public abstract string GetName();
+
+    public abstract void Delete();
+
+    public abstract string GetAbsolutePath();
 }
 
 public class RoomFile : Grabbable
@@ -367,7 +376,7 @@ public class RoomFile : Grabbable
     private readonly string _format;
     private readonly bool _integrity;
     private readonly float _size;
-    private readonly Folder _parent;
+    private Folder _parent;
 
     public RoomFile(string name, string format, bool integrity, float size, Folder parent)
     {
@@ -403,9 +412,19 @@ public class RoomFile : Grabbable
         return _parent;
     }
     
-    public string GetAbsolutePath()
+    public override string GetAbsolutePath()
     {
         return _parent.GetAbsolutePath() + "/" + _name;
+    }
+
+    public override void Delete()
+    {
+        _parent.DeleteFile(this);
+    }
+
+    public override void SetParent(Folder folder)
+    {
+        _parent = folder;
     }
 }
 
@@ -414,8 +433,10 @@ public enum Operation
     Nop,
     FileOrFolderInserted,
     FileCreated,
+    FileDeleted,
     FolderMoving,
     FolderMoved,
+    FolderDeleted,
     FolderCreated
 }
 
@@ -424,8 +445,9 @@ public class Folder : Grabbable
     public static bool DirtyAfterInsertion;
     public static string CurrentFileName;
     public static Folder Root;
+    public static readonly Folder TrashBin = new("TrashBin", null);
     private GameObject _container;
-    private readonly Folder _father;
+    private Folder _father;
     private readonly List<Folder> _children;
     private readonly List<RoomFile> _files;
     private readonly string _name;
@@ -466,6 +488,40 @@ public class Folder : Grabbable
         WriteNewFolderStructureToFile();
         _lastOperation = Operation.FolderCreated;
         DirtyAfterInsertion = true;
+    }
+
+    public void DeleteFile(RoomFile file)
+    {
+        if (_files.Remove(file))
+        {
+            TrashBin._files.Add(file);
+            file.SetParent(TrashBin);
+            _lastOperation = Operation.FileDeleted;
+            WriteNewFolderStructureToFile();
+            DirtyAfterInsertion = true;
+        }
+    }
+
+    public override void SetParent(Folder folder)
+    {
+        _father = folder;
+    }
+
+    private void DeleteFolder(Folder folder)
+    {
+        if (_children.Remove(folder))
+        {
+            TrashBin._children.Add(folder);
+            folder.SetParent(TrashBin);
+            _lastOperation = Operation.FolderDeleted;
+            WriteNewFolderStructureToFile();
+            DirtyAfterInsertion = true;
+        }
+    }
+
+    public override void Delete()
+    {
+        _father.DeleteFolder(this);
     }
 
     private void SetBacheca(BachecaFileController bachecaFileController)
@@ -566,7 +622,7 @@ public class Folder : Grabbable
         _container.transform.GetChild(1).gameObject.SetActive(active);
     }
 
-    public string GetAbsolutePath()
+    public override string GetAbsolutePath()
     {
         if (_father == null) return _name;
         return _father.GetAbsolutePath() + "/" + _name;
