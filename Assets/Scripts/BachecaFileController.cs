@@ -42,10 +42,10 @@ public class BachecaFileController : MonoBehaviour
         for (var i = 0; i < files.Count; i++)
         {
             var instantiated = Instantiate(PickPrefabFromFile(files[i]), holderGo.transform.GetChild(i));
-            var fileGrabber = instantiated.GetComponent<FileGrabber>();
+            var fileGrabber = instantiated.GetComponent<Grabber>();
             if (fileGrabber)
             {
-                fileGrabber.SetFile(files[i]);
+                fileGrabber.SetReferred(files[i]);
             }
         }
     }
