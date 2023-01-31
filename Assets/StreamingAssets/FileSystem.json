@@ -1,18 +1,26 @@
 {
   "Name": "Desktop",
-  "Children": [],
-  "Files": [
+  "Children": [
     {
-      "Name": "Patente.docx",
-      "Format": "doc",
-      "Integrity": true,
-      "Size": 17.0
+      "Name": "Immagini",
+      "Children": [],
+      "Files": []
     },
     {
-      "Name": "Biglietto del treno.docx",
-      "Format": "doc",
-      "Integrity": true,
-      "Size": 142.0
+      "Name": "Documenti",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Audio",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Video",
+      "Children": [],
+      "Files": []
     }
-  ]
+  ],
+  "Files": []
 }

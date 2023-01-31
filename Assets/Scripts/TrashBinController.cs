@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class TrashBinController : MonoBehaviour
@@ -17,20 +20,38 @@ public class TrashBinController : MonoBehaviour
     public GameObject[] DoCs;
     public GameObject[] TxTs;
     public GameObject FolderPrefab;
+    public GameObject InteractCanvas;
+    public TMP_Text InteractCanvasText;
+    public KeyCode KeyPressed;
+    public FirstPersonCharacterController Player;
+    private bool _isPlayerInside;
+    private bool _playAlphaAnimation;
+    private float _startTimeAnimation;
+    private bool _endAlphaAnimation;
 
-    private void EmptyTrashBin()
+    private int TrashItemsCount()
+    {
+        return transform.Cast<Transform>().Sum(child => child.childCount);
+    }
+
+    private void EmptyTrashBin(bool delete)
     {
         foreach (Transform child in transform)
         {
             for (var i = child.childCount - 1; i >= 0; i--)
             {
-                Destroy(child.GetChild(i).gameObject);
+                var toDestroy = child.GetChild(i).gameObject;
+                if (delete)
+                {
+                    toDestroy.transform.GetComponent<Grabber>().GetReferred().PermDelete();
+                }
+                Destroy(toDestroy);
             }
         }
     }
     public void PopulateTrashBin()
     {
-        EmptyTrashBin();
+        EmptyTrashBin(false);
         var j = 0;
         for (var i = 0; i < Folder.TrashBin.GetChildren().Count; i++)
         {
@@ -80,5 +101,57 @@ public class TrashBinController : MonoBehaviour
                 };
         }
         return null;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && TrashItemsCount() > 0)
+        {
+            InteractCanvasText.text = "Premi E per svuotare il cestino";
+            InteractCanvas.SetActive(true);
+            _isPlayerInside = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            _isPlayerInside = false;
+            InteractCanvas.SetActive(false);
+            InteractCanvasText.text = "Premi E per interagire";
+        }
+    }
+
+    private void Update()
+    {
+        if (!_isPlayerInside) return;
+        if (Input.GetKeyDown(KeyPressed))
+        {
+            Player.IgnoreInput();
+            _playAlphaAnimation = true;
+            InteractCanvas.SetActive(false);
+            InteractCanvasText.text = "Premi E per interagire";
+        }
+        if (_playAlphaAnimation)
+        {
+            for (var i = 0; i < TrashItemsCount(); i++)
+            {
+                var actualChild = transform.GetChild(i).GetChild(0);
+                actualChild.localScale *= 0.8f;
+                if (actualChild.localScale.x <= 0.0001f)
+                {
+                    _playAlphaAnimation = false;
+                    _endAlphaAnimation = true;
+                }
+            }
+        }
+        if (_endAlphaAnimation)
+        {
+            _endAlphaAnimation = false;
+            _isPlayerInside = false;
+            EmptyTrashBin(true);
+            Player.ReactivateInput();
+        }
     }
 }

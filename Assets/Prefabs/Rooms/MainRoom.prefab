@@ -205,6 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2011393695431444779}
+  - component: {fileID: 2629235845041141799}
   m_Layer: 0
   m_Name: TrashBin
   m_TagString: Untagged
@@ -232,6 +233,19 @@ Transform:
   m_Father: {fileID: 6468932305367612573}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2629235845041141799
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226667578337642806}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.1576014, y: 1.80668, z: 1.4702957}
+  m_Center: {x: 0.028097153, y: 0.65154946, z: 0.02334559}
 --- !u!1 &524409884315327889
 GameObject:
   m_ObjectHideFlags: 0

@@ -457,3 +457,6 @@ MonoBehaviour:
   - {fileID: 7993695785321491143, guid: 7b05a3c2aaa1763459f083973f620176, type: 3}
   - {fileID: 1065806918249759117, guid: 0592b56a518fc604daf9a5d6e629d443, type: 3}
   FolderPrefab: {fileID: 1825490607542527856, guid: 28c76c1b27c3c1b40b8f66fc3d740ee5, type: 3}
+  InteractCanvas: {fileID: 0}
+  InteractCanvasText: {fileID: 0}
+  KeyPressed: 101
