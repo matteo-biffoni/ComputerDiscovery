@@ -1,51 +1,18 @@
 {
   "Name": "Desktop",
-  "Children": [
-    {
-      "Name": "Documenti",
-      "Children": [],
-      "Files": []
-    },
-    {
-      "Name": "Audio",
-      "Children": [],
-      "Files": []
-    },
-    {
-      "Name": "Immagini",
-      "Children": [],
-      "Files": []
-    },
-    {
-      "Name": "Video",
-      "Children": [],
-      "Files": []
-    }
-  ],
+  "Children": [],
   "Files": [
     {
-      "Name": "Cane.jpg",
-      "Format": "jpeg",
-      "Integrity": true,
-      "Size": 11.0
-    },
-    {
-      "Name": "Assicurazione auto.docx",
+      "Name": "Patente.docx",
       "Format": "doc",
       "Integrity": true,
-      "Size": 74.0
-    },
-    {
-      "Name": "Ricetta.docx",
-      "Format": "doc",
-      "Integrity": true,
-      "Size": 85.0
+      "Size": 17.0
     },
     {
       "Name": "Biglietto del treno.docx",
       "Format": "doc",
       "Integrity": true,
-      "Size": 60.0
+      "Size": 142.0
     }
   ]
 }

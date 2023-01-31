@@ -1,92 +1,92 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class DialogueTrigger : MonoBehaviour
 {
 
-    public FirstPersonCharacterController player;
-    public KeyCode keyPressed;
-    public GameObject interactCanvas;
-    public GameObject dialogueCanvas;
+    [FormerlySerializedAs("player")] public FirstPersonCharacterController Player;
+    [FormerlySerializedAs("keyPressed")] public KeyCode KeyPressed;
+    [FormerlySerializedAs("interactCanvas")] public GameObject InteractCanvas;
+    [FormerlySerializedAs("dialogueCanvas")] public GameObject DialogueCanvas;
     public DialogueManager DialogueManager;
-    public Sprite actorSprite;
-    public string actorName;
-    public HouseManager houseManager;
-    private bool checkInteraction;
+    [FormerlySerializedAs("actorSprite")] public Sprite ActorSprite;
+    [FormerlySerializedAs("actorName")] public string ActorName;
+    [FormerlySerializedAs("houseManager")] public HouseManager HouseManager;
+    private bool _checkInteraction;
     
     
-    [SerializeField]
-    string[] quest1Messages;
+    [FormerlySerializedAs("quest1Messages")] [SerializeField]
+    string[] Quest1Messages;
     
-    [SerializeField]
-    string[] quest2Messages;
+    [FormerlySerializedAs("quest2Messages")] [SerializeField]
+    string[] Quest2Messages;
     
-    [SerializeField]
-    string[] quest3Messages;
+    [FormerlySerializedAs("quest3Messages")] [SerializeField]
+    string[] Quest3Messages;
     
     public void StartDialogue(int questNumber)
     {
         string[] messages = null;
         Cursor.lockState = CursorLockMode.None;
-        player.IgnoreInput();
+        Player.IgnoreInput();
         switch (questNumber)
         {
             case 1:
-                messages = quest1Messages;
+                messages = Quest1Messages;
                 break;
             case 2:
-                messages = quest2Messages;
+                messages = Quest2Messages;
                 break;
             case 3:
-                messages = quest3Messages;
+                messages = Quest3Messages;
                 break;
         }
-        interactCanvas.SetActive(false);
-        dialogueCanvas.SetActive(true);
-        DialogueManager.OpenDialogue(this, messages, actorName, actorSprite);
+        InteractCanvas.SetActive(false);
+        DialogueCanvas.SetActive(true);
+        DialogueManager.OpenDialogue(this, messages, ActorName, ActorSprite);
     }
 
     public void EndDialogue()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        player.ReactivateInput();
-        dialogueCanvas.SetActive(false);
-        interactCanvas.SetActive(true);
-        checkInteraction = true; 
+        Player.ReactivateInput();
+        DialogueCanvas.SetActive(false);
+        InteractCanvas.SetActive(true);
+        _checkInteraction = true; 
     }
     private void OnTriggerEnter(Collider other)
     {
         
-        if (other.gameObject.CompareTag("Player") == true)
+        if (other.gameObject.CompareTag("Player"))
         {
-            checkInteraction = true;
-            interactCanvas.SetActive(true);
+            _checkInteraction = true;
+            InteractCanvas.SetActive(true);
         } 
     }
     
     private void OnTriggerExit(Collider other)
     {
         
-        if (other.gameObject.CompareTag("Player") == true)
+        if (other.gameObject.CompareTag("Player"))
         {
-            checkInteraction = false;
-            interactCanvas.SetActive(false);
+            _checkInteraction = false;
+            InteractCanvas.SetActive(false);
         } 
     }
 
 
     private void Update()
     {
-        transform.LookAt(player.transform);
-        if (!checkInteraction) return;
+        transform.LookAt(Player.transform);
+        if (!_checkInteraction) return;
 
-        if (Input.GetKeyDown(keyPressed))
+        if (Input.GetKeyDown(KeyPressed))
         {
-            var look = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-            player.transform.GetComponentInChildren<Camera>().transform.LookAt(look);
-            checkInteraction = false;
-            StartDialogue(houseManager.actualQuest);
+            var p = transform.position;
+            var look = new Vector3(p.x, p.y + 0.5f, p.z);
+            Player.transform.GetComponentInChildren<Camera>().transform.LookAt(look);
+            _checkInteraction = false;
+            StartDialogue(HouseManager.ActualQuest);
         }
         
     }

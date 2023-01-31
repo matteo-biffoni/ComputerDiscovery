@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Magnet0Raycaster : MonoBehaviour
@@ -13,12 +15,56 @@ public class Magnet0Raycaster : MonoBehaviour
 
     public GameObject Explosion;
 
-    private bool _showingObjMenu;
+    private bool _showingObjMenu, _showingRenameMenu;
+    private GameObject _objMenu, _renameMenu;
+
 
     // Update is called once per frame
     private void Update()
     {
-        if (_showingObjMenu) return;
+        if (_showingObjMenu)
+        {
+            if (_showingRenameMenu)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Destroy(_renameMenu);
+                    _showingRenameMenu = false;
+                }
+                else if (Input.GetMouseButtonDown(0))
+                {
+                    if (EventSystem.current.currentSelectedGameObject == null)
+                    {
+                        Destroy(_objMenu);
+                        _showingObjMenu = false;
+                        _showingRenameMenu = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Destroy(_objMenu);
+                    _showingObjMenu = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                }
+                else if (Input.GetMouseButtonDown(0))
+                {
+                    if (EventSystem.current.currentSelectedGameObject == null)
+                    {
+                        Destroy(_objMenu);
+                        _showingObjMenu = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                    }
+                }
+            }
+            return;
+        }
         var t = transform;
         var ray = new Ray(t.position, t.forward);
 
@@ -59,21 +105,21 @@ public class Magnet0Raycaster : MonoBehaviour
                     _showingObjMenu = true;
                     if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
                     {
-                        var menu = fileGrabber.ShowTrashItemMenu(Player.transform);
-                        var recover = menu.transform.Find("RecoverButton").GetComponent<Button>();
+                        _objMenu = fileGrabber.ShowTrashItemMenu(Player.transform);
+                        var recover = _objMenu.transform.Find("RecoverButton").GetComponent<Button>();
                         recover.onClick.AddListener(delegate
                         {
                             Recover(fileGrabber);
-                            Destroy(menu);
+                            Destroy(_objMenu);
                             _showingObjMenu = false;
                             Cursor.lockState = CursorLockMode.Locked;
                             Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
                         });
-                        var permDelete = menu.transform.Find("PermDeleteButton").GetComponent<Button>();
+                        var permDelete = _objMenu.transform.Find("PermDeleteButton").GetComponent<Button>();
                         permDelete.onClick.AddListener(delegate
                         {
                             PermDelete(fileGrabber);
-                            Destroy(menu);
+                            Destroy(_objMenu);
                             _showingObjMenu = false;
                             Cursor.lockState = CursorLockMode.Locked;
                             Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
@@ -81,21 +127,60 @@ public class Magnet0Raycaster : MonoBehaviour
                     }
                     else
                     {
-                        var menu = fileGrabber.ShowObjectMenu(Player.transform);
-                        var copyButton = menu.transform.Find("CopyButton").GetComponent<Button>();
+                        _objMenu = fileGrabber.ShowObjectMenu(Player.transform);
+                        var copyButton = _objMenu.transform.Find("CopyButton").GetComponent<Button>();
                         copyButton.onClick.AddListener(delegate
                         {
                             Copy(fileGrabber);
-                            Destroy(menu);
+                            Destroy(_objMenu);
                             _showingObjMenu = false;
                             Cursor.lockState = CursorLockMode.Locked;
                             Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
                         });
-                        var deleteButton = menu.transform.Find("DeleteButton").GetComponent<Button>();
+                        var renameButton = _objMenu.transform.Find("RenameButton").GetComponent<Button>();
+                        renameButton.onClick.AddListener(delegate
+                        {
+                            _showingRenameMenu = true;
+                            _renameMenu = fileGrabber.ShowRenameMenu(renameButton.transform.parent);
+                            var cancelButton = _renameMenu.transform.Find("CancelButton").GetComponent<Button>();
+                            cancelButton.onClick.AddListener(delegate
+                            {
+                                Destroy(_renameMenu);
+                                _showingRenameMenu = false;
+                            });
+                            var confirmButton = _renameMenu.transform.Find("ConfirmButton").GetComponent<Button>();
+                            confirmButton.onClick.AddListener(delegate
+                            {
+                                var error = false;
+                                var fileNameInputField = _renameMenu.transform.Find("RenameFileNameInputField")
+                                    .GetComponent<TMP_InputField>();
+                                var fileNameError = _renameMenu.transform.Find("FileNameError").gameObject;
+                                if (fileNameInputField.text.Trim().Equals(""))
+                                {
+                                    fileNameError.SetActive(true);
+                                    error = true;
+                                }
+                                else
+                                {
+                                    fileNameError.SetActive(false);
+                                }
+                                if (!error)
+                                {
+                                    var newName = fileNameInputField.text.Trim();
+                                    fileGrabber.Rename(newName);
+                                    Destroy(_objMenu);
+                                    _showingObjMenu = false;
+                                    _showingRenameMenu = false;
+                                    Cursor.lockState = CursorLockMode.Locked;
+                                    Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                }
+                            });
+                        });
+                        var deleteButton = _objMenu.transform.Find("DeleteButton").GetComponent<Button>();
                         deleteButton.onClick.AddListener(delegate
                         {
                             Delete(fileGrabber);
-                            Destroy(menu);
+                            Destroy(_objMenu);
                             _showingObjMenu = false;
                             Cursor.lockState = CursorLockMode.Locked;
                             Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
@@ -144,6 +229,12 @@ public class Magnet0Raycaster : MonoBehaviour
         if (Folder.MainRoom == roomIn)
         {
             roomIn = Folder.Root;
+        }
+        else if (Folder.Garage == roomIn)
+        {
+            // TODO: Notificare che non si può lasciare un file per esempio in Garage
+            Debug.Log("Non puoi lasciare qui l'elemento, non sei in una vera e propria cartella!");
+            return;
         }
         _grabbedFile.DropReferred(Player.transform, roomIn, Explosion);
         _grabbedFile = null;

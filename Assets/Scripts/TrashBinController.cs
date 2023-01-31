@@ -51,7 +51,6 @@ public class TrashBinController : MonoBehaviour
         {
             var iFile = Folder.TrashBin.GetFiles()[i];
             var fileInstantiated = Instantiate(PickPrefab(iFile), transform.GetChild(i + j));
-            Debug.Log("File instantiated inside trash bin");
             var t = fileInstantiated.transform;
             t.GetComponent<Grabber>().SetReferred(iFile);
             t.localPosition = new Vector3(0f, 0f, 0f);

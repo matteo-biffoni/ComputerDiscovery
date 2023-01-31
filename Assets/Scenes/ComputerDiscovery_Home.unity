@@ -244,19 +244,19 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1162527104, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: player
+      propertyPath: Player
       value: 
       objectReference: {fileID: 1862197109}
     - target: {fileID: 1162527104, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: houseManager
+      propertyPath: HouseManager
       value: 
       objectReference: {fileID: 1301155694}
     - target: {fileID: 1162527104, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: dialogueCanvas
+      propertyPath: DialogueCanvas
       value: 
       objectReference: {fileID: 865926671}
     - target: {fileID: 1162527104, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: interactCanvas
+      propertyPath: InteractCanvas
       value: 
       objectReference: {fileID: 288984559}
     - target: {fileID: 1162527104, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}

@@ -33,7 +33,7 @@ public class HouseManager : MonoBehaviour
 
     private Folder _quest1;
 
-    public int actualQuest = 1;
+    public int ActualQuest = 1;
 
     private static readonly List<string> ImageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
     private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
@@ -54,8 +54,10 @@ public class HouseManager : MonoBehaviour
     private void Start()
     {
         Folder.MainRoomGo = MainRoomGo;
-        var mainRoomPlayerDetector = transform.GetChild(0).AddComponent<PlayerDetector>();
+        var mainRoomPlayerDetector = transform.Find("MainRoom").AddComponent<PlayerDetector>();
         mainRoomPlayerDetector.SetFolderReferred(Folder.MainRoom);
+        var garagePlayerDetector = transform.Find("MainRoom").Find("Garage").AddComponent<PlayerDetector>();
+        garagePlayerDetector.SetFolderReferred(Folder.Garage);
         InstantiateScene(true);
         RetrieveQuest1();
         SpawnObjectsForQuest1();
@@ -267,7 +269,7 @@ public class HouseManager : MonoBehaviour
 
     private IEnumerator DelayInstantiation(Object oldRoot)
     {
-        if (Player.GetRoomIn() != Folder.MainRoom)
+        if (Player.GetRoomIn() != Folder.MainRoom && Player.GetRoomIn() != Folder.Garage)
         {
             var offsetPosition = Player.OffsetInTheRoom();
             yield return new WaitForFixedUpdate();
@@ -378,11 +380,13 @@ public abstract class Grabbable
     public abstract void Recover();
 
     public abstract Grabbable GetACopy();
+
+    public abstract void Rename(string newName);
 }
 
 public class RoomFile : Grabbable
 {
-    private readonly string _name;
+    private string _name;
     private readonly string _format;
     private readonly bool _integrity;
     private readonly float _size;
@@ -430,7 +434,14 @@ public class RoomFile : Grabbable
 
     public override void Delete()
     {
-        _parent.DeleteFile(this, false);
+        if (_parent != null)
+            _parent.DeleteFile(this, false);
+        else
+        {
+            Folder.TrashBin.GetFiles().Add(this);
+            _parent = Folder.TrashBin;
+            Folder.TriggerReloading(Operation.FileDeleted);
+        }
     }
 
     public override void SetParent(Folder folder)
@@ -450,12 +461,71 @@ public class RoomFile : Grabbable
 
     public override void Recover()
     {
-        Folder.GetFolderFromAbsolutePath(_parentOnDeletionAbsolutePath.Split("/"), Folder.Root)?.InsertFileOrFolder(this, true);
+        if (_parentOnDeletionAbsolutePath != null)
+        {
+            var backFolder = Folder.GetFolderFromAbsolutePath(_parentOnDeletionAbsolutePath.Split("/"), Folder.Root);
+            if (backFolder != null)
+            {
+                backFolder.InsertFileOrFolder(this, true);
+            }
+            else
+            {
+                // TODO: Notificare che non si è riusciti a ripristinare correttamente il file e che verrà inserito nel Desktop
+                Debug.Log("Non si è riusciti a ripristinare correttamente il file, verrà inserito nel Desktop");
+                Folder.Root.InsertFileOrFolder(this, true);
+            }
+        }
+        else
+        {
+            // TODO: Notificare che non si è riusciti a ripristinare correttamente il file e che verrà inserito nel Desktop
+            Debug.Log("Non si è riusciti a ripristinare correttamente il file, verrà inserito nel Desktop");
+            Folder.Root.InsertFileOrFolder(this, true);
+        }
     }
 
     public override Grabbable GetACopy()
     {
         return new RoomFile(_name, _format, _integrity, _size, null);
+    }
+
+    public override void Rename(string newName)
+    {
+        _name = newName + "." + GetFormatExtensionFromFormat(_format);
+        Folder.TriggerReloading(Operation.FileRenamed);
+    }
+
+    private static string GetFormatExtensionFromFormat(string format)
+    {
+        return format switch
+        {
+            "png" => "png",
+            "jpeg" => "jpg",
+            "doc" => "docx",
+            "pdf" => "pdf",
+            "txt" => "txt",
+            "mp3" => "mp3",
+            "mov" => "mov",
+            "zip" => "zip",
+            _ => throw new ArgumentOutOfRangeException(nameof(format), format, "Format error")
+        };
+    }
+
+    // ReSharper disable once UnusedMember.Local
+    private static string GetFormatFromFormatExtension(string formatExtension)
+    {
+        return formatExtension switch
+        {
+            "png" => "png",
+            "jpg" => "jpeg",
+            "docx" => "doc",
+            "pdf" => "pdf",
+            "txt" => "txt",
+            "mp3" => "mp3",
+            "mov" => "mov",
+            "zip" => "zip",
+            _ => throw new ArgumentOutOfRangeException(nameof(formatExtension), formatExtension,
+                "Format extension error")
+        };
     }
 }
 
@@ -466,11 +536,13 @@ public enum Operation
     FileCreated,
     FileDeleted,
     FilePermDeleted,
+    FileRenamed,
     FolderMoving,
     FolderMoved,
     FolderDeleted,
     FolderPermDeleted,
-    FolderCreated
+    FolderCreated,
+    FolderRenamed
 }
 
 public class Folder : Grabbable
@@ -483,12 +555,26 @@ public class Folder : Grabbable
     private Folder _father;
     private readonly List<Folder> _children;
     private readonly List<RoomFile> _files;
-    private readonly string _name;
+    private string _name;
     public static readonly Folder MainRoom = new("Main Room", null);
+    public static readonly Folder Garage = new("Garage", null);
     public static GameObject MainRoomGo;
     private BachecaFileController _bacheca;
     private static Operation _lastOperation = Operation.Nop;
     private string _parentOnDeletionAbsolutePath;
+
+    public static void TriggerReloading(Operation lastOp)
+    {
+        WriteNewFolderStructureToFile();
+        _lastOperation = lastOp;
+        DirtyAfterInsertion = true;
+    }
+    
+    public override void Rename(string newName)
+    {
+        _name = newName;
+        TriggerReloading(Operation.FolderRenamed);
+    }
 
     public override Grabbable GetACopy()
     {
@@ -532,9 +618,7 @@ public class Folder : Grabbable
     {
         var newFolder = new Folder(newFolderName, father);
         father.AddChild(newFolder);
-        WriteNewFolderStructureToFile();
-        _lastOperation = Operation.FolderCreated;
-        DirtyAfterInsertion = true;
+        TriggerReloading(Operation.FolderCreated);
     }
 
     public void DeleteFile(RoomFile file, bool perm)
@@ -546,15 +630,13 @@ public class Folder : Grabbable
             {
                 TrashBin._files.Add(file);
                 file.SetParent(TrashBin);
-                _lastOperation = Operation.FileDeleted;
+                TriggerReloading(Operation.FileDeleted);
             }
             else
             {
                 file.SetParent(null);
-                _lastOperation = Operation.FilePermDeleted;
+                TriggerReloading(Operation.FilePermDeleted);
             }
-            WriteNewFolderStructureToFile();
-            DirtyAfterInsertion = true;
         }
     }
 
@@ -577,15 +659,13 @@ public class Folder : Grabbable
             {
                 TrashBin._children.Add(folder);
                 folder.SetParent(TrashBin);
-                _lastOperation = Operation.FolderDeleted;
+                TriggerReloading(Operation.FolderDeleted);
             }
             else
             {
                 folder.SetParent(null);
-                _lastOperation = Operation.FolderPermDeleted;
+                TriggerReloading(Operation.FolderPermDeleted);
             }
-            WriteNewFolderStructureToFile();
-            DirtyAfterInsertion = true;
         }
     }
 
@@ -612,7 +692,17 @@ public class Folder : Grabbable
 
     public override void Recover()
     {
-        GetFolderFromAbsolutePath(_parentOnDeletionAbsolutePath.Split("/"), Root)?.InsertFileOrFolder(this, true);
+        var backFolder = GetFolderFromAbsolutePath(_parentOnDeletionAbsolutePath.Split("/"), Root);
+        if (backFolder != null)
+        {
+            backFolder.InsertFileOrFolder(this, true);
+        }
+        else
+        {
+            // TODO: Notificare che non si è riusciti a ripristinare correttamente la cartella e che verrà inserita nel Desktop
+            Debug.Log("Non si è riusciti a ripristinare correttamente la cartella, verrà inserita nel Desktop");
+            Root.InsertFileOrFolder(this, true);
+        }
     }
 
     public void InsertFileOrFolder(Grabbable file, bool isRecovering)
@@ -641,17 +731,13 @@ public class Folder : Grabbable
             }
             file.SetParent(this);
         }
-        _lastOperation = Operation.FileOrFolderInserted;
-        WriteNewFolderStructureToFile();
-        DirtyAfterInsertion = true;
+        TriggerReloading(Operation.FileOrFolderInserted);
     }
 
     public static void InsertNewFile(RoomFile newFile, Folder father)
     {
         father._files.Add(newFile);
-        WriteNewFolderStructureToFile();
-        _lastOperation = Operation.FileCreated;
-        DirtyAfterInsertion = true;
+        TriggerReloading(Operation.FileCreated);
     }
 
     public static bool IsMainRoomVisible()
@@ -687,9 +773,7 @@ public class Folder : Grabbable
     public void RemoveChild(Folder folder, Operation operation)
     {
         _children.Remove(folder);
-        _lastOperation = operation;
-        WriteNewFolderStructureToFile();
-        DirtyAfterInsertion = true;
+        TriggerReloading(operation);
     }
 
     private void AddChild(Folder folder)

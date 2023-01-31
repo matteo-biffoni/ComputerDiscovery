@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 3771306748784960913}
   m_Layer: 5
   m_Name: DialogueBox
-  m_TagString: Untagged
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -362,10 +362,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cd0686e3b170945b21e84822290a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorImage: {fileID: 3771306749314038284}
-  actorNameText: {fileID: 3771306747800864918}
-  message: {fileID: 3771306748618456713}
-  backgroundBox: {fileID: 3771306748784960942}
+  ActorImage: {fileID: 3771306749314038284}
+  ActorNameText: {fileID: 3771306747800864918}
+  Message: {fileID: 3771306748618456713}
 --- !u!1 &3771306749287187085
 GameObject:
   m_ObjectHideFlags: 0

@@ -522,6 +522,7 @@ GameObject:
   - component: {fileID: 4087726618081238322}
   - component: {fileID: 5716833500132551913}
   - component: {fileID: 4835862290928719329}
+  - component: {fileID: 8619250575236739847}
   m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
@@ -560,7 +561,21 @@ MonoBehaviour:
   Outlined: {fileID: 5991147208694494975}
   ObjMenuCanvasPrefab: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
   TrashItemCanvasPrefab: {fileID: 6557196937122604504, guid: e9e1a65c5afc3a744875d7eccf0cb00d, type: 3}
+  RenameCanvasPrefab: {fileID: 2729442980673021621, guid: 8b7c014763c2ded4bab6af9c5e572e04, type: 3}
 --- !u!65 &4835862290928719329
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4541663119127368680}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.001, y: 0.003, z: 0.003}
+  m_Center: {x: 0.0005, y: 0, z: 0}
+--- !u!65 &8619250575236739847
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -571,8 +586,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.001, y: 0.003, z: 0.003}
-  m_Center: {x: 0.0005, y: 0, z: 0}
+  m_Size: {x: 0.001, y: 0.011735745, z: 0.007181187}
+  m_Center: {x: 0.0012, y: 0.0010369754, z: -0.0030905923}
 --- !u!1 &4710346580353837603
 GameObject:
   m_ObjectHideFlags: 0

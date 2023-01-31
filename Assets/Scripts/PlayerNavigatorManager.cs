@@ -21,7 +21,7 @@ public class PlayerNavigatorManager : MonoBehaviour
     public Vector3 OffsetInTheRoom()
     {
         var position = transform.position;
-        var roomPosition = _roomIn.GetContainer().transform.position;
+        var roomPosition = _roomIn != Folder.Garage ? _roomIn.GetContainer().transform.position : Vector3.zero;
         return new Vector3(position.x - roomPosition.x, 0, position.z - roomPosition.z);
     }
 }
