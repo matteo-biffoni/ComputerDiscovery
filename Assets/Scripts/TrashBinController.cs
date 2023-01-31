@@ -17,8 +17,20 @@ public class TrashBinController : MonoBehaviour
     public GameObject[] DoCs;
     public GameObject[] TxTs;
     public GameObject FolderPrefab;
+
+    private void EmptyTrashBin()
+    {
+        foreach (Transform child in transform)
+        {
+            for (var i = child.childCount - 1; i >= 0; i--)
+            {
+                Destroy(child.GetChild(i).gameObject);
+            }
+        }
+    }
     public void PopulateTrashBin()
     {
+        EmptyTrashBin();
         var j = 0;
         for (var i = 0; i < Folder.TrashBin.GetChildren().Count; i++)
         {
@@ -39,6 +51,7 @@ public class TrashBinController : MonoBehaviour
         {
             var iFile = Folder.TrashBin.GetFiles()[i];
             var fileInstantiated = Instantiate(PickPrefab(iFile), transform.GetChild(i + j));
+            Debug.Log("File instantiated inside trash bin");
             var t = fileInstantiated.transform;
             t.GetComponent<Grabber>().SetReferred(iFile);
             t.localPosition = new Vector3(0f, 0f, 0f);
@@ -67,7 +80,6 @@ public class TrashBinController : MonoBehaviour
                     _ => null
                 };
         }
-
         return null;
     }
 }
