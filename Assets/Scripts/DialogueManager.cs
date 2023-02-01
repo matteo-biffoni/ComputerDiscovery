@@ -9,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     [FormerlySerializedAs("actorImage")] public Image ActorImage;
     [FormerlySerializedAs("actorNameText")] public TMP_Text ActorNameText;
     [FormerlySerializedAs("message")] public TMP_Text Message;
-    //public RectTransform backgroundBox;
+    public RectTransform backgroundBox;
     private Action _endDialogCallback;
     private string[] _currentMessages;
     private int _activeMessage;
