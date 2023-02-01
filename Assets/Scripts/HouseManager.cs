@@ -11,6 +11,8 @@ using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 
+
+
 public class HouseManager : MonoBehaviour
 {
     
@@ -62,6 +64,7 @@ public class HouseManager : MonoBehaviour
         RetrieveQuest1();
         SpawnObjectsForQuest1();
     }
+    
 
     private GameObject PickPrefabFromFile(RoomFile file)
     {
@@ -559,6 +562,9 @@ public enum Operation
     FolderRenamed
 }
 
+
+
+
 public class Folder : Grabbable
 {
     public static bool DirtyAfterInsertion;
@@ -661,6 +667,7 @@ public class Folder : Grabbable
                 TriggerReloading(Operation.FilePermDeleted);
             }
         }
+        NotificationManager.Notify(Operation.FileDeleted);
     }
 
     public override void SetParentOnDeletionAbsolutePath(string folder)
@@ -690,6 +697,7 @@ public class Folder : Grabbable
                 TriggerReloading(Operation.FolderPermDeleted);
             }
         }
+        NotificationManager.Notify(Operation.FolderDeleted);
     }
 
     public override void Delete()

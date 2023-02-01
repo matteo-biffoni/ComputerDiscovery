@@ -44,9 +44,9 @@ public class DialogueTrigger : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Player.ReactivateInput();
-        DialogueCanvas.SetActive(false);
         InteractCanvas.SetActive(true);
         _checkInteraction = true; 
+
     }
     private void OnTriggerEnter(Collider other)
     {

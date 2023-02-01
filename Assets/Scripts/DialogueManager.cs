@@ -22,7 +22,7 @@ public class DialogueManager : MonoBehaviour
         ActorImage.sprite = sprite;
         _endDialogCallback = endDialogCallback;
         _activeMessage = 0;
-        //Qui bisogna fare in modo che il player guardi Lamp
+        backgroundBox.LeanScale(Vector3.one, 0.5f);
         DisplayMessage();
     }
 
@@ -41,8 +41,15 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Conversazione terminata");
+            backgroundBox.LeanScale(Vector3.zero, 0.5f);
             _endDialogCallback();
         }
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        backgroundBox.transform.localScale = Vector3.zero;
     }
 
     // Update is called once per frame
