@@ -346,22 +346,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706df91d3473ed74f84df380e9185ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  keyPressed: 101
-  interactCanvas: {fileID: 0}
-  dialogueCanvas: {fileID: 0}
+  Player: {fileID: 0}
+  KeyPressed: 101
+  InteractCanvas: {fileID: 0}
+  DialogueCanvas: {fileID: 0}
   DialogueManager: {fileID: 0}
-  actorSprite: {fileID: 0}
-  actorName: Lamp
-  houseManager: {fileID: 0}
-  quest1Messages:
+  ActorSprite: {fileID: 0}
+  ActorName: Lamp
+  HouseManager: {fileID: 0}
+  Quest1Messages:
   - Benvenuto
   - ti aspettavo
   - Ciao
-  quest2Messages:
+  Quest2Messages:
   - Very
   - Very good!
-  quest3Messages:
+  Quest3Messages:
   - Addirittura....
   - Fortissimi
 --- !u!1 &5544208384248771020

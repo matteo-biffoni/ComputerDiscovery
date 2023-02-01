@@ -2,39 +2,24 @@
   "Name": "Desktop",
   "Children": [
     {
-      "Name": "Documenti",
-      "Children": [
-        {
-          "Name": "Video",
-          "Children": [],
-          "Files": []
-        }
-      ],
-      "Files": [
-        {
-          "Name": "Assicurazione auto.docx",
-          "Format": "doc",
-          "Integrity": true,
-          "Size": 74.0
-        }
-      ]
-    },
-    {
-      "Name": "Audio",
+      "Name": "Video",
       "Children": [],
       "Files": []
     },
     {
       "Name": "Immagini",
       "Children": [],
-      "Files": [
-        {
-          "Name": "Viaggio.jpg",
-          "Format": "jpeg",
-          "Integrity": true,
-          "Size": 64.0
-        }
-      ]
+      "Files": []
+    },
+    {
+      "Name": "Documenti",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Audio",
+      "Children": [],
+      "Files": []
     }
   ],
   "Files": []

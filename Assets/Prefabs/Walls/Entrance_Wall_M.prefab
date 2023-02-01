@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4157413190427630851}
   - component: {fileID: 4848452561217393514}
   - component: {fileID: 2514862134226495975}
+  - component: {fileID: 2027380993142242757}
   m_Layer: 0
   m_Name: Entrance_Wall_M
   m_TagString: Untagged
@@ -96,8 +97,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.28651953, y: 1.5121895, z: 3.017694}
-  m_Center: {x: -0.14325523, y: 0.7560943, z: 1.741153}
+  m_Size: {x: 0.06021118, y: 1.5121895, z: 2.8903956}
+  m_Center: {x: -0.03010106, y: 0.7560943, z: 1.8048022}
 --- !u!65 &2514862134226495975
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -109,5 +110,18 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.28759217, y: 1.5121895, z: 2.9368978}
-  m_Center: {x: -0.14379156, y: 0.7560943, z: -1.7815511}
+  m_Size: {x: 0.054211617, y: 1.5121895, z: 2.894465}
+  m_Center: {x: -0.027101278, y: 0.7560943, z: -1.8027675}
+--- !u!65 &2027380993142242757
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2500312759902272726}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06213498, y: 1.1783277, z: 1.448595}
+  m_Center: {x: -0.07106817, y: 0.58916336, z: 0.37740922}

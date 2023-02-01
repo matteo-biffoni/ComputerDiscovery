@@ -533,6 +533,37 @@ Transform:
   m_Father: {fileID: 4166704597826687012}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2211812146634576944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5096112214977228649}
+  m_Layer: 0
+  m_Name: AD5L_LookAt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5096112214977228649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211812146634576944}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4600366808039879024}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2289992490594299191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,9 +1080,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4600366808039879024}
   - component: {fileID: 4198810901843871384}
+  - component: {fileID: 1256093958372861834}
+  - component: {fileID: 8921519366489784586}
+  - component: {fileID: 184042825936524833}
   m_Layer: 0
   m_Name: AD5L
-  m_TagString: Untagged
+  m_TagString: AD5L
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1070,12 +1104,13 @@ Transform:
   m_Children:
   - {fileID: 4185802617376250558}
   - {fileID: 5167206736055314108}
+  - {fileID: 5096112214977228649}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4198810901843871384
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1092,7 +1127,71 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1256093958372861834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3790933094467808202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db17d24819444b5428b75c269d4f803d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractWithAD5LKeyCode: 101
+  Player: {fileID: 0}
+  NetworkBox: {fileID: 0}
+  InteractCanvas: {fileID: 0}
+  DialogueCanvas: {fileID: 0}
+  DialogueManager: {fileID: 0}
+  ActorName: AD5L
+  ActorSprite: {fileID: 0}
+  InfoDialog:
+  - Ciao
+  - Sono
+  - AD5L
+  OkInsertionInBox:
+  - Perfetto
+  - Porto questo file in rete
+  - Aspettami qui
+  ErrInsertionInBox:
+  - "Mi dispiace ma non posso inviarlo cos\xEC"
+  - Prova a fare una visita al macchinario zip
+  - Ci rivediamo qui!
+--- !u!114 &8921519366489784586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3790933094467808202}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!136 &184042825936524833
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3790933094467808202}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.632793
+  m_Height: 6.4090853
+  m_Direction: 1
+  m_Center: {x: 0, y: 3.2142997, z: 0.028319836}
 --- !u!1 &3902764678116250671
 GameObject:
   m_ObjectHideFlags: 0
