@@ -95,7 +95,7 @@ public class Grabber : MonoBehaviour
         switch (_file)
         {
             case Folder:
-                transform.parent.parent.parent.parent.GetComponent<MeshRenderer>().enabled = false;
+                transform.parent.parent.parent.parent.localScale *= 0f;
                 break;
             case RoomFile:
                 transform.GetComponent<MeshRenderer>().enabled = false;
@@ -159,6 +159,16 @@ public class Grabber : MonoBehaviour
     public Grabber Copy(Transform cameraT, Transform objHolder)
     {
         _instantiatedFileTextLabel.transform.SetParent(cameraT);
+        var text = _instantiatedFileTextLabel.transform.GetComponent<TMP_Text>().text;
+        if (text.Contains("."))
+        {
+            text = text.Split(".")[0] + "_copia." + text.Split(".")[1];
+        }
+        else
+        {
+            text += "_copia";
+        }
+        _instantiatedFileTextLabel.transform.GetComponent<TMP_Text>().text = text;
         _instantiatedFileTextLabel.transform.localPosition = new Vector3(0, -3, 6);
         _instantiatedFileTextLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
         _instantiatedFileTextLabel.transform.localScale *= 0.3f;
@@ -231,7 +241,7 @@ public class Grabber : MonoBehaviour
         switch (_file)
         {
             case Folder:
-                formatText.gameObject.SetActive(false);
+                formatText.transform.parent.gameObject.SetActive(false);
                 renameMenu.transform.Find("DotText").gameObject.SetActive(false);
                 fileNameText.transform.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
                 break;
@@ -287,6 +297,25 @@ public class Grabber : MonoBehaviour
                 t.localPosition = new Vector3(0f, 0f, 0f);
                 t.localRotation = Quaternion.Euler(0f, 0f, 0f);
                 t.localScale *= 0.75f;
+                break;
+        }
+    }
+
+    public void DropInBox(Transform player, Transform boxObjHolder)
+    {
+        _player = player;
+        _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
+        switch (_file)
+        {
+            case Folder:
+                transform.parent.parent.parent.parent.SetParent(boxObjHolder);
+                transform.parent.parent.parent.parent.localPosition = new Vector3(0f, 1.5f, 0f);
+                transform.parent.parent.parent.parent.localRotation = Quaternion.Euler(0f, 0f, -90f);
+                break;
+            case RoomFile:
+                transform.SetParent(boxObjHolder);
+                transform.localPosition = new Vector3(0f, 1.5f, 0f);
+                transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
                 break;
         }
     }

@@ -2,6 +2,11 @@
   "Name": "Desktop",
   "Children": [
     {
+      "Name": "Video",
+      "Children": [],
+      "Files": []
+    },
+    {
       "Name": "Immagini",
       "Children": [],
       "Files": []
@@ -13,11 +18,6 @@
     },
     {
       "Name": "Audio",
-      "Children": [],
-      "Files": []
-    },
-    {
-      "Name": "Video",
       "Children": [],
       "Files": []
     }

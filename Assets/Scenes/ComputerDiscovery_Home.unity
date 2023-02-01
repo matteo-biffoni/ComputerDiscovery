@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8313cb5b25a42284cb6d7022b886c34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1429239195 stripped
+--- !u!114 &1663533261 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2586040516652387876, guid: 12f0a380cd09f9747ab34dc27a7d209a, type: 3}
   m_PrefabInstance: {fileID: 610033944}
@@ -534,18 +534,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 887215200809799121, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
-      propertyPath: Player
-      value: 
-      objectReference: {fileID: 1862197109}
-    - target: {fileID: 887215200809799121, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
-      propertyPath: InteractCanvas
-      value: 
-      objectReference: {fileID: 288984559}
-    - target: {fileID: 887215200809799121, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
-      propertyPath: InteractCanvasText
-      value: 
-      objectReference: {fileID: 1429239195}
     - target: {fileID: 2381352905324845324, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
       propertyPath: Player
       value: 
@@ -598,6 +586,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6048757766298773536, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1862197109}
+    - target: {fileID: 6048757766298773536, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InteractCanvas
+      value: 
+      objectReference: {fileID: 288984559}
+    - target: {fileID: 6048757766298773536, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InteractCanvasText
+      value: 
+      objectReference: {fileID: 1663533261}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1862197109}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: ActorName
+      value: AD5L
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: DialogueCanvas
+      value: 
+      objectReference: {fileID: 865926671}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InteractCanvas
+      value: 
+      objectReference: {fileID: 288984559}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: DialogueManager
+      value: 
+      objectReference: {fileID: 420883270}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InfoDialog.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InteractWithAD5LKeyCode
+      value: 101
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InfoDialog.Array.data[0]
+      value: Ciao
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InfoDialog.Array.data[1]
+      value: Sono
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615471272926744551, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
+      propertyPath: InfoDialog.Array.data[2]
+      value: AD5L
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b68b635f1b563ee4c94d404d234b4d4b, type: 3}
 --- !u!1001 &5490408625511555647
@@ -617,7 +657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4075039715243747061, guid: 99659a47430f9744687bccf090c470b9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.25
+      value: -3.5
       objectReference: {fileID: 0}
     - target: {fileID: 4075039715243747061, guid: 99659a47430f9744687bccf090c470b9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -625,7 +665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4075039715243747061, guid: 99659a47430f9744687bccf090c470b9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4075039715243747061, guid: 99659a47430f9744687bccf090c470b9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -655,5 +695,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3264840413164659253, guid: 99659a47430f9744687bccf090c470b9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 99659a47430f9744687bccf090c470b9, type: 3}

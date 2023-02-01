@@ -6,6 +6,9 @@ TagManager:
   tags:
   - RoomWalls
   - UI
+  - AD5L
+  - Undefined
+  - Box
   layers:
   - Default
   - TransparentFX

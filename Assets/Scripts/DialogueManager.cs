@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,17 +10,17 @@ public class DialogueManager : MonoBehaviour
     [FormerlySerializedAs("actorNameText")] public TMP_Text ActorNameText;
     [FormerlySerializedAs("message")] public TMP_Text Message;
     //public RectTransform backgroundBox;
-    private DialogueTrigger _currentDialogueTrigger;
+    private Action _endDialogCallback;
     private string[] _currentMessages;
     private int _activeMessage;
     
 
-    public void OpenDialogue(DialogueTrigger dialogueTrigger, string[] messages, string actorName, Sprite sprite)
+    public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
     {
         _currentMessages = messages;
         ActorNameText.text = actorName;
         ActorImage.sprite = sprite;
-        _currentDialogueTrigger = dialogueTrigger;
+        _endDialogCallback = endDialogCallback;
         _activeMessage = 0;
         //Qui bisogna fare in modo che il player guardi Lamp
         DisplayMessage();
@@ -40,8 +41,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Conversazione terminata");
-            _currentDialogueTrigger.EndDialogue();
+            _endDialogCallback();
         }
     }
 

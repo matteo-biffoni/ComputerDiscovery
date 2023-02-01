@@ -26,27 +26,21 @@ public class DialogueTrigger : MonoBehaviour
     
     public void StartDialogue(int questNumber)
     {
-        string[] messages = null;
         Cursor.lockState = CursorLockMode.None;
         Player.IgnoreInput();
-        switch (questNumber)
+        var messages = questNumber switch
         {
-            case 1:
-                messages = Quest1Messages;
-                break;
-            case 2:
-                messages = Quest2Messages;
-                break;
-            case 3:
-                messages = Quest3Messages;
-                break;
-        }
+            1 => Quest1Messages,
+            2 => Quest2Messages,
+            3 => Quest3Messages,
+            _ => null
+        };
         InteractCanvas.SetActive(false);
         DialogueCanvas.SetActive(true);
-        DialogueManager.OpenDialogue(this, messages, ActorName, ActorSprite);
+        DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite);
     }
 
-    public void EndDialogue()
+    private void EndDialogue()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Player.ReactivateInput();
@@ -77,7 +71,10 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Update()
     {
-        transform.LookAt(Player.transform);
+
+        var lookAtPlayer = Player.transform.position;
+        lookAtPlayer.y = transform.position.y;
+        transform.LookAt(lookAtPlayer);
         if (!_checkInteraction) return;
 
         if (Input.GetKeyDown(KeyPressed))

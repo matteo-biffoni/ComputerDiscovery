@@ -369,6 +369,8 @@ public abstract class Grabbable
 
     public abstract string GetName();
 
+    public abstract void SetName(string newName);
+
     public abstract void Delete();
 
     public abstract string GetAbsolutePath();
@@ -379,7 +381,7 @@ public abstract class Grabbable
 
     public abstract void Recover();
 
-    public abstract Grabbable GetACopy();
+    public abstract Grabbable GetACopy(bool firstIfFolder);
 
     public abstract void Rename(string newName);
 }
@@ -405,6 +407,11 @@ public class RoomFile : Grabbable
     public override string GetName()
     {
         return _name;
+    }
+
+    public override void SetName(string newName)
+    {
+        _name = newName;
     }
 
     public string GetFormat()
@@ -483,14 +490,21 @@ public class RoomFile : Grabbable
         }
     }
 
-    public override Grabbable GetACopy()
+    public override Grabbable GetACopy(bool firstIfFolder)
     {
-        return new RoomFile(_name, _format, _integrity, _size, null);
+        var copyName = _name.Split(".")[0] + "_copia." + _name.Split(".")[1];
+        return new RoomFile(copyName, _format, _integrity, _size, null);
     }
 
     public override void Rename(string newName)
     {
-        _name = newName + "." + GetFormatExtensionFromFormat(_format);
+        newName = newName + "." + GetFormatExtensionFromFormat(_format);
+        if (_parent != null)
+        {
+            while (!_parent.IsFileNameAvailable(newName))
+                newName = newName.Split(".")[0] + "_copia." + newName.Split(".")[1];
+        }
+        _name = newName;
         Folder.TriggerReloading(Operation.FileRenamed);
     }
 
@@ -572,23 +586,32 @@ public class Folder : Grabbable
     
     public override void Rename(string newName)
     {
+        while (!_father.IsChildNameAvailable(newName))
+        {
+            newName += "_copia";
+        }
         _name = newName;
         TriggerReloading(Operation.FolderRenamed);
     }
 
-    public override Grabbable GetACopy()
+    public override Grabbable GetACopy(bool firstIfFolder)
     {
-        var f = new Folder(_name, null);
+        var f = new Folder(_name + "_copia", null);
         foreach (var child in _children)
         {
-            f._children.Add(child.GetACopy() as Folder);
+            f._children.Add(child.GetACopy(false) as Folder);
         }
         foreach (var file in _files)
         {
-            f._files.Add(file.GetACopy() as RoomFile);
+            f._files.Add(file.GetACopy(false) as RoomFile);
         }
         f._parentOnDeletionAbsolutePath = null;
         return f;
+    }
+
+    public override void SetName(string newName)
+    {
+        _name = newName;
     }
 
 
@@ -708,11 +731,25 @@ public class Folder : Grabbable
     public void InsertFileOrFolder(Grabbable file, bool isRecovering)
     {
         var comingFrom = file.GetParent();
-        if (comingFrom != this)
+        var alreadyPresentSameFile = false;
+        switch (file)
+        {
+            case Folder folder:
+                if (_children.Contains(folder))
+                    alreadyPresentSameFile = true;
+                break;
+            case RoomFile roomFile:
+                if (_files.Contains(roomFile))
+                    alreadyPresentSameFile = true;
+                break;
+        }
+        if (!alreadyPresentSameFile)
         {
             switch (file)
             {
                 case Folder folder:
+                    if (!IsChildNameAvailable(folder._name))
+                        folder._name += "_copia";
                     _children.Add(folder);
                     if (isRecovering)
                     {
@@ -721,6 +758,9 @@ public class Folder : Grabbable
                     comingFrom?.GetChildren().Remove(folder);
                     break;
                 case RoomFile roomFile:
+                    if (!IsFileNameAvailable(roomFile.GetName()))
+                        roomFile.SetName(
+                            roomFile.GetName().Split(".")[0] + "_copia." + roomFile.GetName().Split(".")[1]);
                     _files.Add(roomFile);
                     if (isRecovering)
                     {
@@ -851,9 +891,14 @@ public class Folder : Grabbable
             folder._children.Select(child => GetFolderFromCollider(child, collider)).FirstOrDefault(folderAnalyzed => folderAnalyzed != null);
     }
 
-    public bool IsChildNameAvailable(string name)
+    private bool IsChildNameAvailable(string name)
     {
         return _children.All(child => child._name != name.Trim());
+    }
+
+    public bool IsFileNameAvailable(string name)
+    {
+        return _files.All(file => file.GetName() != name.Trim());
     }
 
     public List<Folder> GetChildren()

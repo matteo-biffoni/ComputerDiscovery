@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4519353605943668433}
   - component: {fileID: 2680357927876997236}
   - component: {fileID: 1206893888430210940}
+  - component: {fileID: 3654237169683221751}
   m_Layer: 0
   m_Name: Entrance_Wall_R2
   m_TagString: Untagged
@@ -111,3 +112,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.06457758, y: 1.501719, z: 1.1088061}
   m_Center: {x: -0.03228569, y: 0.750859, z: 2.695597}
+--- !u!65 &3654237169683221751
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2717645679601684228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.07477689, y: 1.1660539, z: 1.3272953}
+  m_Center: {x: -0.105731845, y: 0.58302647, z: 2.1137629}
