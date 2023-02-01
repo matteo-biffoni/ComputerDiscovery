@@ -25,6 +25,7 @@ public class NotificationManager : MonoBehaviour
     public static void Notify(Operation operation)
     {
         Instance.backgroundBox.gameObject.SetActive(true);
+        
         switch (operation)
         {
             //Eliminazione file
