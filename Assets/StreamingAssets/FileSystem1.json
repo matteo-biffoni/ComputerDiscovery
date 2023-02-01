@@ -1,0 +1,315 @@
+{
+  "Name": "Desktop",
+  "Children": [
+    {
+      "Name": "Cartella1",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [],
+              "Files": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": [],
+              "Files": []
+            }
+          ],
+          "Files": []
+        },
+        {
+          "Name": "Cartella2",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [],
+              "Files": []
+            }
+          ],
+          "Files": []
+        },
+        {
+          "Name": "Cartella3",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [],
+              "Files": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": [],
+              "Files": []
+            },
+            {
+              "Name": "Cartella3",
+              "Children": [],
+              "Files": []
+            }
+          ],
+          "Files": []
+        },
+        {
+          "Name": "Cartella 4",
+          "Children": [],
+          "Files": []
+        }
+      ],
+      "Files": []
+    },
+    {
+      "Name": "Cartella2",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [
+                {
+                  "Name": "Cartella1",
+                  "Children": [],
+                  "Files": []
+                },
+                {
+                  "Name": "Cartella2",
+                  "Children": [],
+                  "Files": []
+                }
+              ],
+              "Files": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": [],
+              "Files": []
+            },
+            {
+              "Name": "Cartella3",
+              "Children": [],
+              "Files": []
+            }
+          ],
+          "Files": []
+        }
+      ],
+      "Files": []
+    },
+    {
+      "Name": "Cartella3",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Cartella4",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [],
+              "Files": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": [],
+              "Files": []
+            }
+          ],
+          "Files": []
+        },
+        {
+          "Name": "Cartella2",
+          "Children": [
+            {
+              "Name": "Cartella1",
+              "Children": [
+                {
+                  "Name": "Cartella1",
+                  "Children": [
+                    {
+                      "Name": "Cartella1",
+                      "Children": [],
+                      "Files": []
+                    },
+                    {
+                      "Name": "Cartella2",
+                      "Children": [],
+                      "Files": []
+                    }
+                  ],
+                  "Files": []
+                },
+                {
+                  "Name": "Cartella2",
+                  "Children": [],
+                  "Files": []
+                }
+              ],
+              "Files": []
+            },
+            {
+              "Name": "Cartella2",
+              "Children": [
+                {
+                  "Name": "Cartella1",
+                  "Children": [
+                    {
+                      "Name": "Cartella1",
+                      "Children": [
+                        {
+                          "Name": "Cartella1",
+                          "Children": [],
+                          "Files": []
+                        },
+                        {
+                          "Name": "Cartella2",
+                          "Children": [],
+                          "Files": []
+                        },
+                        {
+                          "Name": "Cartella3",
+                          "Children": [],
+                          "Files": []
+                        }
+                      ],
+                      "Files": []
+                    },
+                    {
+                      "Name": "Cartella2",
+                      "Children": [],
+                      "Files": []
+                    },
+                    {
+                      "Name": "Cartella3",
+                      "Children": [],
+                      "Files": []
+                    }
+                  ],
+                  "Files": []
+                },
+                {
+                  "Name": "Cartella2",
+                  "Children": [],
+                  "Files": []
+                }
+              ],
+              "Files": []
+            }
+          ],
+          "Files": []
+        },
+        {
+          "Name": "Cartella3",
+          "Children": [],
+          "Files": []
+        }
+      ],
+      "Files": []
+    },
+    {
+      "Name": "Cartella5",
+      "Children": [
+        {
+          "Name": "Cartella1",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella2",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella3",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella4",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella5",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella6",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella7",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella8",
+          "Children": [],
+          "Files": []
+        },
+        {
+          "Name": "Cartella9",
+          "Children": [],
+          "Files": []
+        }
+      ],
+      "Files": []
+    },
+    {
+      "Name": "Cartella6",
+      "Children": [],
+      "Files": []
+    }
+  ],
+  "Files": [
+    {
+      "Name": "File1.doc",
+      "Format": "doc",
+      "Integrity": true,
+      "Size": 2
+    },
+    {
+      "Name": "File2.doc",
+      "Format": "doc",
+      "Integrity": false,
+      "Size": 10.8
+    },
+    {
+      "Name": "File3.doc",
+      "Format": "doc",
+      "Integrity": false,
+      "Size": 1102
+    },
+    {
+      "Name": "File4.txt",
+      "Format": "txt",
+      "Integrity": false,
+      "Size": 7
+    },
+    {
+      "Name": "File5.txt",
+      "Format": "txt",
+      "Integrity": false,
+      "Size": 17
+    },
+    {
+      "Name": "File6.txt",
+      "Format": "txt",
+      "Integrity": false,
+      "Size": 166
+    },
+    {
+      "Name": "File7.jpg",
+      "Format": "jpeg",
+      "Integrity": false,
+      "Size": 123
+    }
+  ]
+}
