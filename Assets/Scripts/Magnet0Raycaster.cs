@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Magnet0Raycaster : MonoBehaviour
@@ -13,12 +15,59 @@ public class Magnet0Raycaster : MonoBehaviour
 
     public GameObject Explosion;
 
-    private bool _showingObjMenu;
+    private bool _showingObjMenu, _showingRenameMenu;
+    private GameObject _objMenu, _renameMenu;
+    private NetworkManager _previousNetworkManager;
+    private NetworkBox _previousNetworkBox;
+    private Transform _boxObjHolderT;
+
 
     // Update is called once per frame
     private void Update()
     {
-        if (_showingObjMenu) return;
+        if (_showingObjMenu)
+        {
+            if (_showingRenameMenu)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Destroy(_renameMenu);
+                    _showingRenameMenu = false;
+                }
+                else if (Input.GetMouseButtonDown(0))
+                {
+                    if (EventSystem.current.currentSelectedGameObject == null)
+                    {
+                        Destroy(_objMenu);
+                        _showingObjMenu = false;
+                        _showingRenameMenu = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Destroy(_objMenu);
+                    _showingObjMenu = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                }
+                else if (Input.GetMouseButtonDown(0))
+                {
+                    if (EventSystem.current.currentSelectedGameObject == null)
+                    {
+                        Destroy(_objMenu);
+                        _showingObjMenu = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                    }
+                }
+            }
+            return;
+        }
         var t = transform;
         var ray = new Ray(t.position, t.forward);
 
@@ -31,84 +80,202 @@ public class Magnet0Raycaster : MonoBehaviour
             {
                 DropFile();
             }
-            return;
         }
         if (Physics.Raycast(ray, out var hit, RaycastDistance))
         {
-            var fileGrabber = hit.transform.GetComponent<Grabber>();
-            if (_previousPointedFile != null && _previousPointedFile != fileGrabber)
+            if (!_grabbedFile)
             {
-                _previousPointedFile.Outlined.OutlineWidth = 0f;
-                _previousPointedFile.TriggerLabel(false, null);
-            }
-            if (fileGrabber)
-            {
-                _previousPointedFile = fileGrabber;
-                if (fileGrabber.Outlined)
-                    fileGrabber.Outlined.OutlineWidth = 7f;
-                fileGrabber.TriggerLabel(true, Player.transform.GetComponentInChildren<Camera>().transform);
-                if (Input.GetMouseButtonDown(0))
+                var fileGrabber = hit.transform.GetComponent<Grabber>();
+                if (_previousPointedFile != null && _previousPointedFile != fileGrabber)
                 {
-                    if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
-                    fileGrabber.Outlined.OutlineWidth = 0f;
-                    _grabbedFile = fileGrabber;
-                    _grabbedFile.GrabReferred(Player.transform.GetComponentInChildren<Camera>().transform, transform.Find("ObjHolder"));
+                    _previousPointedFile.Outlined.OutlineWidth = 0f;
+                    _previousPointedFile.TriggerLabel(false, null);
                 }
-                else if (Input.GetMouseButtonDown(1))
+
+                if (fileGrabber)
                 {
-                    _showingObjMenu = true;
-                    if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
+                    _previousPointedFile = fileGrabber;
+                    if (fileGrabber.Outlined)
+                        fileGrabber.Outlined.OutlineWidth = 7f;
+                    fileGrabber.TriggerLabel(true, Player.transform.GetComponentInChildren<Camera>().transform);
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        var menu = fileGrabber.ShowTrashItemMenu(Player.transform);
-                        var recover = menu.transform.Find("RecoverButton").GetComponent<Button>();
-                        recover.onClick.AddListener(delegate
-                        {
-                            Recover(fileGrabber);
-                            Destroy(menu);
-                            _showingObjMenu = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                        });
-                        var permDelete = menu.transform.Find("PermDeleteButton").GetComponent<Button>();
-                        permDelete.onClick.AddListener(delegate
-                        {
-                            PermDelete(fileGrabber);
-                            Destroy(menu);
-                            _showingObjMenu = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                        });
+                        if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
+                        fileGrabber.Outlined.OutlineWidth = 0f;
+                        _grabbedFile = fileGrabber;
+                        _grabbedFile.GrabReferred(Player.transform.GetComponentInChildren<Camera>().transform,
+                            transform.Find("ObjHolder"));
                     }
-                    else
+                    else if (Input.GetMouseButtonDown(1))
                     {
-                        var menu = fileGrabber.ShowObjectMenu(Player.transform);
-                        var copyButton = menu.transform.Find("CopyButton").GetComponent<Button>();
-                        copyButton.onClick.AddListener(delegate
+                        _showingObjMenu = true;
+                        if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
                         {
-                            Copy(fileGrabber);
-                            Destroy(menu);
-                            _showingObjMenu = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                        });
-                        var deleteButton = menu.transform.Find("DeleteButton").GetComponent<Button>();
-                        deleteButton.onClick.AddListener(delegate
+                            _objMenu = fileGrabber.ShowTrashItemMenu(Player.transform);
+                            var recover = _objMenu.transform.Find("RecoverButton").GetComponent<Button>();
+                            recover.onClick.AddListener(delegate
+                            {
+                                Recover(fileGrabber);
+                                Destroy(_objMenu);
+                                _showingObjMenu = false;
+                                Cursor.lockState = CursorLockMode.Locked;
+                                Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                            });
+                            var permDelete = _objMenu.transform.Find("PermDeleteButton").GetComponent<Button>();
+                            permDelete.onClick.AddListener(delegate
+                            {
+                                PermDelete(fileGrabber);
+                                Destroy(_objMenu);
+                                _showingObjMenu = false;
+                                Cursor.lockState = CursorLockMode.Locked;
+                                Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                            });
+                        }
+                        else
                         {
-                            Delete(fileGrabber);
-                            Destroy(menu);
-                            _showingObjMenu = false;
-                            Cursor.lockState = CursorLockMode.Locked;
-                            Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                        });
+                            _objMenu = fileGrabber.ShowObjectMenu(Player.transform);
+                            var copyButton = _objMenu.transform.Find("CopyButton").GetComponent<Button>();
+                            copyButton.onClick.AddListener(delegate
+                            {
+                                Copy(fileGrabber);
+                                Destroy(_objMenu);
+                                _showingObjMenu = false;
+                                Cursor.lockState = CursorLockMode.Locked;
+                                Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                            });
+                            var renameButton = _objMenu.transform.Find("RenameButton").GetComponent<Button>();
+                            renameButton.onClick.AddListener(delegate
+                            {
+                                _showingRenameMenu = true;
+                                _renameMenu = fileGrabber.ShowRenameMenu(renameButton.transform.parent);
+                                var cancelButton = _renameMenu.transform.Find("CancelButton").GetComponent<Button>();
+                                cancelButton.onClick.AddListener(delegate
+                                {
+                                    Destroy(_renameMenu);
+                                    _showingRenameMenu = false;
+                                });
+                                var confirmButton = _renameMenu.transform.Find("ConfirmButton").GetComponent<Button>();
+                                confirmButton.onClick.AddListener(delegate
+                                {
+                                    var error = false;
+                                    var fileNameInputField = _renameMenu.transform.Find("RenameFileNameInputField")
+                                        .GetComponent<TMP_InputField>();
+                                    var fileNameError = _renameMenu.transform.Find("FileNameError").gameObject;
+                                    if (fileNameInputField.text.Trim().Equals("") ||
+                                        fileNameInputField.text.Trim().Contains("."))
+                                    {
+                                        fileNameError.SetActive(true);
+                                        error = true;
+                                    }
+                                    else
+                                    {
+                                        fileNameError.SetActive(false);
+                                    }
+
+                                    if (!error)
+                                    {
+                                        var newName = fileNameInputField.text.Trim();
+                                        fileGrabber.Rename(newName);
+                                        Destroy(_objMenu);
+                                        _showingObjMenu = false;
+                                        _showingRenameMenu = false;
+                                        Cursor.lockState = CursorLockMode.Locked;
+                                        Player.transform.GetComponent<FirstPersonCharacterController>()
+                                            .ReactivateInput();
+                                    }
+                                });
+                            });
+                            var deleteButton = _objMenu.transform.Find("DeleteButton").GetComponent<Button>();
+                            deleteButton.onClick.AddListener(delegate
+                            {
+                                Delete(fileGrabber);
+                                Destroy(_objMenu);
+                                _showingObjMenu = false;
+                                Cursor.lockState = CursorLockMode.Locked;
+                                Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (hit.transform.CompareTag("Box"))
+                {
+                    if (_grabbedFile != null)
+                    {
+                        var networkBox = hit.transform.GetComponent<NetworkBox>();
+                        if (_previousNetworkBox != null && _previousNetworkBox != networkBox)
+                        {
+                            if (_previousNetworkBox.GetActualRaycast())
+                            {
+                                _previousNetworkBox.SetActualRaycast(false);
+                                _previousNetworkBox = null;
+                                _boxObjHolderT = null;
+                                return;
+                            }
+                        }
+                        if (networkBox)
+                        {
+                            _previousNetworkBox = networkBox;
+                            _boxObjHolderT = _previousNetworkBox.transform.Find("BoxObjHolder");
+                            if (!_previousNetworkBox.GetActualRaycast())
+                            {
+                                _previousNetworkBox.SetActualRaycast(true);
+                            }
+                        }
+                    }
+                }
+            }
+            if (hit.transform.CompareTag("AD5L"))
+            {
+                var networkManager = hit.transform.GetComponent<NetworkManager>();
+                if (_previousNetworkManager != null && _previousNetworkManager != networkManager)
+                {
+                    if (_previousNetworkManager.GetActualRaycast())
+                    {
+                        _previousNetworkManager.SetActualRaycast(false);
+                        _previousNetworkManager = null;
+                        return;
+                    }
+                }
+                if (networkManager)
+                {
+                    _previousNetworkManager = networkManager;
+                    if (!_previousNetworkManager.GetActualRaycast())
+                    {
+                        _previousNetworkManager.SetActualRaycast(true);
                     }
                 }
             }
         }
-        else if (_previousPointedFile != null)
+        else
         {
-            _previousPointedFile.Outlined.OutlineWidth = 0f;
-            _previousPointedFile.TriggerLabel(false, null);
-            _previousPointedFile = null;
+            if (_previousPointedFile != null)
+            {
+                _previousPointedFile.Outlined.OutlineWidth = 0f;
+                _previousPointedFile.TriggerLabel(false, null);
+                _previousPointedFile = null;
+            }
+
+            if (_previousNetworkManager != null)
+            {
+                if (_previousNetworkManager.GetActualRaycast())
+                {
+                    _previousNetworkManager.SetActualRaycast(false);
+                    _previousNetworkManager = null;
+                }
+            }
+
+            if (_previousNetworkBox != null)
+            {
+                if (_previousNetworkBox.GetActualRaycast())
+                {
+                    _previousNetworkBox.SetActualRaycast(false);
+                    _previousNetworkBox = null;
+                    _boxObjHolderT = null;
+                }
+            }
         }
     }
 
@@ -126,7 +293,7 @@ public class Magnet0Raycaster : MonoBehaviour
     {
         fileGrabber.Outlined.OutlineWidth = 0f;
         _grabbedFile = fileGrabber.Copy(Player.transform.GetComponentInChildren<Camera>().transform, transform.Find("ObjHolder"));
-        _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy());
+        _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy(true));
     }
 
     private void Delete(Grabber grabber)
@@ -144,6 +311,19 @@ public class Magnet0Raycaster : MonoBehaviour
         if (Folder.MainRoom == roomIn)
         {
             roomIn = Folder.Root;
+        }
+        else if (Folder.Garage == roomIn)
+        {
+            if (_previousNetworkBox == null)
+            {
+                // TODO: Notificare che non si può lasciare un file per esempio in Garage
+                Debug.Log("Non puoi lasciare qui l'elemento, non sei in una vera e propria cartella!");
+                return;
+            }
+            _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+            _previousNetworkBox.FileInserted(_grabbedFile);
+            _grabbedFile = null;
+            return;
         }
         _grabbedFile.DropReferred(Player.transform, roomIn, Explosion);
         _grabbedFile = null;

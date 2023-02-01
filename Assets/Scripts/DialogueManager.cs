@@ -1,60 +1,52 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public Image actorImage;
-    public TMP_Text actorNameText;
-    public TMP_Text message;
-    public RectTransform backgroundBox;
-    private DialogueTrigger currentDialogueTrigger;
-    private string[] currentMessages;
-    private int activeMessage = 0;
+    [FormerlySerializedAs("actorImage")] public Image ActorImage;
+    [FormerlySerializedAs("actorNameText")] public TMP_Text ActorNameText;
+    [FormerlySerializedAs("message")] public TMP_Text Message;
+    //public RectTransform backgroundBox;
+    private Action _endDialogCallback;
+    private string[] _currentMessages;
+    private int _activeMessage;
     
 
-    public void OpenDialogue(DialogueTrigger dialogueTrigger, string[] messages, string actorName, Sprite sprite)
+    public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
     {
-        currentMessages = messages;
-        actorNameText.text = actorName;
-        actorImage.sprite = sprite;
-        currentDialogueTrigger = dialogueTrigger;
-        activeMessage = 0;
+        _currentMessages = messages;
+        ActorNameText.text = actorName;
+        ActorImage.sprite = sprite;
+        _endDialogCallback = endDialogCallback;
+        _activeMessage = 0;
         //Qui bisogna fare in modo che il player guardi Lamp
         DisplayMessage();
     }
 
-    void DisplayMessage()
+    private void DisplayMessage()
     {
-        string messageToDisplay = currentMessages[activeMessage];
-        message.text = messageToDisplay;
+        var messageToDisplay = _currentMessages[_activeMessage];
+        Message.text = messageToDisplay;
     }
 
-    public void NextMessage()
+    private void NextMessage()
     {
-        activeMessage++;
-        if (activeMessage < currentMessages.Length)
+        _activeMessage++;
+        if (_activeMessage < _currentMessages.Length)
         {
             DisplayMessage();
         }
         else
         {
-            Debug.Log("Conversazione terminata");
-            currentDialogueTrigger.EndDialogue();
+            _endDialogCallback();
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
