@@ -142,7 +142,6 @@ public class Grabber : MonoBehaviour
     private IEnumerator CloseDoorWhenCopying(Animator animator)
     {
         yield return new WaitForFixedUpdate();
-        
         // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
         animator.SetBool("openDoor", false);
         // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams

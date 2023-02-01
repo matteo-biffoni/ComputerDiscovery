@@ -3,8 +3,21 @@
   "Children": [
     {
       "Name": "Documenti",
-      "Children": [],
-      "Files": []
+      "Children": [
+        {
+          "Name": "Video",
+          "Children": [],
+          "Files": []
+        }
+      ],
+      "Files": [
+        {
+          "Name": "Assicurazione auto.docx",
+          "Format": "doc",
+          "Integrity": true,
+          "Size": 74.0
+        }
+      ]
     },
     {
       "Name": "Audio",
@@ -14,38 +27,15 @@
     {
       "Name": "Immagini",
       "Children": [],
-      "Files": []
-    },
-    {
-      "Name": "Video",
-      "Children": [],
-      "Files": []
+      "Files": [
+        {
+          "Name": "Viaggio.jpg",
+          "Format": "jpeg",
+          "Integrity": true,
+          "Size": 64.0
+        }
+      ]
     }
   ],
-  "Files": [
-    {
-      "Name": "Cane.jpg",
-      "Format": "jpeg",
-      "Integrity": true,
-      "Size": 11.0
-    },
-    {
-      "Name": "Assicurazione auto.docx",
-      "Format": "doc",
-      "Integrity": true,
-      "Size": 74.0
-    },
-    {
-      "Name": "Ricetta.docx",
-      "Format": "doc",
-      "Integrity": true,
-      "Size": 85.0
-    },
-    {
-      "Name": "Biglietto del treno.docx",
-      "Format": "doc",
-      "Integrity": true,
-      "Size": 60.0
-    }
-  ]
+  "Files": []
 }
