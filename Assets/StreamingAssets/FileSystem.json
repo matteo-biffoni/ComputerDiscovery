@@ -4,22 +4,74 @@
     {
       "Name": "Video",
       "Children": [],
-      "Files": []
+      "Files": [
+        {
+          "Name": "Beethoven.mov",
+          "Format": "mov",
+          "Integrity": true,
+          "Size": 15.0
+        }
+      ]
     },
     {
       "Name": "Immagini",
       "Children": [],
-      "Files": []
+      "Files": [
+        {
+          "Name": "Cane.jpg",
+          "Format": "jpeg",
+          "Integrity": true,
+          "Size": 11.0
+        },
+        {
+          "Name": "Prato.png",
+          "Format": "png",
+          "Integrity": true,
+          "Size": 11.0
+        }
+      ]
     },
     {
       "Name": "Documenti",
       "Children": [],
-      "Files": []
+      "Files": [
+        {
+          "Name": "Tessera sanitaria.pdf",
+          "Format": "pdf",
+          "Integrity": true,
+          "Size": 121.0
+        },
+        {
+          "Name": "Passaporto.docx",
+          "Format": "doc",
+          "Integrity": true,
+          "Size": 18.0
+        },
+        {
+          "Name": "Ricetta.docx",
+          "Format": "doc",
+          "Integrity": true,
+          "Size": 9.0
+        },
+        {
+          "Name": "Assicurazione auto.txt",
+          "Format": "txt",
+          "Integrity": true,
+          "Size": 75.0
+        }
+      ]
     },
     {
       "Name": "Audio",
       "Children": [],
-      "Files": []
+      "Files": [
+        {
+          "Name": "Provino.mp3",
+          "Format": "mp3",
+          "Integrity": true,
+          "Size": 14.0
+        }
+      ]
     }
   ],
   "Files": []

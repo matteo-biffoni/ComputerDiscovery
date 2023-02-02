@@ -35,7 +35,7 @@ public class HouseManager : MonoBehaviour
 
     private Folder _quest1;
 
-    public int ActualQuest = 1;
+    public static int ActualQuest = 1;
 
     private static readonly List<string> ImageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
     private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
@@ -509,6 +509,7 @@ public class RoomFile : Grabbable
         }
         _name = newName;
         Folder.TriggerReloading(Operation.FileRenamed);
+        NotificationManager.Notify(Operation.FileRenamed);
     }
 
     private static string GetFormatExtensionFromFormat(string format)
@@ -559,10 +560,15 @@ public enum Operation
     FolderDeleted,
     FolderPermDeleted,
     FolderCreated,
-    FolderRenamed
+    FolderRenamed,
+    TrashBinEmpty,
+    FileMoved,
+    FileCopied,
+    FolderCopied,
+    ReleaseNotAllowed,
+    FileRestored,
+    FolderRestored
 }
-
-
 
 
 public class Folder : Grabbable
@@ -598,6 +604,8 @@ public class Folder : Grabbable
         }
         _name = newName;
         TriggerReloading(Operation.FolderRenamed);
+        NotificationManager.Notify(Operation.FolderRenamed);
+        
     }
 
     public override Grabbable GetACopy(bool firstIfFolder)
@@ -660,14 +668,21 @@ public class Folder : Grabbable
                 TrashBin._files.Add(file);
                 file.SetParent(TrashBin);
                 TriggerReloading(Operation.FileDeleted);
+                if (TrashBinController.EmptyOperation == false)
+                {
+                    NotificationManager.Notify(Operation.FileDeleted);
+                }
             }
             else
             {
                 file.SetParent(null);
                 TriggerReloading(Operation.FilePermDeleted);
+                if (TrashBinController.EmptyOperation == false)
+                {
+                    NotificationManager.Notify(Operation.FilePermDeleted);
+                }
             }
         }
-        NotificationManager.Notify(Operation.FileDeleted);
     }
 
     public override void SetParentOnDeletionAbsolutePath(string folder)
@@ -690,14 +705,21 @@ public class Folder : Grabbable
                 TrashBin._children.Add(folder);
                 folder.SetParent(TrashBin);
                 TriggerReloading(Operation.FolderDeleted);
+                if (TrashBinController.EmptyOperation == false)
+                {
+                    NotificationManager.Notify(Operation.FolderDeleted);
+                }
             }
             else
             {
                 folder.SetParent(null);
                 TriggerReloading(Operation.FolderPermDeleted);
+                if (TrashBinController.EmptyOperation == false)
+                {
+                    NotificationManager.Notify(Operation.FolderPermDeleted);  
+                }
             }
         }
-        NotificationManager.Notify(Operation.FolderDeleted);
     }
 
     public override void Delete()
