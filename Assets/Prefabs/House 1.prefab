@@ -6010,7 +6010,6 @@ MonoBehaviour:
   Player: {fileID: 0}
   MainRoomGo: {fileID: 7207769513803892583}
   TrashBinController: {fileID: 1655889605496224719}
-  ActualQuest: 1
   MediumSizeMin: 10
   LargeSizeMin: 50
   Mp3S:
