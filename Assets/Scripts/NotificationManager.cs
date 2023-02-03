@@ -113,7 +113,7 @@ public class NotificationManager : MonoBehaviour
         Instance.StartCoroutine(CloseNotification(2f));
     }
 
-    public static void QuestNotify(String message)
+    public static void QuestNotify(string message)
     {
         Instance.backgroundBox.gameObject.SetActive(true);
         Instance.message.text = message;
