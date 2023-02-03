@@ -22,28 +22,29 @@ public class NotificationManager : MonoBehaviour
         Instance = this;
     }
 
+    //Notifiche operazioni su file e cartelle
     public static void Notify(Operation operation)
     {
         Instance.backgroundBox.gameObject.SetActive(true);
         
         switch (operation)
         {
-            //Eliminazione file
+            //File spostato nel cestino
             case Operation.FileDeleted:
-                Instance.message.text = "File eliminato correttamente";
+                Instance.message.text = "File spostato nel cestino";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
-            //Eliminazione definitiva file
+            //File eliminato definitivamente
             case Operation.FilePermDeleted:
                 Instance.message.text = "File eliminato definitivamente";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
-            //Eliminazione Cartella
+            //Cartella spostata nel cestino
             case Operation.FolderDeleted:
-                Instance.message.text = "Cartella eliminata correttamente";
+                Instance.message.text = "Cartella spostata nel cestino";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
-            //Eliminazione definitiva Cartella 
+            //Cartella eliminata definitivamente
             case Operation.FolderPermDeleted:
                 Instance.message.text = "Cartella eliminata definitivamente";
                 Instance.NotificationImage.sprite = Instance.successSprite;
@@ -56,13 +57,70 @@ public class NotificationManager : MonoBehaviour
             
             //Cartella mossa correttamente
             case Operation.FolderMoved:
-                Instance.message.text = "Cartella spostata correttamente";
+                Instance.message.text = "Cartella spostata in una nuova posizione";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
             
+            //Cartella mossa correttamente
+            case Operation.FileMoved:
+                Instance.message.text = "File spostato in una nuova posizione";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            
+            //Svuotamento cestino
+            case Operation.TrashBinEmpty:
+                Instance.message.text = "Cestino svuotato correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            
+            //Rinomina file
+            case Operation.FileRenamed:
+                Instance.message.text = "File rinominato correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+
+            //Rinomina Cartella
+            case Operation.FolderRenamed:
+                Instance.message.text = "Cartella rinominata correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            //Cartella copiata
+            case Operation.FolderCopied:
+                Instance.message.text = "Cartella copiata correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            //File copiato
+            case Operation.FileCopied:
+                Instance.message.text = "File copiato correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            //Operazione di release non consentita
+            case Operation.ReleaseNotAllowed:
+                Instance.message.text = "Non puoi lasciare il file o la cartella in questa posizione";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            //File ripristinato
+            case Operation.FileRestored:
+                Instance.message.text = "File ripristinato correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            //Cartella ripristinata
+            case Operation.FolderRestored:
+                Instance.message.text = "Cartella ripristinata correttamente";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
         }
         Instance.StartCoroutine(CloseNotification(2f));
     }
+
+    public static void QuestNotify(string message)
+    {
+        Instance.backgroundBox.gameObject.SetActive(true);
+        Instance.message.text = message;
+        Instance.NotificationImage.sprite = Instance.successSprite;
+        Instance.StartCoroutine(CloseNotification(3f));
+    }
+
 
     private static IEnumerator CloseNotification(float duration)
     {
