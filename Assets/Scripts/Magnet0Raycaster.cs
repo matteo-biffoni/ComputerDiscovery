@@ -89,7 +89,7 @@ public class Magnet0Raycaster : MonoBehaviour
                 if (_previousPointedFile != null && _previousPointedFile != fileGrabber)
                 {
                     _previousPointedFile.Outlined.OutlineWidth = 0f;
-                    _previousPointedFile.TriggerLabel(false);
+                    _previousPointedFile.TriggerLabel(false, null);
                 }
 
                 if (fileGrabber)
@@ -97,13 +97,14 @@ public class Magnet0Raycaster : MonoBehaviour
                     _previousPointedFile = fileGrabber;
                     if (fileGrabber.Outlined)
                         fileGrabber.Outlined.OutlineWidth = 7f;
-                    fileGrabber.TriggerLabel(true);
+                    fileGrabber.TriggerLabel(true, Player.transform.GetComponentInChildren<Camera>().transform);
                     if (Input.GetMouseButtonDown(0))
                     {
                         if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
                         fileGrabber.Outlined.OutlineWidth = 0f;
                         _grabbedFile = fileGrabber;
-                        _grabbedFile.GrabReferred(transform.Find("ObjHolder"));
+                        _grabbedFile.GrabReferred(Player.transform.GetComponentInChildren<Camera>().transform,
+                            transform.Find("ObjHolder"));
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
@@ -253,8 +254,7 @@ public class Magnet0Raycaster : MonoBehaviour
             if (_previousPointedFile != null)
             {
                 _previousPointedFile.Outlined.OutlineWidth = 0f;
-                if (!_grabbedFile)
-                    _previousPointedFile.TriggerLabel(false);
+                _previousPointedFile.TriggerLabel(false, null);
                 _previousPointedFile = null;
             }
 
@@ -292,7 +292,7 @@ public class Magnet0Raycaster : MonoBehaviour
     private void Copy(Grabber fileGrabber)
     {
         fileGrabber.Outlined.OutlineWidth = 0f;
-        _grabbedFile = fileGrabber.Copy(transform.Find("ObjHolder"));
+        _grabbedFile = fileGrabber.Copy(Player.transform.GetComponentInChildren<Camera>().transform, transform.Find("ObjHolder"));
         _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy(true));
     }
 

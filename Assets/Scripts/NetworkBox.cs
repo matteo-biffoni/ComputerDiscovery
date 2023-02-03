@@ -79,6 +79,6 @@ public class NetworkBox : MonoBehaviour
             grabberT.transform.position = Vector3.MoveTowards(grabberT.transform.position, target, Time.deltaTime * 0.75f);
             yield return null;
         }
-        NetworkManager.StartCoroutine(NetworkManager.FileInsertedInBox(_insertedFile));
+        StartCoroutine(NetworkManager.FileInsertedInBox(_insertedFile));
     }
 }
