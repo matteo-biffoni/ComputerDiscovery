@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -23,53 +24,91 @@ public class NetworkManager : MonoBehaviour
 
     public string[] ErrInsertionInBox;
 
+    public string[] CameBackFromNetworkDialog;
+
     private Grabber _currentInserted;
-    
+    private bool _shouldLookAtPlayer = true;
+    private bool _playerShouldLookAtMe;
+    private Transform _lookAtMe;
+
+    private AD5LNavController _ad5LNavController;
+    private Quaternion _previousPlayerRotation;
+    private Quaternion _previousCameraRotation;
+
+    private bool _shouldListenForRaycastChanges = true;
+
     // Start is called before the first frame update
     private void Start()
     {
         _outline = GetComponent<Outline>();
+        _lookAtMe = transform.Find("AD5L_LookAt").transform;
+        _ad5LNavController = GetComponent<AD5LNavController>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (_changeRaycast)
+        if (_shouldListenForRaycastChanges)
         {
-            if (_actualRaycast)
+            if (_changeRaycast)
             {
-                InteractCanvas.SetActive(true);
-                _startDialog = true;
+                _changeRaycast = false;
+                if (_actualRaycast)
+                {
+                    InteractCanvas.SetActive(true);
+                    _startDialog = true;
+                }
+                else
+                {
+                    _startDialog = false;
+                    InteractCanvas.SetActive(false);
+                }
+
+                AD5LOutline(_actualRaycast);
             }
-            else
-            {
-                _startDialog = false;
-                InteractCanvas.SetActive(false);
-            }
-            _changeRaycast = false;
-            AD5LOutline(_actualRaycast);
         }
 
-        var lookAtPlayer = Player.transform.position;
-        lookAtPlayer.y = transform.position.y;
-        transform.LookAt(lookAtPlayer);
+        if (_shouldLookAtPlayer)
+        {
+            var lookAtPlayer = Player.transform.position;
+            lookAtPlayer.y = transform.position.y;
+            transform.LookAt(lookAtPlayer);
+        }
+
+        if (_playerShouldLookAtMe)
+        {
+            var lookAtMeCorr = _lookAtMe.position;
+            lookAtMeCorr.y = Player.transform.position.y;
+            Player.transform.LookAt(lookAtMeCorr);
+        }
+
         if (_startDialog)
         {
             if (Input.GetKeyDown(InteractWithAD5LKeyCode))
             {
                 _startDialog = false;
+                Player.IgnoreInput();
+                AD5LOutline(false);
                 InteractCanvas.SetActive(false);
-                DialogueCanvas.SetActive(true);
-                DialogueManager.OpenDialogue(EndDialogue, InfoDialog, ActorName, ActorSprite);
+                StartCoroutine(SimpleInteract());
             }
         }
     }
 
-    public IEnumerator FileInsertedInBox(Grabber grabber)
+    private IEnumerator SimpleInteract()
     {
-        _currentInserted = grabber;
-        var targetPosition = transform.Find("AD5L_LookAt").transform.position;
-        var direction = (targetPosition - Player.transform.position).normalized;
+        _playerShouldLookAtMe = false;
+        yield return SmoothTurnToAD5L();
+        DialogueCanvas.SetActive(true);
+        DialogueManager.OpenDialogue(EndDialogue, InfoDialog, ActorName, ActorSprite);
+    }
+
+    private IEnumerator SmoothTurnToAD5L()
+    {
+        _previousPlayerRotation = Player.transform.rotation;
+        _previousCameraRotation = Player.transform.GetComponentInChildren<Camera>().transform.localRotation;
+        var ad5LookAt = transform.Find("AD5L_LookAt").transform.position;
+        var direction = (ad5LookAt - Player.transform.position).normalized;
         var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
         var lookRotationCamera = Quaternion.LookRotation(direction);
         direction.y = 0;
@@ -82,13 +121,40 @@ public class NetworkManager : MonoBehaviour
             cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, cameraTo, Time.deltaTime * 8f);
             yield return null;
         }
+    }
+
+    private IEnumerator SmoothReturnToPreviousOrientation()
+    {
+        var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
+        while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.01f)
+        {
+            Player.transform.rotation =
+                Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 12f);
+            cameraT.localRotation =
+                Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 12f);
+            yield return null;
+        }
+        InteractCanvas.SetActive(_actualRaycast);
+        AD5LOutline(_actualRaycast);
+        Cursor.lockState = CursorLockMode.Locked;
+        Player.ReactivateInput();
+        _shouldListenForRaycastChanges = true;
+        yield return null;
+    }
+
+    public IEnumerator FileInsertedInBox(Grabber grabber)
+    {
+        _shouldListenForRaycastChanges = false;
+        _currentInserted = grabber;
+        InteractCanvas.SetActive(false);
+        yield return SmoothTurnToAD5L();
         DialogueCanvas.SetActive(true);
         switch (_currentInserted.GetReferred())
         {
             case Folder:
                 DialogueManager.OpenDialogue(EndDialogueErr, ErrInsertionInBox, ActorName, ActorSprite);
                 break;
-            case RoomFile roomFile:
+            case RoomFile:
                 DialogueManager.OpenDialogue(EndDialogueOk, OkInsertionInBox, ActorName, ActorSprite);
                 break;
         }
@@ -104,6 +170,14 @@ public class NetworkManager : MonoBehaviour
     {
         return _actualRaycast;
     }
+
+    public void CameBackFromNetwork()
+    {
+        Destroy(_currentInserted.gameObject);
+        _currentInserted = null;
+        _shouldLookAtPlayer = true;
+        DialogueManager.OpenDialogue(EndDialogue, CameBackFromNetworkDialog, ActorName, ActorSprite);
+    }
     
 
     private void AD5LOutline(bool show)
@@ -114,25 +188,21 @@ public class NetworkManager : MonoBehaviour
 
     private void EndDialogue()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Player.ReactivateInput();
-        DialogueCanvas.SetActive(false);
-        InteractCanvas.SetActive(_actualRaycast);
+        _playerShouldLookAtMe = false;
+        StartCoroutine(SmoothReturnToPreviousOrientation());
+        NetworkBox.ReOpenBox();
     }
 
     private void EndDialogueOk()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Player.ReactivateInput();
-        DialogueCanvas.SetActive(false);
-        InteractCanvas.SetActive(_actualRaycast);
-        _currentInserted = null;
+        _shouldLookAtPlayer = false;
+        _playerShouldLookAtMe = true;
+        _ad5LNavController.enabled = true;
+        _ad5LNavController.StartCoroutine(_ad5LNavController.SendBoxInNetwork());
     }
 
     private void EndDialogueErr()
     {
-        DialogueCanvas.SetActive(false);
-        InteractCanvas.SetActive(_actualRaycast);
         if (_currentInserted.GetReferred().GetParent() != null)
         {
             _currentInserted.GetReferred().SetParentOnDeletionAbsolutePath(_currentInserted.GetReferred().GetParent().GetAbsolutePath());
@@ -141,7 +211,6 @@ public class NetworkManager : MonoBehaviour
         Destroy(_currentInserted.transform.parent.parent.parent.parent.gameObject);
         NetworkBox.ReOpenBox();
         _currentInserted = null;
-        Cursor.lockState = CursorLockMode.Locked;
-        Player.ReactivateInput();
+        StartCoroutine(SmoothReturnToPreviousOrientation());
     }
 }

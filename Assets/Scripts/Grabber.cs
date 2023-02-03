@@ -18,8 +18,9 @@ public class Grabber : MonoBehaviour
     private bool _labelVisibility;
     private Quaternion _previousPlayerRotation;
     private Quaternion _previousCameraRotation;
-    public GameObject FileTextLabel;
-    private GameObject _instantiatedFileTextLabel;
+    private TMP_Text _fileNameText;
+    private Vector3 _fileNameTextStartPos;
+    private readonly Vector3 _grabbedFileNameTextPosition = new (750, -100, 0);
     public Outline Outlined;
     [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
     public GameObject TrashItemCanvasPrefab;
@@ -28,6 +29,8 @@ public class Grabber : MonoBehaviour
     private void Start()
     {
         if (Outlined == null) Outlined = GetComponent<Outline>();
+        _fileNameText = GameObject.FindGameObjectWithTag("GrabbedFileText").transform.GetComponent<TMP_Text>();
+        _fileNameTextStartPos = _fileNameText.transform.localPosition;
     }
 
     private void Update()
@@ -126,8 +129,12 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
-        if (_instantiatedFileTextLabel != null)
-            Destroy(_instantiatedFileTextLabel);
+
+        if (_fileNameText.text.Trim() != "")
+        {
+            _fileNameText.text = "";
+            _fileNameText.transform.localPosition = _grabbedFileNameTextPosition;
+        }
     }
 
     public void PermDelete()
@@ -142,8 +149,12 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
-        if (_instantiatedFileTextLabel != null)
-            Destroy(_instantiatedFileTextLabel);
+
+        if (_fileNameText.text.Trim() != "")
+        {
+            _fileNameText.text = "";
+            _fileNameText.transform.localPosition = _grabbedFileNameTextPosition;
+        }
     }
 
     public void SetReferred(Grabbable file)
@@ -156,10 +167,9 @@ public class Grabber : MonoBehaviour
         return _file;
     }
 
-    public Grabber Copy(Transform cameraT, Transform objHolder)
+    public Grabber Copy(Transform objHolder)
     {
-        _instantiatedFileTextLabel.transform.SetParent(cameraT);
-        var text = _instantiatedFileTextLabel.transform.GetComponent<TMP_Text>().text;
+        var text = _fileNameText.text;
         if (text.Contains("."))
         {
             text = text.Split(".")[0] + "_copia." + text.Split(".")[1];
@@ -168,10 +178,8 @@ public class Grabber : MonoBehaviour
         {
             text += "_copia";
         }
-        _instantiatedFileTextLabel.transform.GetComponent<TMP_Text>().text = text;
-        _instantiatedFileTextLabel.transform.localPosition = new Vector3(0, -3, 6);
-        _instantiatedFileTextLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        _instantiatedFileTextLabel.transform.localScale *= 0.3f;
+        _fileNameText.text = text;
+        _fileNameText.transform.localPosition = _fileNameTextStartPos;
         Transform t;
         GameObject duplicate;
         switch (_file)
@@ -222,8 +230,12 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
-        if (_instantiatedFileTextLabel != null)
-            Destroy(_instantiatedFileTextLabel);
+
+        if (_fileNameText.text.Trim() != "")
+        {
+            _fileNameText.text = "";
+            _fileNameText.transform.localPosition = _fileNameTextStartPos;
+        }
     }
 
     public void Rename(string newName)
@@ -267,12 +279,9 @@ public class Grabber : MonoBehaviour
         return Instantiate(ObjMenuCanvasPrefab);
     }
 
-    public void GrabReferred(Transform cameraT, Transform objHolder)
+    public void GrabReferred(Transform objHolder)
     {
-        _instantiatedFileTextLabel.transform.SetParent(cameraT);
-        _instantiatedFileTextLabel.transform.localPosition = new Vector3(0, -3, 6);
-        _instantiatedFileTextLabel.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        _instantiatedFileTextLabel.transform.localScale *= 0.3f;
+        _fileNameText.transform.localPosition = _grabbedFileNameTextPosition;
         Transform t;
         switch (_file)
         {
@@ -302,6 +311,8 @@ public class Grabber : MonoBehaviour
 
     public void DropInBox(Transform player, Transform boxObjHolder)
     {
+        _fileNameText.text = "";
+        _fileNameText.transform.localPosition = _fileNameTextStartPos;
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         switch (_file)
@@ -309,7 +320,8 @@ public class Grabber : MonoBehaviour
             case Folder:
                 transform.parent.parent.parent.parent.SetParent(boxObjHolder);
                 transform.parent.parent.parent.parent.localPosition = new Vector3(0f, 1.5f, 0f);
-                transform.parent.parent.parent.parent.localRotation = Quaternion.Euler(0f, 0f, -90f);
+                transform.parent.parent.parent.parent.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                transform.parent.parent.parent.parent.localScale *= 0.75f;
                 break;
             case RoomFile:
                 transform.SetParent(boxObjHolder);
@@ -321,6 +333,8 @@ public class Grabber : MonoBehaviour
 
     public void DropReferred(Transform player, Folder room, GameObject explosion)
     {
+        _fileNameText.text = "";
+        _fileNameText.transform.localPosition = _fileNameTextStartPos;
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         _destinationRoom = room;
@@ -332,27 +346,19 @@ public class Grabber : MonoBehaviour
         _turnPlayer = true;
     }
 
-    public void TriggerLabel(bool value, Transform orientation)
+    public void TriggerLabel(bool value)
     {
         if (value)
         {
             if (!_labelVisibility)
             {
-                var t = transform;
-                var tPosition = t.position;
-                _instantiatedFileTextLabel = Instantiate(FileTextLabel, t.parent);
-                if (_file is Folder) _instantiatedFileTextLabel.transform.localScale *= 0.002f;
-                _instantiatedFileTextLabel.GetComponent<TMP_Text>().text = _file.GetName();
-                var position = new Vector3(tPosition.x, tPosition.y + 0.2f, tPosition.z);
-                position = Vector3.MoveTowards(position, orientation.position, 0.1f);
-                _instantiatedFileTextLabel.transform.position = position;
+                _fileNameText.text = _file.GetName();
             }
-            _instantiatedFileTextLabel.transform.LookAt(orientation);
-            _instantiatedFileTextLabel.transform.Rotate(0, 180, 0);
         }
-        else if (_labelVisibility && _instantiatedFileTextLabel != null)
+        else if (_labelVisibility && _fileNameText.text.Trim() != "")
         {
-            Destroy(_instantiatedFileTextLabel);
+            _fileNameText.text = "";
+            _fileNameText.transform.localPosition = _fileNameTextStartPos;
         }
         _labelVisibility = value;
     }
