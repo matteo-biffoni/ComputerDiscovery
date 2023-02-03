@@ -18,9 +18,8 @@ public class Grabber : MonoBehaviour
     private bool _labelVisibility;
     private Quaternion _previousPlayerRotation;
     private Quaternion _previousCameraRotation;
-    private TMP_Text _fileNameText;
-    private Vector3 _fileNameTextStartPos;
-    private readonly Vector3 _grabbedFileNameTextPosition = new (750, -100, 0);
+    private TMP_Text _fileNameTextRaycast;
+    private TMP_Text _fileNameTextGrabbed;
     public Outline Outlined;
     [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
     public GameObject TrashItemCanvasPrefab;
@@ -29,8 +28,8 @@ public class Grabber : MonoBehaviour
     private void Start()
     {
         if (Outlined == null) Outlined = GetComponent<Outline>();
-        _fileNameText = GameObject.FindGameObjectWithTag("GrabbedFileText").transform.GetComponent<TMP_Text>();
-        _fileNameTextStartPos = _fileNameText.transform.localPosition;
+        _fileNameTextRaycast = GameObject.FindGameObjectWithTag("FileNameRaycast").transform.GetComponent<TMP_Text>();
+        _fileNameTextGrabbed = GameObject.FindGameObjectWithTag("GrabbedFileText").transform.GetComponent<TMP_Text>();
     }
 
     private void Update()
@@ -138,11 +137,9 @@ public class Grabber : MonoBehaviour
                 NotificationManager.Notify(Operation.FileRestored);
                 break;
         }
-
-        if (_fileNameText.text.Trim() != "")
+        if (_fileNameTextRaycast.text.Trim() != "")
         {
-            _fileNameText.text = "";
-            _fileNameText.transform.localPosition = _grabbedFileNameTextPosition;
+            _fileNameTextRaycast.text = "";
         }
     }
 
@@ -158,11 +155,9 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
-
-        if (_fileNameText.text.Trim() != "")
+        if (_fileNameTextRaycast.text.Trim() != "")
         {
-            _fileNameText.text = "";
-            _fileNameText.transform.localPosition = _grabbedFileNameTextPosition;
+            _fileNameTextRaycast.text = "";
         }
     }
 
@@ -178,7 +173,7 @@ public class Grabber : MonoBehaviour
 
     public Grabber Copy(Transform objHolder)
     {
-        var text = _fileNameText.text;
+        var text = _fileNameTextRaycast.text;
         if (text.Contains("."))
         {
             text = text.Split(".")[0] + "_copia." + text.Split(".")[1];
@@ -187,8 +182,8 @@ public class Grabber : MonoBehaviour
         {
             text += "_copia";
         }
-        _fileNameText.text = text;
-        _fileNameText.transform.localPosition = _fileNameTextStartPos;
+        _fileNameTextRaycast.text = "";
+        _fileNameTextGrabbed.text = text;
         Transform t;
         GameObject duplicate;
         switch (_file)
@@ -243,11 +238,9 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
-
-        if (_fileNameText.text.Trim() != "")
+        if (_fileNameTextRaycast.text.Trim() != "")
         {
-            _fileNameText.text = "";
-            _fileNameText.transform.localPosition = _fileNameTextStartPos;
+            _fileNameTextRaycast.text = "";
         }
     }
 
@@ -294,7 +287,8 @@ public class Grabber : MonoBehaviour
 
     public void GrabReferred(Transform objHolder)
     {
-        _fileNameText.transform.localPosition = _grabbedFileNameTextPosition;
+        _fileNameTextGrabbed.text = _fileNameTextRaycast.text.Trim();
+        _fileNameTextRaycast.text = "";
         Transform t;
         switch (_file)
         {
@@ -324,8 +318,7 @@ public class Grabber : MonoBehaviour
 
     public void DropInBox(Transform player, Transform boxObjHolder)
     {
-        _fileNameText.text = "";
-        _fileNameText.transform.localPosition = _fileNameTextStartPos;
+        _fileNameTextGrabbed.text = "";
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         switch (_file)
@@ -346,8 +339,7 @@ public class Grabber : MonoBehaviour
 
     public void DropReferred(Transform player, Folder room, GameObject explosion)
     {
-        _fileNameText.text = "";
-        _fileNameText.transform.localPosition = _fileNameTextStartPos;
+        _fileNameTextGrabbed.text = "";
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         _destinationRoom = room;
@@ -365,13 +357,12 @@ public class Grabber : MonoBehaviour
         {
             if (!_labelVisibility)
             {
-                _fileNameText.text = _file.GetName();
+                _fileNameTextRaycast.text = _file.GetName().Trim();
             }
         }
-        else if (_labelVisibility && _fileNameText.text.Trim() != "")
+        else if (_labelVisibility && _fileNameTextRaycast.text.Trim() != "")
         {
-            _fileNameText.text = "";
-            _fileNameText.transform.localPosition = _fileNameTextStartPos;
+            _fileNameTextRaycast.text = "";
         }
         _labelVisibility = value;
     }
