@@ -4,7 +4,7 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
 
-    public static List<string> Quest1FormatChecker(Folder actualFolderStructure)
+    public static void Quest1FormatChecker(Folder actualFolderStructure)
     {
         var wrongAllocatedFilesList = new List<string>(); //lista di file non posizionati correttamente
         var filesActual = actualFolderStructure.GetAllFiles();
@@ -58,18 +58,13 @@ public class QuestManager : MonoBehaviour
                     break;
             }
         }
-        LavagnettaManager.WriteOnLavagnetta(wrongAllocatedFilesList);
+        LavagnettaManager.WriteOnLavagnetta(wrongAllocatedFilesList, "INFO");
         //Check fine quest, tutti i file allocati correttamente
         if (filesActual.Count == 8 && wrongAllocatedFilesList.Count == 0) {
             HouseManager.ActualQuest = 2;
-            var message = new List<string>();
-            message.Add("Missione");
-            message.Add("Completata!");
-            LavagnettaManager.WriteOnLavagnetta(message);
+            LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
             NotificationManager.QuestNotify("Lamp ti sta aspettando! :)");
         }
-        
-        return wrongAllocatedFilesList;
     }
     public static bool Quest1CountChecker(Folder quest1, Folder actualFolderStructure)
     {

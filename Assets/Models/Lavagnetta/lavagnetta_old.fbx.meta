@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: 4e09b7630d269d34084585a4110614d6
+guid: 9a007d48de438164abc6cb41103f5731
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Cornice
-    second: {fileID: 2100000, guid: d1370537ea6ec3445a48c3f3a2e1701a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Lavagnetta
-    second: {fileID: 2100000, guid: cc85a1a1b0db10e4992ecb927408ce05, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Metallic
-    second: {fileID: 2100000, guid: c0f4159718747d446aec6d0bfba38b56, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

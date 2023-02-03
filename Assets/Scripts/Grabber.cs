@@ -114,6 +114,11 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
+
+        if (HouseManager.ActualQuest == 1)
+        {
+            QuestManager.Quest1FormatChecker(Folder.Root);
+        }
     }
 
     public void Recover()

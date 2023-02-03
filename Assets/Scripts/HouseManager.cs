@@ -247,24 +247,6 @@ public class HouseManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            var formatErrors = QuestManager.Quest1FormatChecker(Folder.Root);
-            if (formatErrors.Count == 0)
-            {
-                Debug.Log("Nessun file fuori posto");
-                Debug.Log(QuestManager.Quest1CountChecker(_quest1, Folder.Root)
-                    ? "Hai finito"
-                    : "Ti mancano ancora dei file da posizionare");
-            }
-            else
-            {
-                foreach (var error in formatErrors)
-                {
-                    Debug.Log(error);
-                }
-            }
-        }
         if (!Folder.DirtyAfterInsertion) return;
         Folder.DirtyAfterInsertion = false;
         StartCoroutine(DelayInstantiation(Folder.Root.GetContainer()));
