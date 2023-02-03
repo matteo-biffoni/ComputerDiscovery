@@ -9,6 +9,7 @@ TagManager:
   - AD5L
   - Undefined
   - Box
+  - GrabbedFileText
   layers:
   - Default
   - TransparentFX
