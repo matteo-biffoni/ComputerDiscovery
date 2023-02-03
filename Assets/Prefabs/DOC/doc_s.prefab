@@ -104,6 +104,7 @@ MonoBehaviour:
   Outlined: {fileID: 0}
   ObjMenuCanvasPrefab: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
   TrashItemCanvasPrefab: {fileID: 6557196937122604504, guid: e9e1a65c5afc3a744875d7eccf0cb00d, type: 3}
+  RenameCanvasPrefab: {fileID: 2729442980673021621, guid: 8b7c014763c2ded4bab6af9c5e572e04, type: 3}
 --- !u!114 &6926131056758398429
 MonoBehaviour:
   m_ObjectHideFlags: 0
