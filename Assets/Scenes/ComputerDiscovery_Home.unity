@@ -122,6 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
+
   m_NavMeshData: {fileID: 23800000, guid: 38874bf599f976d4c8c396017304d64f, type: 2}
 --- !u!1 &288984559 stripped
 GameObject:
@@ -770,13 +771,61 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99659a47430f9744687bccf090c470b9, type: 3}
---- !u!1001 &6518780219499584367
+
+--- !u!1001 &8025206579143594920
+
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+
+    - target: {fileID: 1318013739062555588, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_Name
+      value: lavagnetta
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.302
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.584
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.2274
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.0009355396
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.99999964
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180.107
+      objectReference: {fileID: 0}
+    - target: {fileID: 1801816088730151294, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
     - target: {fileID: 6518780218237967489, guid: 7203824b1326b5a44b551380fd614dde, type: 3}
       propertyPath: m_Name
       value: GrabbedFileCanvas
@@ -866,4 +915,5 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7203824b1326b5a44b551380fd614dde, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 22cc7d6c862d8354d938334d78b41f94, type: 3}
+
