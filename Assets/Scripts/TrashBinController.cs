@@ -29,6 +29,7 @@ public class TrashBinController : MonoBehaviour
     private float _startTimeAnimation;
     private bool _endAlphaAnimation;
 
+    public static bool EmptyOperation = false;
     private int TrashItemsCount()
     {
         return transform.Cast<Transform>().Sum(child => child.childCount);
@@ -36,6 +37,7 @@ public class TrashBinController : MonoBehaviour
 
     private void EmptyTrashBin(bool delete)
     {
+        EmptyOperation = true;
         foreach (Transform child in transform)
         {
             for (var i = child.childCount - 1; i >= 0; i--)
@@ -49,9 +51,11 @@ public class TrashBinController : MonoBehaviour
             }
         }
     }
+    
     public void PopulateTrashBin()
     {
         EmptyTrashBin(false);
+        EmptyOperation = false;
         var j = 0;
         for (var i = 0; i < Folder.TrashBin.GetChildren().Count; i++)
         {
@@ -152,6 +156,7 @@ public class TrashBinController : MonoBehaviour
             _isPlayerInside = false;
             EmptyTrashBin(true);
             Player.ReactivateInput();
+            NotificationManager.Notify(Operation.TrashBinEmpty);
         }
     }
 }

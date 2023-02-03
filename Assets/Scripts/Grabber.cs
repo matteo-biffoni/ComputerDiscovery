@@ -109,11 +109,18 @@ public class Grabber : MonoBehaviour
         switch (_file)
         {
             case Folder:
+                if (!isRecovering) {NotificationManager.Notify(Operation.FolderMoved);}
                 Destroy(transform.parent.parent.parent.parent.gameObject);
                 break;
             case RoomFile:
+                if (!isRecovering) {NotificationManager.Notify(Operation.FileMoved);}
                 Destroy(gameObject);
                 break;
+        }
+
+        if (HouseManager.ActualQuest == 1)
+        {
+            QuestManager.Quest1FormatChecker(Folder.Root);
         }
     }
 
@@ -124,9 +131,11 @@ public class Grabber : MonoBehaviour
         {
             case Folder:
                 Destroy(transform.parent.parent.parent.parent.gameObject);
+                NotificationManager.Notify(Operation.FolderRestored);
                 break;
             case RoomFile:
                 Destroy(gameObject);
+                NotificationManager.Notify(Operation.FileRestored);
                 break;
         }
 
@@ -197,6 +206,8 @@ public class Grabber : MonoBehaviour
                 duplicate.transform.localPosition = new Vector3(0f, 0f, 2f);
                 duplicate.transform.localRotation = Quaternion.Euler(180f, -90f, 120f);
                 duplicate.transform.localScale *= 3f;
+                //notifica
+                NotificationManager.Notify(Operation.FolderCopied);
                 return duplicate.transform.GetComponentInChildren<Grabber>();
             case RoomFile:
                 t = transform;
@@ -204,6 +215,8 @@ public class Grabber : MonoBehaviour
                 duplicate.transform.localPosition = new Vector3(0f, 0f, 0f);
                 duplicate.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
                 duplicate.transform.localScale *= 5f;
+                //notifica
+                NotificationManager.Notify(Operation.FileCopied);
                 return duplicate.transform.GetComponent<Grabber>();
         }
         return null;
