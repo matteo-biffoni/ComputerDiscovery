@@ -10,6 +10,7 @@ TagManager:
   - Undefined
   - Box
   - GrabbedFileText
+  - FileNameRaycast
   layers:
   - Default
   - TransparentFX

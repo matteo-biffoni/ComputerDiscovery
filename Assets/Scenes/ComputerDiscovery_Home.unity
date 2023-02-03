@@ -747,7 +747,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6518780218237967489, guid: 7203824b1326b5a44b551380fd614dde, type: 3}
       propertyPath: m_Name
-      value: GrabbedFileCanvas
+      value: FileNameCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 6518780218237967517, guid: 7203824b1326b5a44b551380fd614dde, type: 3}
       propertyPath: m_Pivot.x
