@@ -10,16 +10,11 @@ public class Grabber : MonoBehaviour
     private Grabbable _file;
     private Transform _player;
     private Folder _destinationRoom;
-    private Vector3 _bachecaTarget;
-    private bool _turnPlayer;
-    private bool _moveTowardsBacheca;
-    private bool _takeBackCamera;
     private GameObject _explosion;
     private bool _labelVisibility;
-    private Quaternion _previousPlayerRotation;
-    private Quaternion _previousCameraRotation;
     private TMP_Text _fileNameTextRaycast;
     private TMP_Text _fileNameTextGrabbed;
+    private Transform _bachecaLookAt;
     public Outline Outlined;
     [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
     public GameObject TrashItemCanvasPrefab;
@@ -32,99 +27,67 @@ public class Grabber : MonoBehaviour
         _fileNameTextGrabbed = GameObject.FindGameObjectWithTag("GrabbedFileText").transform.GetComponent<TMP_Text>();
     }
 
-    private void Update()
+    private IEnumerator AnimationAfterDrop()
     {
-        if (_turnPlayer)
+        var previousPlayerRotation = _player.rotation;
+        Transform playerTransform;
+        var previousCameraRotation = (playerTransform = _player).GetComponentInChildren<Camera>().transform.localRotation;
+        var direction = (_bachecaLookAt.position - playerTransform.position).normalized;
+        var cameraT = _player.GetComponentInChildren<Camera>().transform;
+        var lookRotationCamera = Quaternion.LookRotation(direction);
+        direction.y = 0;
+        var lookRotation = Quaternion.LookRotation(direction);
+        var localRotation = cameraT.localRotation;
+        var cameraTo = Quaternion.Euler(new Vector3(lookRotationCamera.eulerAngles.x, localRotation.eulerAngles.y,
+            localRotation.eulerAngles.z));
+        while (Quaternion.Angle(_player.rotation, lookRotation) > 0.001f)
         {
-            var direction = (_destinationRoom.GetBacheca().transform.position - _player.position).normalized;
-            var cameraT = _player.GetComponentInChildren<Camera>().transform;
-            var lookRotationCamera = Quaternion.LookRotation(direction);
-            direction.y = 0;
-            var lookRotation = Quaternion.LookRotation(direction);
-            var cameraTo = Quaternion.Euler(new Vector3(lookRotationCamera.eulerAngles.x, cameraT.localRotation.eulerAngles.y,
-                cameraT.localRotation.eulerAngles.z));
             _player.rotation = Quaternion.Slerp(_player.rotation, lookRotation, Time.deltaTime * 8f);
             cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, cameraTo, Time.deltaTime * 8f);
-            if (Quaternion.Angle(_player.rotation, lookRotation) <= 0.01f)
-            {
-                _turnPlayer = false;
-                _moveTowardsBacheca = true;
-            }
+            yield return null;
         }
-        if (_moveTowardsBacheca)
+
+        var t = _file switch
         {
-            Transform t = null;
-            switch (_file)
-            {
-                case Folder:
-                    t = transform.parent.parent.parent.parent;
-                    break;
-                case RoomFile:
-                    t = transform;
-                    break;
-            }
-
-            if (t != null)
-            {
-                t.position = Vector3.MoveTowards(t.position, _bachecaTarget, Time.deltaTime * 8f);
-                if (Vector3.Distance(t.position, _bachecaTarget) < 0.001f)
-                {
-                    _moveTowardsBacheca = false;
-                    Instantiate(_explosion, transform);
-                    StartCoroutine(Finish(false));
-                }
-            }
-        }
-
-        if (_takeBackCamera)
+            Folder => transform.parent.parent.parent.parent,
+            RoomFile => transform,
+            _ => null
+        };
+        if (t != null)
         {
-            var cameraT = _player.GetComponentInChildren<Camera>().transform;
-            _player.rotation = Quaternion.Slerp(_player.rotation, _previousPlayerRotation, Time.deltaTime * 12f);
-            cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 12f);
-            if (Quaternion.Angle(_player.rotation, _previousPlayerRotation) <= 0.01f)
+            while (Vector3.Distance(t.position, _bachecaLookAt.position) > 0.001f)
             {
-                _takeBackCamera = false;
-                _player.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                t.position = Vector3.MoveTowards(t.position, _bachecaLookAt.position, Time.deltaTime * 8f);
+                yield return null;
             }
         }
-    }
-    
 
-    private IEnumerator Finish(bool isRecovering)
-    {
+        Instantiate(_explosion, transform);
         yield return new WaitForSeconds(0.3f);
-        _takeBackCamera = true;
-        switch (_file)
-        {
-            case Folder:
-                transform.parent.parent.parent.parent.localScale *= 0f;
-                break;
-            case RoomFile:
-                transform.GetComponent<MeshRenderer>().enabled = false;
-                break;
-        }
-        yield return new WaitUntil(() => !_takeBackCamera);
-        _destinationRoom.InsertFileOrFolder(_file, isRecovering);
-        switch (_file)
-        {
-            case Folder:
-                if (!isRecovering) {NotificationManager.Notify(Operation.FolderMoved);}
-                Destroy(transform.parent.parent.parent.parent.gameObject);
-                break;
-            case RoomFile:
-                if (!isRecovering) {NotificationManager.Notify(Operation.FileMoved);}
-                Destroy(gameObject);
-                break;
-        }
-
+        HouseManager.PlayerRotationToAfterInstantiation = previousPlayerRotation;
+        HouseManager.CameraRotationToAfterInstantiation = previousCameraRotation;
+        _destinationRoom.InsertFileOrFolder(_file, false);
         if (HouseManager.ActualQuest == 1)
         {
             QuestManager.Quest1FormatChecker(Folder.Root);
         }
+        switch (_file)
+        {
+            case Folder:
+                NotificationManager.Notify(Operation.FolderMoved);
+                Destroy(transform.parent.parent.parent.parent.gameObject);
+                break;
+            case RoomFile:
+                NotificationManager.Notify(Operation.FileMoved);
+                Destroy(gameObject);
+                break;
+        }
+        Magnet0Raycaster.Operating = true;
     }
 
     public void Recover()
     {
+        Magnet0Raycaster.Operating = false;
         _file.Recover();
         switch (_file)
         {
@@ -141,10 +104,12 @@ public class Grabber : MonoBehaviour
         {
             _fileNameTextRaycast.text = "";
         }
+        Magnet0Raycaster.Operating = true;
     }
 
     public void PermDelete()
     {
+        Magnet0Raycaster.Operating = false;
         _file.PermDelete();
         switch (_file)
         {
@@ -159,6 +124,7 @@ public class Grabber : MonoBehaviour
         {
             _fileNameTextRaycast.text = "";
         }
+        Magnet0Raycaster.Operating = true;
     }
 
     public void SetReferred(Grabbable file)
@@ -173,6 +139,7 @@ public class Grabber : MonoBehaviour
 
     public Grabber Copy(Transform objHolder)
     {
+        Magnet0Raycaster.Operating = false;
         var text = _fileNameTextRaycast.text;
         if (text.Contains("."))
         {
@@ -203,6 +170,7 @@ public class Grabber : MonoBehaviour
                 duplicate.transform.localScale *= 3f;
                 //notifica
                 NotificationManager.Notify(Operation.FolderCopied);
+                Magnet0Raycaster.Operating = true;
                 return duplicate.transform.GetComponentInChildren<Grabber>();
             case RoomFile:
                 t = transform;
@@ -212,8 +180,10 @@ public class Grabber : MonoBehaviour
                 duplicate.transform.localScale *= 5f;
                 //notifica
                 NotificationManager.Notify(Operation.FileCopied);
+                Magnet0Raycaster.Operating = true;
                 return duplicate.transform.GetComponent<Grabber>();
         }
+        Magnet0Raycaster.Operating = true;
         return null;
     }
 
@@ -228,6 +198,7 @@ public class Grabber : MonoBehaviour
 
     public void Delete()
     {
+        Magnet0Raycaster.Operating = false;
         _file.Delete();
         switch (_file)
         {
@@ -242,11 +213,14 @@ public class Grabber : MonoBehaviour
         {
             _fileNameTextRaycast.text = "";
         }
+        Magnet0Raycaster.Operating = true;
     }
 
     public void Rename(string newName)
     {
+        Magnet0Raycaster.Operating = false;
         _file.Rename(newName);
+        Magnet0Raycaster.Operating = true;
     }
 
     public GameObject ShowRenameMenu(Transform canvasT)
@@ -287,6 +261,7 @@ public class Grabber : MonoBehaviour
 
     public void GrabReferred(Transform objHolder)
     {
+        Magnet0Raycaster.Operating = false;
         _fileNameTextGrabbed.text = _fileNameTextRaycast.text.Trim();
         _fileNameTextRaycast.text = "";
         Transform t;
@@ -314,10 +289,12 @@ public class Grabber : MonoBehaviour
                 t.localScale *= 0.75f;
                 break;
         }
+        Magnet0Raycaster.Operating = true;
     }
 
     public void DropInBox(Transform player, Transform boxObjHolder)
     {
+        Magnet0Raycaster.Operating = false;
         _fileNameTextGrabbed.text = "";
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
@@ -335,20 +312,19 @@ public class Grabber : MonoBehaviour
                 transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
                 break;
         }
+        Magnet0Raycaster.Operating = true;
     }
 
     public void DropReferred(Transform player, Folder room, GameObject explosion)
     {
+        Magnet0Raycaster.Operating = false;
         _fileNameTextGrabbed.text = "";
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         _destinationRoom = room;
-        var bachecaPosition = room.GetBacheca().transform.position;
-        _bachecaTarget = new Vector3(bachecaPosition.x, bachecaPosition.y + 1f, bachecaPosition.z);
+        _bachecaLookAt = room.GetContainer().transform.GetChild(0).Find("BachecaLookAt");
         _explosion = explosion;
-        _previousPlayerRotation = _player.rotation;
-        _previousCameraRotation = _player.GetComponentInChildren<Camera>().transform.localRotation;
-        _turnPlayer = true;
+        StartCoroutine(AnimationAfterDrop());
     }
 
     public void TriggerLabel(bool value)

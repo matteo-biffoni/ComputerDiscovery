@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
 using Random = System.Random;
@@ -33,13 +34,14 @@ public class HouseManager : MonoBehaviour
 
     public TrashBinController TrashBinController;
 
-    private Folder _quest1;
-
     public static int ActualQuest = 1;
 
-    private static readonly List<string> ImageFileNames = new() { "Gatto", "Cane", "Viaggio", "Prato", "Ape", "New York", "Roma", "Oculus" };
+    private static readonly List<string> ImageFileNames = new() { "wHxUOUNlXf", "oSlPKjPelf", "gejYdEeNmW", "lsrhlhfGpV" };
     private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
     private static readonly List<string> MultimediaFileNames = new () { "Recita", "Concerto", "Audizione", "Spettacolo", "Provino", "Shakira", "Beethoven", "John Lennon" };
+    public List<Sprite> PossibleImagesPng;
+    public List<Sprite> PossibleImagesJpeg;
+    
     
     public float MediumSizeMin = 10.0f;
     public float LargeSizeMin = 50.0f;
@@ -53,6 +55,9 @@ public class HouseManager : MonoBehaviour
     public GameObject[] DoCs;
     public GameObject[] TxTs;
 
+    public static Quaternion? PlayerRotationToAfterInstantiation = null;
+    public static Quaternion? CameraRotationToAfterInstantiation = null;
+
     private void Start()
     {
         Folder.MainRoomGo = MainRoomGo;
@@ -61,7 +66,6 @@ public class HouseManager : MonoBehaviour
         var garagePlayerDetector = transform.Find("MainRoom").Find("Garage").AddComponent<PlayerDetector>();
         garagePlayerDetector.SetFolderReferred(Folder.Garage);
         InstantiateScene(true);
-        RetrieveQuest1();
         SpawnObjectsForQuest1();
     }
     
@@ -82,6 +86,7 @@ public class HouseManager : MonoBehaviour
             _ => null
         };
     }
+    
     private void SpawnObjectsForQuest1()
     {
         var quest1ObjectsSpawner =
@@ -194,12 +199,20 @@ public class HouseManager : MonoBehaviour
         objectSpawners.Remove(extracted);
         var objToSpawn = PickPrefabFromFile(immagine1);
         var instantiated = Instantiate(objToSpawn, extracted.transform);
+        var immagine1Sprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        var extractedPng = PossibleImagesPng[random.Next(0, PossibleImagesPng.Count)];
+        PossibleImagesPng.Remove(extractedPng);
+        immagine1Sprite.sprite = extractedPng;
         var fileGrabber = instantiated.transform.GetComponent<Grabber>();
         fileGrabber.SetReferred(immagine1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(immagine2);
         instantiated = Instantiate(objToSpawn, extracted.transform);
+        var immagine2Sprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        var extractedJpeg = PossibleImagesJpeg[random.Next(0, PossibleImagesJpeg.Count)];
+        PossibleImagesJpeg.Remove(extractedJpeg);
+        immagine2Sprite.sprite = extractedJpeg;
         fileGrabber = instantiated.transform.GetComponent<Grabber>();
         fileGrabber.SetReferred(immagine2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
@@ -236,13 +249,25 @@ public class HouseManager : MonoBehaviour
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(fileBonus);
         instantiated = Instantiate(objToSpawn, extracted.transform);
+        if (fileBonus.GetFormat() == "jpeg" || fileBonus.GetFormat() == "png")
+        {
+            if (fileBonus.GetFormat() == "jpeg")
+            {
+                var immagineBonusSprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
+                var extractedBonusJpeg = PossibleImagesJpeg[random.Next(0, PossibleImagesJpeg.Count)];
+                PossibleImagesJpeg.Remove(extractedBonusJpeg);
+                immagineBonusSprite.sprite = extractedBonusJpeg;
+            }
+            if (fileBonus.GetFormat() == "png")
+            {
+                var immagineBonusSprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
+                var extractedBonusPng = PossibleImagesPng[random.Next(0, PossibleImagesPng.Count)];
+                PossibleImagesPng.Remove(extractedBonusPng);
+                immagineBonusSprite.sprite = extractedBonusPng;
+            }
+        }
         fileGrabber = instantiated.transform.GetComponent<Grabber>();
         fileGrabber.SetReferred(fileBonus);
-    }
-
-    private void RetrieveQuest1()
-    {
-        _quest1 = Folder.RetrieveQuest1();
     }
 
     private void Update()
@@ -250,6 +275,22 @@ public class HouseManager : MonoBehaviour
         if (!Folder.DirtyAfterInsertion) return;
         Folder.DirtyAfterInsertion = false;
         StartCoroutine(DelayInstantiation(Folder.Root.GetContainer()));
+    }
+
+    private IEnumerator ResetPlayer()
+    {
+        if (PlayerRotationToAfterInstantiation != null && CameraRotationToAfterInstantiation != null)
+        {
+            var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
+            while (Quaternion.Angle(Player.transform.rotation, (Quaternion) PlayerRotationToAfterInstantiation) > 0.001f)
+            {
+                Player.transform.rotation =
+                    Quaternion.Slerp(Player.transform.rotation, (Quaternion) PlayerRotationToAfterInstantiation, Time.deltaTime * 8f);
+                cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, (Quaternion) CameraRotationToAfterInstantiation, Time.deltaTime * 8f);
+                yield return null;
+            }
+        }
+        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
     }
 
     private IEnumerator DelayInstantiation(Object oldRoot)
@@ -265,27 +306,20 @@ public class HouseManager : MonoBehaviour
             p.transform.position = new Vector3(newRoomPosition.x + offsetPosition.x,
                 p.transform.position.y, newRoomPosition.z + offsetPosition.z);
             Destroy(oldRoot);
-            /*switch (Folder.LastOperation)
+            if (PlayerRotationToAfterInstantiation != null)
             {
-                case Operation.FileCreated:
-                    break;
-                case Operation.FileInserted:
-                    break;
-                case Operation.FolderCreated:
-                    break;
-                case Operation.FolderMoved:
-                    break;
-                case Operation.Nop:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }*/
+                StartCoroutine(ResetPlayer());
+            }
         }
         else
         {
             yield return new WaitForFixedUpdate();
             InstantiateScene(false);
             Destroy(oldRoot);
+            if (PlayerRotationToAfterInstantiation != null)
+            {
+                StartCoroutine(ResetPlayer());
+            }
         }
     }
 
@@ -366,7 +400,7 @@ public abstract class Grabbable
 
     public abstract void Recover();
 
-    public abstract Grabbable GetACopy(bool firstIfFolder);
+    public abstract Grabbable GetACopy();
 
     public abstract void Rename(string newName);
 }
@@ -475,7 +509,7 @@ public class RoomFile : Grabbable
         }
     }
 
-    public override Grabbable GetACopy(bool firstIfFolder)
+    public override Grabbable GetACopy()
     {
         var copyName = _name.Split(".")[0] + "_copia." + _name.Split(".")[1];
         return new RoomFile(copyName, _format, _integrity, _size, null);
@@ -492,6 +526,11 @@ public class RoomFile : Grabbable
         _name = newName;
         Folder.TriggerReloading(Operation.FileRenamed);
         NotificationManager.Notify(Operation.FileRenamed);
+        //check quest 2
+        if (HouseManager.ActualQuest == 2)
+        {
+            QuestManager.Quest2FormatChecker(Folder.GetFolderFromAbsolutePath(new [] {"Desktop", "Immagini"}, Folder.Root));
+        }
     }
 
     private static string GetFormatExtensionFromFormat(string format)
@@ -549,7 +588,11 @@ public enum Operation
     FolderCopied,
     ReleaseNotAllowed,
     FileRestored,
-    FolderRestored
+    FolderRestored,
+    FolderFullOfSubfolders,
+    FolderFullOfFiles,
+    Quest2Completed,
+    LockedFunctionality
 }
 
 
@@ -562,19 +605,26 @@ public class Folder : Grabbable
     private GameObject _container;
     private Folder _father;
     private readonly List<Folder> _children;
-    private readonly List<RoomFile> _files;
+    private List<RoomFile> _files;
     private string _name;
     public static readonly Folder MainRoom = new("Main Room", null);
     public static readonly Folder Garage = new("Garage", null);
     public static GameObject MainRoomGo;
     private BachecaFileController _bacheca;
-    private static Operation _lastOperation = Operation.Nop;
+    //private static Operation _lastOperation = Operation.Nop;
     private string _parentOnDeletionAbsolutePath;
+    public const int MaxNumberOfSubfolders = 9;
+    public const int MaxNumberOfFilesPerFolder = 10;
+    public static bool ShouldDoorsHaveGrabberAttached;
 
     public static void TriggerReloading(Operation lastOp)
     {
+        if (lastOp == Operation.Quest2Completed)
+        {
+            ShouldDoorsHaveGrabberAttached = true;
+        }
         WriteNewFolderStructureToFile();
-        _lastOperation = lastOp;
+        //_lastOperation = lastOp;
         DirtyAfterInsertion = true;
     }
     
@@ -590,16 +640,16 @@ public class Folder : Grabbable
         
     }
 
-    public override Grabbable GetACopy(bool firstIfFolder)
+    public override Grabbable GetACopy()
     {
         var f = new Folder(_name + "_copia", null);
         foreach (var child in _children)
         {
-            f._children.Add(child.GetACopy(false) as Folder);
+            f._children.Add(child.GetACopy() as Folder);
         }
         foreach (var file in _files)
         {
-            f._files.Add(file.GetACopy(false) as RoomFile);
+            f._files.Add(file.GetACopy() as RoomFile);
         }
         f._parentOnDeletionAbsolutePath = null;
         return f;
@@ -625,7 +675,7 @@ public class Folder : Grabbable
         }
         return list;
     }
-    private Folder(string name, Folder father)
+    public Folder(string name, Folder father)
     {
         _father = father;
         _name = name;
@@ -638,6 +688,11 @@ public class Folder : Grabbable
         var newFolder = new Folder(newFolderName, father);
         father.AddChild(newFolder);
         TriggerReloading(Operation.FolderCreated);
+    }
+
+    public void SetFiles(List<RoomFile> files)
+    {
+        _files = files;
     }
 
     public void DeleteFile(RoomFile file, bool perm)
@@ -760,7 +815,7 @@ public class Folder : Grabbable
             switch (file)
             {
                 case Folder folder:
-                    if (!IsChildNameAvailable(folder._name))
+                    while(!IsChildNameAvailable(folder._name))
                         folder._name += "_copia";
                     _children.Add(folder);
                     if (isRecovering)
@@ -770,7 +825,7 @@ public class Folder : Grabbable
                     comingFrom?.GetChildren().Remove(folder);
                     break;
                 case RoomFile roomFile:
-                    if (!IsFileNameAvailable(roomFile.GetName()))
+                    while(!IsFileNameAvailable(roomFile.GetName()))
                         roomFile.SetName(
                             roomFile.GetName().Split(".")[0] + "_copia." + roomFile.GetName().Split(".")[1]);
                     _files.Add(roomFile);

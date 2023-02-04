@@ -104,6 +104,20 @@ public class NotificationManager : MonoBehaviour
                 Instance.message.text = "Cartella ripristinata correttamente";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
+            //Cartella piena di sottocartelle
+            case Operation.FolderFullOfSubfolders:
+                Instance.message.text = "Questa cartella ha già il massimo numero di sottocartelle";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            //Cartella piena di file
+            case Operation.FolderFullOfFiles:
+                Instance.message.text = "Questa cartella ha già il massimo numero di file";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
+            case Operation.LockedFunctionality:
+                Instance.message.text = "Vai avanti nel gioco per sbloccare questa funzionalità";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
         }
         Instance.StartCoroutine(CloseNotification(2f));
     }

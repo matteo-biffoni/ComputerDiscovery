@@ -1,5 +1,6 @@
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
@@ -9,20 +10,29 @@ public class DoorController : MonoBehaviour
     private Folder _room;
     private Folder _roomTo;
 
+    public GameObject Handle;
+    public GameObject ObjMenuCanvasPrefab;
+    public GameObject TrashItemCanvasPrefab;
+    public GameObject RenameCanvasPrefab;
+    public Outline Outline;
+
     private Animator _doorAnimator;
     private static readonly int OpenDoor = Animator.StringToHash("openDoor");
     private static readonly int CloseDoor = Animator.StringToHash("closeDoor");
 
     public TMP_Text DirectionFrontText;
-    
-    /*private void Start()
-    {
-        _doorAnimator = GetComponent<Animator>();
-    }*/
 
     private void Awake()
     {
         _doorAnimator = GetComponent<Animator>();
+        if (Folder.ShouldDoorsHaveGrabberAttached)
+        {
+            var grabber = Handle.AddComponent<Grabber>();
+            grabber.Outlined = Outline;
+            grabber.RenameCanvasPrefab = RenameCanvasPrefab;
+            grabber.TrashItemCanvasPrefab = TrashItemCanvasPrefab;
+            grabber.ObjMenuCanvasPrefab = ObjMenuCanvasPrefab;
+        }
     }
 
     public void SetRoom(Folder folder)
