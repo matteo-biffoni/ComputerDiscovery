@@ -17,6 +17,12 @@ public class FirstPersonCharacterController : MonoBehaviour
     private bool _isGrounded;
 
     private bool _ignoreInput;
+    private bool _ignoreMovement;
+
+    public void IgnoreMovement()
+    {
+        _ignoreMovement = true;
+    }
 
     public void IgnoreInput()
     {
@@ -25,6 +31,7 @@ public class FirstPersonCharacterController : MonoBehaviour
 
     public void ReactivateInput()
     {
+        _ignoreMovement = false;
         _ignoreInput = false;
     }
     
@@ -51,11 +58,14 @@ public class FirstPersonCharacterController : MonoBehaviour
             _cameraXRotation = Mathf.Clamp(_cameraXRotation, -90f, 90f);
             CameraT.localRotation = Quaternion.Euler(_cameraXRotation, 0f, 0f);
 
-            var h = Input.GetAxis("Horizontal");
-            var v = Input.GetAxis("Vertical");
-            var tr = transform;
-            var move = (tr.right * h + tr.forward * v).normalized;
-            _characterController.Move(move * (Speed * Time.deltaTime));
+            if (!_ignoreMovement)
+            {
+                var h = Input.GetAxis("Horizontal");
+                var v = Input.GetAxis("Vertical");
+                var tr = transform;
+                var move = (tr.right * h + tr.forward * v).normalized;
+                _characterController.Move(move * (Speed * Time.deltaTime));
+            }
         }
 
         _velocity.y += Gravity * Time.deltaTime;

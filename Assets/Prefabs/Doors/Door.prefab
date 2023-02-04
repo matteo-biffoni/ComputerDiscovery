@@ -272,6 +272,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeed12493d9e4cd408e2279e8f898664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Handle: {fileID: 4541663119127368680}
+  ObjMenuCanvasPrefab: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
+  TrashItemCanvasPrefab: {fileID: 6557196937122604504, guid: e9e1a65c5afc3a744875d7eccf0cb00d, type: 3}
+  RenameCanvasPrefab: {fileID: 2729442980673021621, guid: 8b7c014763c2ded4bab6af9c5e572e04, type: 3}
+  Outline: {fileID: 5991147208694494975}
   DirectionFrontText: {fileID: 3231960330147602841}
 --- !u!1 &2850927271682063797
 GameObject:
@@ -520,7 +525,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4087726618081238322}
-  - component: {fileID: 5716833500132551913}
   - component: {fileID: 4835862290928719329}
   - component: {fileID: 8619250575236739847}
   m_Layer: 0
@@ -545,23 +549,6 @@ Transform:
   m_Father: {fileID: 3577343688458909751}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5716833500132551913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4541663119127368680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da568a814570bb8419dc261fc3a6eafd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FileTextLabel: {fileID: 5813823793815039770, guid: bdf6d8558c3921a47816bb4363c9fe4d, type: 3}
-  Outlined: {fileID: 5991147208694494975}
-  ObjMenuCanvasPrefab: {fileID: 6557196937122604504, guid: 35cc037c5403e5e4fbb151027b95bf4c, type: 3}
-  TrashItemCanvasPrefab: {fileID: 6557196937122604504, guid: e9e1a65c5afc3a744875d7eccf0cb00d, type: 3}
-  RenameCanvasPrefab: {fileID: 2729442980673021621, guid: 8b7c014763c2ded4bab6af9c5e572e04, type: 3}
 --- !u!65 &4835862290928719329
 BoxCollider:
   m_ObjectHideFlags: 0

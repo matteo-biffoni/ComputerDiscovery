@@ -70,4 +70,29 @@ public class QuestManager : MonoBehaviour
     {
         return quest1.GetAllFiles().Count == actualFolderStructure.GetAllFiles().Count;
     }
+    
+    public static void Quest2FormatChecker(Folder ImagesFolder)
+    {
+        //Ipotizzo che il filesystem caricato per la quest 2 abbia alcuni file nella cartella immagini e 2 sottocartelle 
+        //con altri file al loro interno, tutti da rinominare. 
+        //Es. foto.jpeg - albero.png - ponte.jpeg - luna.png 
+        var toBeRenamedFiles = new List<string>{"foto.jpg","albero.png", "ponte.jpg", "luna.png"};
+        var notRenamedFiles = new List<string>(); //lista di file non ancora rinominati
+        var filesActual = ImagesFolder.GetAllFiles(); //prendo tutti i file nella cartella Immagini
+        foreach (var file in filesActual)
+        {
+            var fileName = file.GetName();
+            if (toBeRenamedFiles.Contains(fileName))
+            {
+                notRenamedFiles.Add($"Il file '{fileName}' deve essere rinominato");
+            }
+        }
+        LavagnettaManager.WriteOnLavagnetta(notRenamedFiles, "INFO");
+        //Check fine quest, tutti i file allocati correttamente
+        if (notRenamedFiles.Count == 0) {
+            HouseManager.ActualQuest = 3;
+            LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
+            NotificationManager.QuestNotify("Lamp ti sta aspettando! :)");
+        }
+    }
 }

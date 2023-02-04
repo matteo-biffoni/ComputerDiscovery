@@ -41,7 +41,6 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Conversazione terminata");
             backgroundBox.LeanScale(Vector3.zero, 0.5f);
             _endDialogCallback();
         }

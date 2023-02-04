@@ -21,10 +21,13 @@ public class Magnet0Raycaster : MonoBehaviour
     private NetworkBox _previousNetworkBox;
     private Transform _boxObjHolderT;
 
+    public static bool Operating = true;
+
 
     // Update is called once per frame
     private void Update()
     {
+        if (!Operating) return;
         if (_showingObjMenu)
         {
             if (_showingRenameMenu)
@@ -79,6 +82,7 @@ public class Magnet0Raycaster : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 DropFile();
+                return;
             }
         }
         if (Physics.Raycast(ray, out var hit, RaycastDistance))
@@ -105,13 +109,13 @@ public class Magnet0Raycaster : MonoBehaviour
                         _grabbedFile = fileGrabber;
                         _grabbedFile.GrabReferred(transform.Find("ObjHolder"));
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1) && HouseManager.ActualQuest >= 2)
                     {
                         _showingObjMenu = true;
                         if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
                         {
                             _objMenu = fileGrabber.ShowTrashItemMenu(Player.transform);
-                            var recover = _objMenu.transform.Find("RecoverButton").GetComponent<Button>();
+                            var recover = _objMenu.transform.GetChild(0).Find("RecoverButton").GetComponent<Button>();
                             recover.onClick.AddListener(delegate
                             {
                                 Recover(fileGrabber);
@@ -120,7 +124,7 @@ public class Magnet0Raycaster : MonoBehaviour
                                 Cursor.lockState = CursorLockMode.Locked;
                                 Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
                             });
-                            var permDelete = _objMenu.transform.Find("PermDeleteButton").GetComponent<Button>();
+                            var permDelete = _objMenu.transform.GetChild(0).Find("PermDeleteButton").GetComponent<Button>();
                             permDelete.onClick.AddListener(delegate
                             {
                                 PermDelete(fileGrabber);
@@ -129,20 +133,37 @@ public class Magnet0Raycaster : MonoBehaviour
                                 Cursor.lockState = CursorLockMode.Locked;
                                 Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
                             });
+                            _objMenu.SetActive(true);
                         }
                         else
                         {
                             _objMenu = fileGrabber.ShowObjectMenu(Player.transform);
-                            var copyButton = _objMenu.transform.Find("CopyButton").GetComponent<Button>();
-                            copyButton.onClick.AddListener(delegate
+                            var copyButton = _objMenu.transform.GetChild(0).Find("CopyButton").GetComponent<Button>();
+                            if (HouseManager.ActualQuest <= 2)
                             {
-                                Copy(fileGrabber);
-                                Destroy(_objMenu);
-                                _showingObjMenu = false;
-                                Cursor.lockState = CursorLockMode.Locked;
-                                Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                            });
-                            var renameButton = _objMenu.transform.Find("RenameButton").GetComponent<Button>();
+                                ColorBlock cb = copyButton.colors;
+                                cb.normalColor = Color.grey;
+                                cb.highlightedColor = Color.grey;
+                                cb.selectedColor = Color.grey;
+                                cb.disabledColor = Color.gray;
+                                copyButton.colors = cb;
+                                copyButton.onClick.AddListener(delegate
+                                {
+                                    NotificationManager.Notify(Operation.LockedFunctionality);
+                                });
+                            }
+                            else
+                            {
+                                copyButton.onClick.AddListener(delegate
+                                {
+                                    Copy(fileGrabber);
+                                    Destroy(_objMenu);
+                                    _showingObjMenu = false;
+                                    Cursor.lockState = CursorLockMode.Locked;
+                                    Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                });
+                            }
+                            var renameButton = _objMenu.transform.GetChild(0).Find("RenameButton").GetComponent<Button>();
                             renameButton.onClick.AddListener(delegate
                             {
                                 _showingRenameMenu = true;
@@ -184,15 +205,32 @@ public class Magnet0Raycaster : MonoBehaviour
                                     }
                                 });
                             });
-                            var deleteButton = _objMenu.transform.Find("DeleteButton").GetComponent<Button>();
-                            deleteButton.onClick.AddListener(delegate
+                            var deleteButton = _objMenu.transform.GetChild(0).Find("DeleteButton").GetComponent<Button>();
+                            if (HouseManager.ActualQuest <= 2)
                             {
-                                Delete(fileGrabber);
-                                Destroy(_objMenu);
-                                _showingObjMenu = false;
-                                Cursor.lockState = CursorLockMode.Locked;
-                                Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-                            });
+                                ColorBlock cb = deleteButton.colors;
+                                cb.normalColor = Color.grey;
+                                cb.highlightedColor = Color.grey;
+                                cb.selectedColor = Color.grey;
+                                cb.disabledColor = Color.gray;
+                                deleteButton.colors = cb;
+                                deleteButton.onClick.AddListener(delegate
+                                {
+                                    NotificationManager.Notify(Operation.LockedFunctionality);
+                                });
+                            }
+                            else
+                            {
+                                deleteButton.onClick.AddListener(delegate
+                                {
+                                    Delete(fileGrabber);
+                                    Destroy(_objMenu);
+                                    _showingObjMenu = false;
+                                    Cursor.lockState = CursorLockMode.Locked;
+                                    Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                });
+                            }
+                            _objMenu.SetActive(true);
                         }
                     }
                 }
@@ -293,7 +331,8 @@ public class Magnet0Raycaster : MonoBehaviour
     {
         fileGrabber.Outlined.OutlineWidth = 0f;
         _grabbedFile = fileGrabber.Copy(transform.Find("ObjHolder"));
-        _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy(true));
+        Debug.Log("Assegnato");
+        _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy());
     }
 
     private void Delete(Grabber grabber)
@@ -325,6 +364,26 @@ public class Magnet0Raycaster : MonoBehaviour
             //qui
             _grabbedFile = null;
             return;
+        }
+        if (roomIn != null)
+        {
+            switch (_grabbedFile.GetReferred())
+            {
+                case Folder:
+                    if (roomIn.GetChildren().Count == Folder.MaxNumberOfSubfolders)
+                    {
+                        NotificationManager.Notify(Operation.FolderFullOfSubfolders);
+                        return;
+                    }
+                    break;
+                case RoomFile:
+                    if (roomIn.GetFiles().Count == Folder.MaxNumberOfFilesPerFolder)
+                    {
+                        NotificationManager.Notify(Operation.FolderFullOfFiles);
+                        return;
+                    }
+                    break;
+            }
         }
         _grabbedFile.DropReferred(Player.transform, roomIn, Explosion);
         _grabbedFile = null;
