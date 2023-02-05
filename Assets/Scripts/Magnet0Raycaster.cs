@@ -356,7 +356,6 @@ public class Magnet0Raycaster : MonoBehaviour
             if (_previousNetworkBox == null)
             {
                 NotificationManager.Notify(Operation.ReleaseNotAllowed);
-                Debug.Log("Non puoi lasciare qui l'elemento, non sei in una vera e propria cartella!");
                 return;
             }
             _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);

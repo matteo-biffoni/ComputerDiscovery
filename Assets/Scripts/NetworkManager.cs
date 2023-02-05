@@ -115,7 +115,7 @@ public class NetworkManager : MonoBehaviour
         var lookRotation = Quaternion.LookRotation(direction);
         var cameraTo = Quaternion.Euler(new Vector3(lookRotationCamera.eulerAngles.x, cameraT.localRotation.eulerAngles.y,
             cameraT.localRotation.eulerAngles.z));
-        while (Quaternion.Angle(Player.transform.rotation, lookRotation) > 0.001f)
+        while (Quaternion.Angle(Player.transform.rotation, lookRotation) > 0.1f)
         {
             Player.transform.rotation = Quaternion.Slerp(Player.transform.rotation, lookRotation, Time.deltaTime * 8f);
             cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, cameraTo, Time.deltaTime * 8f);
@@ -126,7 +126,7 @@ public class NetworkManager : MonoBehaviour
     private IEnumerator SmoothReturnToPreviousOrientation()
     {
         var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
-        while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.01f)
+        while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.1f)
         {
             Player.transform.rotation =
                 Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 12f);
@@ -176,6 +176,7 @@ public class NetworkManager : MonoBehaviour
         Destroy(_currentInserted.gameObject);
         _currentInserted = null;
         _shouldLookAtPlayer = true;
+        DialogueCanvas.SetActive(true);
         DialogueManager.OpenDialogue(EndDialogue, CameBackFromNetworkDialog, ActorName, ActorSprite);
     }
     
@@ -188,6 +189,7 @@ public class NetworkManager : MonoBehaviour
 
     private void EndDialogue()
     {
+        DialogueCanvas.SetActive(false);
         _playerShouldLookAtMe = false;
         StartCoroutine(SmoothReturnToPreviousOrientation());
         NetworkBox.ReOpenBox();
@@ -195,6 +197,7 @@ public class NetworkManager : MonoBehaviour
 
     private void EndDialogueOk()
     {
+        DialogueCanvas.SetActive(false);
         _shouldLookAtPlayer = false;
         _playerShouldLookAtMe = true;
         _ad5LNavController.enabled = true;
@@ -203,6 +206,7 @@ public class NetworkManager : MonoBehaviour
 
     private void EndDialogueErr()
     {
+        DialogueCanvas.SetActive(false);
         if (_currentInserted.GetReferred().GetParent() != null)
         {
             _currentInserted.GetReferred().SetParentOnDeletionAbsolutePath(_currentInserted.GetReferred().GetParent().GetAbsolutePath());

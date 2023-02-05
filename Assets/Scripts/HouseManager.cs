@@ -55,9 +55,6 @@ public class HouseManager : MonoBehaviour
     public GameObject[] DoCs;
     public GameObject[] TxTs;
 
-    public static Quaternion? PlayerRotationToAfterInstantiation = null;
-    public static Quaternion? CameraRotationToAfterInstantiation = null;
-
     private void Start()
     {
         Folder.MainRoomGo = MainRoomGo;
@@ -277,22 +274,6 @@ public class HouseManager : MonoBehaviour
         StartCoroutine(DelayInstantiation(Folder.Root.GetContainer()));
     }
 
-    private IEnumerator ResetPlayer()
-    {
-        if (PlayerRotationToAfterInstantiation != null && CameraRotationToAfterInstantiation != null)
-        {
-            var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
-            while (Quaternion.Angle(Player.transform.rotation, (Quaternion) PlayerRotationToAfterInstantiation) > 0.001f)
-            {
-                Player.transform.rotation =
-                    Quaternion.Slerp(Player.transform.rotation, (Quaternion) PlayerRotationToAfterInstantiation, Time.deltaTime * 8f);
-                cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, (Quaternion) CameraRotationToAfterInstantiation, Time.deltaTime * 8f);
-                yield return null;
-            }
-        }
-        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
-    }
-
     private IEnumerator DelayInstantiation(Object oldRoot)
     {
         if (Player.GetRoomIn() != Folder.MainRoom && Player.GetRoomIn() != Folder.Garage)
@@ -306,21 +287,14 @@ public class HouseManager : MonoBehaviour
             p.transform.position = new Vector3(newRoomPosition.x + offsetPosition.x,
                 p.transform.position.y, newRoomPosition.z + offsetPosition.z);
             Destroy(oldRoot);
-            if (PlayerRotationToAfterInstantiation != null)
-            {
-                StartCoroutine(ResetPlayer());
-            }
         }
         else
         {
             yield return new WaitForFixedUpdate();
             InstantiateScene(false);
             Destroy(oldRoot);
-            if (PlayerRotationToAfterInstantiation != null)
-            {
-                StartCoroutine(ResetPlayer());
-            }
         }
+        Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -496,15 +470,14 @@ public class RoomFile : Grabbable
             }
             else
             {
-                // TODO: Notificare che non si è riusciti a ripristinare correttamente il file e che verrà inserito nel Desktop
+                NotificationManager.Notify(Operation.RestoreRedirectedToDesktop);
                 Debug.Log("Non si è riusciti a ripristinare correttamente il file, verrà inserito nel Desktop");
                 Folder.Root.InsertFileOrFolder(this, true);
             }
         }
         else
         {
-            // TODO: Notificare che non si è riusciti a ripristinare correttamente il file e che verrà inserito nel Desktop
-            Debug.Log("Non si è riusciti a ripristinare correttamente il file, verrà inserito nel Desktop");
+            NotificationManager.Notify(Operation.RestoreRedirectedToDesktop);
             Folder.Root.InsertFileOrFolder(this, true);
         }
     }
@@ -592,7 +565,8 @@ public enum Operation
     FolderFullOfSubfolders,
     FolderFullOfFiles,
     Quest2Completed,
-    LockedFunctionality
+    LockedFunctionality,
+    RestoreRedirectedToDesktop
 }
 
 
@@ -789,8 +763,7 @@ public class Folder : Grabbable
         }
         else
         {
-            // TODO: Notificare che non si è riusciti a ripristinare correttamente la cartella e che verrà inserita nel Desktop
-            Debug.Log("Non si è riusciti a ripristinare correttamente la cartella, verrà inserita nel Desktop");
+            NotificationManager.Notify(Operation.RestoreRedirectedToDesktop);
             Root.InsertFileOrFolder(this, true);
         }
     }
@@ -920,11 +893,6 @@ public class Folder : Grabbable
         return index != -1 ? _children[index] : null;
     }
 
-    /*public void ActivateChildComponents(DoorController controller, bool active)
-    {
-        GetChildrenFromDoorController(controller).ActivateRoomComponents(active);
-    }*/
-
     public override Folder GetParent()
     {
         return _father;
@@ -939,15 +907,6 @@ public class Folder : Grabbable
     {
         return _files;
     }
-
-    // ReSharper disable Unity.PerformanceAnalysis
-    /*public void ActivateGreatGrandFather(bool active)
-    {
-        if (_father is { _father: { _father: {  } } })
-        {
-            _father._father._father.ActivateRoomComponents(active);
-        }
-    }*/
     
     // ReSharper disable Unity.PerformanceAnalysis
     public static Folder GetFolderFromCollider(Folder folder, Collider collider)

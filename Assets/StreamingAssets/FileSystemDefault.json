@@ -1,0 +1,26 @@
+{
+  "Name": "Desktop",
+  "Children": [
+    {
+      "Name": "Video",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Immagini",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Documenti",
+      "Children": [],
+      "Files": []
+    },
+    {
+      "Name": "Audio",
+      "Children": [],
+      "Files": []
+    }
+  ],
+  "Files": []
+}

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NotificationManager : MonoBehaviour
 {
-    private static NotificationManager Instance;
+    public static NotificationManager Instance;
     public Image NotificationImage;
     public TMP_Text message;
     public RectTransform backgroundBox;
@@ -118,12 +118,17 @@ public class NotificationManager : MonoBehaviour
                 Instance.message.text = "Vai avanti nel gioco per sbloccare questa funzionalità";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
+            case Operation.RestoreRedirectedToDesktop:
+                Instance.message.text = "Ripristino non riuscito, quindi è stato effettuato nel Desktop";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
         }
         Instance.StartCoroutine(CloseNotification(2f));
     }
 
-    public static void QuestNotify(string message)
+    public static IEnumerator QuestNotify(string message)
     {
+        yield return new WaitUntil(() => !Instance.backgroundBox.gameObject.activeSelf);
         Instance.backgroundBox.gameObject.SetActive(true);
         Instance.message.text = message;
         Instance.NotificationImage.sprite = Instance.successSprite;
