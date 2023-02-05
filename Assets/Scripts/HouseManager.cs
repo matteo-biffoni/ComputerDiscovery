@@ -657,13 +657,6 @@ public class Folder : Grabbable
         _files = new List<RoomFile>();
     }
 
-    public static void InsertNewFolder(string newFolderName, Folder father)
-    {
-        var newFolder = new Folder(newFolderName, father);
-        father.AddChild(newFolder);
-        TriggerReloading(Operation.FolderCreated);
-    }
-
     public void SetFiles(List<RoomFile> files)
     {
         _files = files;
@@ -814,11 +807,13 @@ public class Folder : Grabbable
         TriggerReloading(Operation.FileOrFolderInserted);
     }
 
+    /*
     public static void InsertNewFile(RoomFile newFile, Folder father)
     {
         father._files.Add(newFile);
         TriggerReloading(Operation.FileCreated);
     }
+    */
 
     public static bool IsMainRoomVisible()
     {

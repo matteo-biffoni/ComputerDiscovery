@@ -5948,6 +5948,7 @@ GameObject:
   - component: {fileID: 7207769513263745763}
   - component: {fileID: 4975184523187967338}
   - component: {fileID: 4975184523187967335}
+  - component: {fileID: 4094658588323271994}
   m_Layer: 7
   m_Name: House 1
   m_TagString: Untagged
@@ -6076,6 +6077,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95beac4bd8577a4e9ee97542323a743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4094658588323271994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207769513263745762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad715ab3230530340a458a561cddc02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  NewFolderKey: 110
+  CreateFolderCanvas: {fileID: 5464802197773771108, guid: e2b64afe61ce70945802cc5df4232781, type: 3}
 --- !u!1 &7207769513437210773
 GameObject:
   m_ObjectHideFlags: 0
