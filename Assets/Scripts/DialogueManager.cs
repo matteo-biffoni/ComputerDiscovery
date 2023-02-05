@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,10 +10,10 @@ public class DialogueManager : MonoBehaviour
     [FormerlySerializedAs("actorImage")] public Image ActorImage;
     [FormerlySerializedAs("actorNameText")] public TMP_Text ActorNameText;
     [FormerlySerializedAs("message")] public TMP_Text Message;
-    public RectTransform backgroundBox;
     private Action _endDialogCallback;
     private string[] _currentMessages;
     private int _activeMessage;
+    private bool _dialogRunning;
     
 
     public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
@@ -22,8 +23,18 @@ public class DialogueManager : MonoBehaviour
         ActorImage.sprite = sprite;
         _endDialogCallback = endDialogCallback;
         _activeMessage = 0;
-        backgroundBox.LeanScale(Vector3.one, 0.5f);
+        StartCoroutine(ScaleAndStartDialogue());
+    }
+
+    private IEnumerator ScaleAndStartDialogue()
+    {
         DisplayMessage();
+        while (transform.localScale.x < 0.99f)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, Time.deltaTime * 8f);
+            yield return null;
+        }
+        _dialogRunning = true;
     }
 
     private void DisplayMessage()
@@ -41,19 +52,25 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            backgroundBox.LeanScale(Vector3.zero, 0.5f);
-            _endDialogCallback();
+            StartCoroutine(ScaleBackAndCallback());
         }
     }
-    // Start is called before the first frame update
-    void Start()
+
+    private IEnumerator ScaleBackAndCallback()
     {
-        backgroundBox.transform.localScale = Vector3.zero;
+        while (transform.localScale.x > 0.01f)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 8f);
+            yield return null;
+        }
+        _dialogRunning = false;
+        _endDialogCallback();
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (!_dialogRunning) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             NextMessage();

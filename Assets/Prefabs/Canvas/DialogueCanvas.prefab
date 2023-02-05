@@ -298,8 +298,8 @@ RectTransform:
   m_GameObject: {fileID: 3771306748784960941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3771306749314038283}
   - {fileID: 3771306747800864917}
@@ -365,7 +365,6 @@ MonoBehaviour:
   ActorImage: {fileID: 3771306749314038284}
   ActorNameText: {fileID: 3771306747800864918}
   Message: {fileID: 3771306748618456713}
-  backgroundBox: {fileID: 3771306748784960942}
 --- !u!1 &3771306749287187085
 GameObject:
   m_ObjectHideFlags: 0

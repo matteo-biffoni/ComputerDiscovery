@@ -63,7 +63,7 @@ public class QuestManager : MonoBehaviour
         if (filesActual.Count == 8 && wrongAllocatedFilesList.Count == 0) {
             HouseManager.ActualQuest = 2;
             LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
-            NotificationManager.QuestNotify("Lamp ti sta aspettando! :)");
+            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }
     public static bool Quest1CountChecker(Folder quest1, Folder actualFolderStructure)
@@ -92,7 +92,7 @@ public class QuestManager : MonoBehaviour
         if (notRenamedFiles.Count == 0) {
             HouseManager.ActualQuest = 3;
             LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
-            NotificationManager.QuestNotify("Lamp ti sta aspettando! :)");
+            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }
 }

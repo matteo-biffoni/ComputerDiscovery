@@ -40,7 +40,7 @@ public class Grabber : MonoBehaviour
         var localRotation = cameraT.localRotation;
         var cameraTo = Quaternion.Euler(new Vector3(lookRotationCamera.eulerAngles.x, localRotation.eulerAngles.y,
             localRotation.eulerAngles.z));
-        while (Quaternion.Angle(_player.rotation, lookRotation) > 0.001f)
+        while (Quaternion.Angle(_player.rotation, lookRotation) > 0.1f)
         {
             _player.rotation = Quaternion.Slerp(_player.rotation, lookRotation, Time.deltaTime * 8f);
             cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, cameraTo, Time.deltaTime * 8f);
@@ -55,7 +55,7 @@ public class Grabber : MonoBehaviour
         };
         if (t != null)
         {
-            while (Vector3.Distance(t.position, _bachecaLookAt.position) > 0.001f)
+            while (Vector3.Distance(t.position, _bachecaLookAt.position) > 0.1f)
             {
                 t.position = Vector3.MoveTowards(t.position, _bachecaLookAt.position, Time.deltaTime * 8f);
                 yield return null;
@@ -64,8 +64,22 @@ public class Grabber : MonoBehaviour
 
         Instantiate(_explosion, transform);
         yield return new WaitForSeconds(0.3f);
-        HouseManager.PlayerRotationToAfterInstantiation = previousPlayerRotation;
-        HouseManager.CameraRotationToAfterInstantiation = previousCameraRotation;
+        switch (_file)
+        {
+            case Folder:
+                transform.parent.parent.parent.parent.SetParent(_destinationRoom.GetBacheca().transform);
+                break;
+            case RoomFile:
+                transform.SetParent(_destinationRoom.GetBacheca().transform);
+                break;
+        }
+        while (Quaternion.Angle(_player.rotation, previousPlayerRotation) > 0.1f)
+        {
+            _player.rotation = Quaternion.Slerp(_player.rotation, previousPlayerRotation, Time.deltaTime * 8f);
+            cameraT.localRotation =
+                Quaternion.Slerp(cameraT.localRotation, previousCameraRotation, Time.deltaTime * 8f);
+            yield return null;
+        }
         _destinationRoom.InsertFileOrFolder(_file, false);
         if (HouseManager.ActualQuest == 1)
         {
@@ -331,12 +345,12 @@ public class Grabber : MonoBehaviour
     {
         if (value)
         {
-            if (!_labelVisibility)
+            if (!_labelVisibility && _fileNameTextRaycast != null && _file?.GetName() != null)
             {
                 _fileNameTextRaycast.text = _file.GetName().Trim();
             }
         }
-        else if (_labelVisibility && _fileNameTextRaycast.text.Trim() != "")
+        else if (_labelVisibility && _fileNameTextRaycast != null && _fileNameTextRaycast.text.Trim() != "")
         {
             _fileNameTextRaycast.text = "";
         }

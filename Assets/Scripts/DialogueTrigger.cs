@@ -34,7 +34,7 @@ public class DialogueTrigger : MonoBehaviour
     
     private IEnumerator StartDialogue(int questNumber)
     {
-        Cursor.lockState = CursorLockMode.None;
+        InteractCanvas.SetActive(false);
         Player.IgnoreInput();
         yield return SmoothTurnToLamp();
         var messages = questNumber switch
@@ -44,7 +44,6 @@ public class DialogueTrigger : MonoBehaviour
             3 => Quest3Messages,
             _ => null
         };
-        InteractCanvas.SetActive(false);
         DialogueCanvas.SetActive(true);
         DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite);
     }
@@ -62,7 +61,7 @@ public class DialogueTrigger : MonoBehaviour
         var localRotation = cameraT.localRotation;
         var cameraTo = Quaternion.Euler(new Vector3(lookRotationCamera.eulerAngles.x, localRotation.eulerAngles.y,
             localRotation.eulerAngles.z));
-        while (Quaternion.Angle(Player.transform.rotation, lookRotation) > 0.001f)
+        while (Quaternion.Angle(Player.transform.rotation, lookRotation) > 0.1f)
         {
             Player.transform.rotation = Quaternion.Slerp(Player.transform.rotation, lookRotation, Time.deltaTime * 8f);
             cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, cameraTo, Time.deltaTime * 8f);
@@ -73,7 +72,7 @@ public class DialogueTrigger : MonoBehaviour
     private IEnumerator SmoothReturnToPreviousOrientation()
     {
         var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
-        while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.01f)
+        while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.1f)
         {
             Player.transform.rotation =
                 Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 12f);
@@ -81,6 +80,7 @@ public class DialogueTrigger : MonoBehaviour
                 Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 12f);
             yield return null;
         }
+        Player.ReactivateInput();
         yield return null;
     }
 
@@ -108,8 +108,7 @@ public class DialogueTrigger : MonoBehaviour
             _thirdQuestInstantiation = true;
             Folder.TriggerReloading(Operation.Quest2Completed);
         }
-        Cursor.lockState = CursorLockMode.Locked;
-        Player.ReactivateInput();
+        DialogueCanvas.SetActive(false);
         InteractCanvas.SetActive(true);
         _checkInteraction = true;
         StartCoroutine(SmoothReturnToPreviousOrientation());

@@ -129,7 +129,7 @@ public class AD5LNavController : MonoBehaviour
     
     private IEnumerator SmoothTurnTo(Quaternion rotation)
     {
-        while (Quaternion.Angle(transform.rotation, rotation) > 0.001f)
+        while (Quaternion.Angle(transform.rotation, rotation) > 0.1f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 3f);
             yield return null;

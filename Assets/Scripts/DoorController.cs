@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -33,6 +34,14 @@ public class DoorController : MonoBehaviour
             grabber.TrashItemCanvasPrefab = TrashItemCanvasPrefab;
             grabber.ObjMenuCanvasPrefab = ObjMenuCanvasPrefab;
         }
+    }
+
+    private void Start()
+    {
+        if (!(Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position,
+                transform.position) < 1.17197f)) return;
+        _doorAnimator.SetBool(CloseDoor, false);
+        _doorAnimator.SetBool(OpenDoor, true);
     }
 
     public void SetRoom(Folder folder)
