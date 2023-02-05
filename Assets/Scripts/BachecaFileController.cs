@@ -47,6 +47,7 @@ public class BachecaFileController : MonoBehaviour
             if (fileGrabber)
             {
                 fileGrabber.SetReferred(files[i]);
+                fileGrabber.SetImage(SpriteSelector.GetSpriteFromInt(files[i].GetImageIndex()));
             }
         }
     }

@@ -19,6 +19,11 @@ public class FirstPersonCharacterController : MonoBehaviour
     private bool _ignoreInput;
     private bool _ignoreMovement;
 
+    public bool IsMagnet0Free()
+    {
+        return !_ignoreInput;
+    }
+
     public void IgnoreMovement()
     {
         _ignoreMovement = true;

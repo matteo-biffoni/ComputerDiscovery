@@ -272,43 +272,43 @@
     {
       "Name": "File1.doc",
       "Format": "doc",
-      "Integrity": true,
+      "ImageIndex": -1,
       "Size": 2
     },
     {
       "Name": "File2.doc",
       "Format": "doc",
-      "Integrity": false,
+      "ImageIndex": -1,
       "Size": 10.8
     },
     {
       "Name": "File3.doc",
       "Format": "doc",
-      "Integrity": false,
+      "ImageIndex": -1,
       "Size": 1102
     },
     {
       "Name": "File4.txt",
       "Format": "txt",
-      "Integrity": false,
+      "ImageIndex": -1,
       "Size": 7
     },
     {
       "Name": "File5.txt",
       "Format": "txt",
-      "Integrity": false,
+      "ImageIndex": -1,
       "Size": 17
     },
     {
       "Name": "File6.txt",
       "Format": "txt",
-      "Integrity": false,
+      "ImageIndex": -1,
       "Size": 166
     },
     {
       "Name": "File7.jpg",
       "Format": "jpeg",
-      "Integrity": false,
+      "ImageIndex": -1,
       "Size": 123
     }
   ]

@@ -1,8 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
+
+    public static List<string> ImageNamesAtQuest2Start;
 
     public static void Quest1FormatChecker(Folder actualFolderStructure)
     {
@@ -63,26 +66,29 @@ public class QuestManager : MonoBehaviour
         if (filesActual.Count == 8 && wrongAllocatedFilesList.Count == 0) {
             HouseManager.ActualQuest = 2;
             LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
-            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+            
+            NotificationManager.Instance.StartCoroutine(ShowLastNotifyAndNotifyQuest1());
         }
+    }
+
+    private static IEnumerator ShowLastNotifyAndNotifyQuest1()
+    {
+        yield return new WaitForSeconds(2f);
+        yield return NotificationManager.QuestNotify("Lamp ti sta aspettando! :)");
     }
     public static bool Quest1CountChecker(Folder quest1, Folder actualFolderStructure)
     {
         return quest1.GetAllFiles().Count == actualFolderStructure.GetAllFiles().Count;
     }
     
-    public static void Quest2FormatChecker(Folder ImagesFolder)
+    public static void Quest2FormatChecker()
     {
-        //Ipotizzo che il filesystem caricato per la quest 2 abbia alcuni file nella cartella immagini e 2 sottocartelle 
-        //con altri file al loro interno, tutti da rinominare. 
-        //Es. foto.jpeg - albero.png - ponte.jpeg - luna.png 
-        var toBeRenamedFiles = new List<string>{"foto.jpg","albero.png", "ponte.jpg", "luna.png"};
         var notRenamedFiles = new List<string>(); //lista di file non ancora rinominati
-        var filesActual = ImagesFolder.GetAllFiles(); //prendo tutti i file nella cartella Immagini
+        var filesActual = Folder.Root.GetAllFiles(); //prendo tutti i file nella cartella Immagini
         foreach (var file in filesActual)
         {
             var fileName = file.GetName();
-            if (toBeRenamedFiles.Contains(fileName))
+            if (ImageNamesAtQuest2Start.Contains(fileName))
             {
                 notRenamedFiles.Add($"Il file '{fileName}' deve essere rinominato");
             }

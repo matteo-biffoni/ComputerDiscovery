@@ -6,7 +6,7 @@ using UnityEngine;
 public class NetworkBox : MonoBehaviour
 {
     public NetworkManager NetworkManager;
-    private Outline _outline;
+    public Outline Outline;
 
     private bool _actualRaycast;
 
@@ -20,7 +20,7 @@ public class NetworkBox : MonoBehaviour
 
     private void Start()
     {
-        _outline = GetComponent<Outline>();
+        Outline = GetComponent<Outline>();
         _animator = GetComponent<Animator>();
     }
 
@@ -52,8 +52,8 @@ public class NetworkBox : MonoBehaviour
 
     private void BoxOutline(bool show)
     {
-        _outline.OutlineWidth = show ? 5f : 0f;
-        _outline.enabled = show;
+        Outline.OutlineWidth = show ? 5f : 0f;
+        Outline.enabled = show;
     }
 
     public void FileInserted(Grabber grabber)

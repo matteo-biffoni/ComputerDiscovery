@@ -132,7 +132,11 @@ public class NotificationManager : MonoBehaviour
         Instance.backgroundBox.gameObject.SetActive(true);
         Instance.message.text = message;
         Instance.NotificationImage.sprite = Instance.successSprite;
-        Instance.StartCoroutine(CloseNotification(3f));
+    }
+
+    public static void HardCloseNotification()
+    {
+        Instance.backgroundBox.gameObject.SetActive(false);
     }
 
 
