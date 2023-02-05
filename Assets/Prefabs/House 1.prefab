@@ -1175,6 +1175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 2217327805658242056}
+  Outline: {fileID: 0}
 --- !u!114 &4485759878308114251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5949,6 +5950,7 @@ GameObject:
   - component: {fileID: 4975184523187967338}
   - component: {fileID: 4975184523187967335}
   - component: {fileID: 4094658588323271994}
+  - component: {fileID: 6012121029886427229}
   m_Layer: 7
   m_Name: House 1
   m_TagString: Untagged
@@ -6011,14 +6013,6 @@ MonoBehaviour:
   Player: {fileID: 0}
   MainRoomGo: {fileID: 7207769513803892583}
   TrashBinController: {fileID: 1655889605496224719}
-  PossibleImagesPng:
-  - {fileID: 21300000, guid: 0f71d9bb625d7454a8596904a25646d6, type: 3}
-  - {fileID: 21300000, guid: 28671512f2cc77c44bebc6d98899b502, type: 3}
-  - {fileID: 21300000, guid: 02c9f12d705daa0499868fc2fa1dd3a0, type: 3}
-  PossibleImagesJpeg:
-  - {fileID: 21300000, guid: 28671512f2cc77c44bebc6d98899b502, type: 3}
-  - {fileID: 21300000, guid: 02c9f12d705daa0499868fc2fa1dd3a0, type: 3}
-  - {fileID: 21300000, guid: 0f71d9bb625d7454a8596904a25646d6, type: 3}
   MediumSizeMin: 10
   LargeSizeMin: 50
   Mp3S:
@@ -6092,6 +6086,35 @@ MonoBehaviour:
   Player: {fileID: 0}
   NewFolderKey: 110
   CreateFolderCanvas: {fileID: 5464802197773771108, guid: e2b64afe61ce70945802cc5df4232781, type: 3}
+--- !u!114 &6012121029886427229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207769513263745762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80b7eeeba0e8413687d90f55cda27cd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sprites:
+  - {fileID: 21300000, guid: 5cd6d2ec8acf4c24ca6064bc434f31ac, type: 3}
+  - {fileID: 21300000, guid: 8164edfd96efbcc41bdfdc52a4d86723, type: 3}
+  - {fileID: 21300000, guid: fe10d19465546a546aec21f5d7b96b8e, type: 3}
+  - {fileID: 21300000, guid: ea5fc6f065742b04da165ec19a88245a, type: 3}
+  - {fileID: 21300000, guid: 91e2df2027031534b86419668f22d8eb, type: 3}
+  - {fileID: 21300000, guid: 3a936e6bf17811a4192e7241c6331908, type: 3}
+  - {fileID: 21300000, guid: e8ab7270f85a6b941b8dd86214bb38fe, type: 3}
+  - {fileID: 21300000, guid: 5f2cdd7400d67de4295739ad42538671, type: 3}
+  - {fileID: 21300000, guid: cb6b71c7b15b91e43aef964fce311dfa, type: 3}
+  - {fileID: 21300000, guid: 3455cb60ccdb4c140941f17fb74f3ca6, type: 3}
+  - {fileID: 21300000, guid: 7a0190fc30ec3444ebaa4db1c00dcee9, type: 3}
+  - {fileID: 21300000, guid: 9841f8a5e7465d54da3417559d1ff466, type: 3}
+  - {fileID: 21300000, guid: 9b24ee30bf8e3954e91ca970b2cccba0, type: 3}
+  - {fileID: 21300000, guid: 3edc294bf42a109429ffbe6b18fb72ac, type: 3}
+  - {fileID: 21300000, guid: a9a40099ac772fe45998fc7af94fbff6, type: 3}
+  - {fileID: 21300000, guid: 7955b9ab951a0a440aef9146cde0a946, type: 3}
 --- !u!1 &7207769513437210773
 GameObject:
   m_ObjectHideFlags: 0

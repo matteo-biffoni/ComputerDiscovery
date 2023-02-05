@@ -14,6 +14,7 @@ public class CreateFolderManager : MonoBehaviour
     public GameObject CreateFolderCanvas;
     private bool _showingMenu;
     private GameObject _menu;
+    public static bool EnabledByQuest;
     
     private void Start()
     {
@@ -51,6 +52,7 @@ public class CreateFolderManager : MonoBehaviour
             {
                 var newFolderName = folderNameInputField.text.Trim();
                 _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null), false);
+                NotificationManager.Notify(Operation.FolderCreated);
                 GoBackToGame();
             }
         });
@@ -70,7 +72,7 @@ public class CreateFolderManager : MonoBehaviour
         {
             if (Input.GetKeyDown(NewFolderKey))
             {
-                if (_fps.IsMagnet0Free() && _pnm.CanCreateFolder())
+                if (_fps.IsMagnet0Free() && _pnm.CanCreateFolder() && EnabledByQuest)
                 {
                     GetLockAndShowMenu();
                 }

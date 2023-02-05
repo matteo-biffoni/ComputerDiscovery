@@ -36,13 +36,11 @@ public class HouseManager : MonoBehaviour
 
     public static int ActualQuest = 1;
 
-    private static readonly List<string> ImageFileNames = new() { "wHxUOUNlXf", "oSlPKjPelf", "gejYdEeNmW", "lsrhlhfGpV" };
+    private static readonly List<string> ImageFileNames = new() { "IimMaAggGiInE", "FfooTOoGRaFia", "gejYdEeNmW", "lsrhlhfGpV" };
     private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };
     private static readonly List<string> MultimediaFileNames = new () { "Recita", "Concerto", "Audizione", "Spettacolo", "Provino", "Shakira", "Beethoven", "John Lennon" };
-    public List<Sprite> PossibleImagesPng;
-    public List<Sprite> PossibleImagesJpeg;
-    
-    
+
+
     public float MediumSizeMin = 10.0f;
     public float LargeSizeMin = 50.0f;
 
@@ -103,8 +101,8 @@ public class HouseManager : MonoBehaviour
         ImageFileNames.Remove(nomeImmagine2);
         nomeImmagine1 += ".png";
         nomeImmagine2 += ".jpg";
-        var immagine1 = new RoomFile(nomeImmagine1, "png", true, random.Next(1, 150), null);
-        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", true, random.Next(1, 150), null);
+        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null);
+        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null);
         indiceNome = random.Next(0, DocFileNames.Count);
         var nomeDocumento1 = DocFileNames[indiceNome];
         DocFileNames.Remove(nomeDocumento1);
@@ -117,9 +115,9 @@ public class HouseManager : MonoBehaviour
         nomeDocumento1 += ".docx";
         nomeDocumento2 += ".pdf";
         nomeDocumento3 += ".txt";
-        var documento1 = new RoomFile(nomeDocumento1, "doc", true, random.Next(1, 150), null);
-        var documento2 = new RoomFile(nomeDocumento2, "pdf", true, random.Next(1, 150), null);
-        var documento3 = new RoomFile(nomeDocumento3, "txt", true, random.Next(1, 150), null);
+        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null);
+        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null);
+        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null);
         indiceNome = random.Next(0, MultimediaFileNames.Count);
         var nomeMultFile1 = MultimediaFileNames[indiceNome];
         MultimediaFileNames.Remove(nomeMultFile1);
@@ -128,88 +126,45 @@ public class HouseManager : MonoBehaviour
         MultimediaFileNames.Remove(nomeMultFile2);
         nomeMultFile1 += ".mp3";
         nomeMultFile2 += ".mov";
-        var multFile1 = new RoomFile(nomeMultFile1, "mp3", true, random.Next(1, 150), null);
-        var multFile2 = new RoomFile(nomeMultFile2, "mov", true, random.Next(1, 150), null);
-        var fileBonus = new RoomFile("", "", true, 0f, null);
+        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null);
+        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null);
+        var fileBonus = new RoomFile("", "", -1, 0f, null);
         string nomeFileBonus;
-        var formatoBonusIndice = random.Next(0, 2);
+        var formatoBonusIndice = random.Next(0, 1);
         switch (formatoBonusIndice)
         {
             case 0:
-                formatoBonusIndice = random.Next(0, 1);
+            {
                 indiceNome = random.Next(0, ImageFileNames.Count);
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
-                switch (formatoBonusIndice)
-                {
-                    case 0:
-                        nomeFileBonus += ".png";
-                        fileBonus = new RoomFile(nomeFileBonus, "png", true, random.Next(1, 150), null);
-                        break;
-                    case 1:
-                        nomeFileBonus += ".jpg";
-                        fileBonus = new RoomFile(nomeFileBonus, "jpeg", true, random.Next(1, 150), null);
-                        break;
-                }
+                nomeFileBonus += ".png";
+                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null);
                 break;
+            }
             case 1:
-                formatoBonusIndice = random.Next(0, 2);
-                indiceNome = random.Next(0, DocFileNames.Count);
-                nomeFileBonus = DocFileNames[indiceNome];
-                DocFileNames.Remove(nomeFileBonus);
-                switch (formatoBonusIndice)
-                {
-                    case 0:
-                        nomeFileBonus += ".docx";
-                        fileBonus = new RoomFile(nomeFileBonus, "doc", true, random.Next(1, 150), null);
-                        break;
-                    case 1:
-                        nomeFileBonus += ".pdf";
-                        fileBonus = new RoomFile(nomeFileBonus, "pdf", true, random.Next(1, 150), null);
-                        break;
-                    case 2:
-                        nomeFileBonus += ".txt";
-                        fileBonus = new RoomFile(nomeFileBonus, "txt", true, random.Next(1, 150), null);
-                        break;
-                }
+            {
+                indiceNome = random.Next(0, ImageFileNames.Count);
+                nomeFileBonus = ImageFileNames[indiceNome];
+                ImageFileNames.Remove(nomeFileBonus);
+                nomeFileBonus += ".jpg";
+                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null);
                 break;
-            case 2:
-                formatoBonusIndice = random.Next(0, 1);
-                indiceNome = random.Next(0, MultimediaFileNames.Count);
-                nomeFileBonus = MultimediaFileNames[indiceNome];
-                MultimediaFileNames.Remove(nomeFileBonus);
-                switch (formatoBonusIndice)
-                {
-                    case 0:
-                        nomeFileBonus += ".mp3";
-                        fileBonus = new RoomFile(nomeFileBonus, "mp3", true, random.Next(1, 150), null);
-                        break;
-                    case 1:
-                        nomeFileBonus += ".mov";
-                        fileBonus = new RoomFile(nomeFileBonus, "mov", true, random.Next(1, 150), null);
-                        break;
-                }
-                break;
+            }
         }
         // Ora gli 8 file sono: { immagine1, immagine2, documento1, documento2, documento3, multFile1, multFile2, fileBonus }
         var extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         var objToSpawn = PickPrefabFromFile(immagine1);
         var instantiated = Instantiate(objToSpawn, extracted.transform);
-        var immagine1Sprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        var extractedPng = PossibleImagesPng[random.Next(0, PossibleImagesPng.Count)];
-        PossibleImagesPng.Remove(extractedPng);
-        immagine1Sprite.sprite = extractedPng;
+        instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = SpriteSelector.GetSpriteFromInt(immagine1.GetImageIndex());
         var fileGrabber = instantiated.transform.GetComponent<Grabber>();
         fileGrabber.SetReferred(immagine1);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(immagine2);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        var immagine2Sprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        var extractedJpeg = PossibleImagesJpeg[random.Next(0, PossibleImagesJpeg.Count)];
-        PossibleImagesJpeg.Remove(extractedJpeg);
-        immagine2Sprite.sprite = extractedJpeg;
+        instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = SpriteSelector.GetSpriteFromInt(immagine2.GetImageIndex());
         fileGrabber = instantiated.transform.GetComponent<Grabber>();
         fileGrabber.SetReferred(immagine2);
         extracted = objectSpawners[random.Next(0, objectSpawners.Count)];
@@ -246,23 +201,7 @@ public class HouseManager : MonoBehaviour
         objectSpawners.Remove(extracted);
         objToSpawn = PickPrefabFromFile(fileBonus);
         instantiated = Instantiate(objToSpawn, extracted.transform);
-        if (fileBonus.GetFormat() == "jpeg" || fileBonus.GetFormat() == "png")
-        {
-            if (fileBonus.GetFormat() == "jpeg")
-            {
-                var immagineBonusSprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
-                var extractedBonusJpeg = PossibleImagesJpeg[random.Next(0, PossibleImagesJpeg.Count)];
-                PossibleImagesJpeg.Remove(extractedBonusJpeg);
-                immagineBonusSprite.sprite = extractedBonusJpeg;
-            }
-            if (fileBonus.GetFormat() == "png")
-            {
-                var immagineBonusSprite = instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>();
-                var extractedBonusPng = PossibleImagesPng[random.Next(0, PossibleImagesPng.Count)];
-                PossibleImagesPng.Remove(extractedBonusPng);
-                immagineBonusSprite.sprite = extractedBonusPng;
-            }
-        }
+        instantiated.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = SpriteSelector.GetSpriteFromInt(fileBonus.GetImageIndex());
         fileGrabber = instantiated.transform.GetComponent<Grabber>();
         fileGrabber.SetReferred(fileBonus);
     }
@@ -383,16 +322,16 @@ public class RoomFile : Grabbable
 {
     private string _name;
     private readonly string _format;
-    private readonly bool _integrity;
+    private readonly int _imageIndex;
     private readonly float _size;
     private Folder _parent;
     private string _parentOnDeletionAbsolutePath;
 
-    public RoomFile(string name, string format, bool integrity, float size, Folder parent)
+    public RoomFile(string name, string format, int imageIndex, float size, Folder parent)
     {
         _name = name;
         _format = format;
-        _integrity = integrity;
+        _imageIndex = imageIndex;
         _size = size;
         _parent = parent;
     }
@@ -412,9 +351,9 @@ public class RoomFile : Grabbable
         return _format;
     }
 
-    public bool GetIntegrity()
+    public int GetImageIndex()
     {
-        return _integrity;
+        return _imageIndex;
     }
 
     public float GetSize()
@@ -485,7 +424,7 @@ public class RoomFile : Grabbable
     public override Grabbable GetACopy()
     {
         var copyName = _name.Split(".")[0] + "_copia." + _name.Split(".")[1];
-        return new RoomFile(copyName, _format, _integrity, _size, null);
+        return new RoomFile(copyName, _format, _imageIndex, _size, null);
     }
 
     public override void Rename(string newName)
@@ -502,7 +441,7 @@ public class RoomFile : Grabbable
         //check quest 2
         if (HouseManager.ActualQuest == 2)
         {
-            QuestManager.Quest2FormatChecker(Folder.GetFolderFromAbsolutePath(new [] {"Desktop", "Immagini"}, Folder.Root));
+            QuestManager.Quest2FormatChecker();
         }
     }
 
@@ -596,6 +535,7 @@ public class Folder : Grabbable
         if (lastOp == Operation.Quest2Completed)
         {
             ShouldDoorsHaveGrabberAttached = true;
+            CreateFolderManager.EnabledByQuest = true;
         }
         WriteNewFolderStructureToFile();
         //_lastOperation = lastOp;
@@ -1185,7 +1125,7 @@ public class Folder : Grabbable
         var folder = new Folder(jsonFolder.Name, father);
         foreach (var file in jsonFolder.Files)
         {
-            folder._files.Add(new RoomFile(file.Name, file.Format, file.Integrity, file.Size, folder));
+            folder._files.Add(new RoomFile(file.Name, file.Format, file.ImageIndex, file.Size, folder));
         }
         foreach (var child in jsonFolder.Children)
         {
@@ -1209,7 +1149,7 @@ public class Folder : Grabbable
             {
                 Name = file.GetName(),
                 Format = file.GetFormat(),
-                Integrity = file.GetIntegrity(),
+                ImageIndex = file.GetImageIndex(),
                 Size = file.GetSize()
             });
         }
@@ -1234,8 +1174,8 @@ public class JsonFile
     [JsonProperty("Format")]
     public string Format { get; set; }
     
-    [JsonProperty("Integrity")]
-    public bool Integrity { get; set; }
+    [JsonProperty("ImageIndex")]
+    public int ImageIndex { get; set; }
     
     [JsonProperty("Size")]
     public float Size { get; set; }

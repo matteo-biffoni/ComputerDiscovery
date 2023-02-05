@@ -45,6 +45,7 @@ public class DialogueTrigger : MonoBehaviour
             _ => null
         };
         DialogueCanvas.SetActive(true);
+        NotificationManager.HardCloseNotification();
         DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite);
     }
     
@@ -91,16 +92,20 @@ public class DialogueTrigger : MonoBehaviour
         {
             _secondQuestInstantiation = true;
             var Immagini = Folder.GetFolderFromAbsolutePath(new [] { "Desktop", "Immagini"}, Folder.Root);
-            var Viaggio = new Folder("Viaggio", Immagini);
-            var file1 = new RoomFile("foto.jpg", "jpeg", true, 70, Viaggio);
-            var file2 = new RoomFile("albero.png", "png", true, 70, Viaggio);
-            var file3 = new RoomFile("ponte.jpg", "jpeg", true, 70, Viaggio);
-            var file4 = new RoomFile("luna.png", "png", true, 70, Viaggio);
+            var Torino = new Folder("Torino", Immagini);
+            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino);
+            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino);
+            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino);
+            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino);
             var fileList = new List<RoomFile> { file1, file2, file3, file4 };
-            Viaggio.SetFiles(fileList);
-            Immagini.GetChildren().Add(Viaggio);
+            Torino.SetFiles(fileList);
+            Immagini.GetChildren().Add(Torino);
             Folder.TriggerReloading(Operation.Nop);
-            var randomicallyGenerated = Immagini.GetAllFiles().Where((file) => file.GetParent() == Immagini);
+            QuestManager.ImageNamesAtQuest2Start = new List<string>();
+            foreach (var roomFile in Immagini.GetAllFiles())
+            {
+                QuestManager.ImageNamesAtQuest2Start.Add(roomFile.GetName());
+            }
         }
 
         if (HouseManager.ActualQuest == 3 && !_thirdQuestInstantiation)

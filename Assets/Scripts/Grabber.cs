@@ -27,6 +27,14 @@ public class Grabber : MonoBehaviour
         _fileNameTextGrabbed = GameObject.FindGameObjectWithTag("GrabbedFileText").transform.GetComponent<TMP_Text>();
     }
 
+    public void SetImage(Sprite sprite)
+    {
+        if (_file is RoomFile roomFile && (roomFile.GetFormat() == "png" || roomFile.GetFormat() == "jpeg"))
+        {
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = sprite;
+        }
+    }
+
     private IEnumerator AnimationAfterDrop()
     {
         var previousPlayerRotation = _player.rotation;

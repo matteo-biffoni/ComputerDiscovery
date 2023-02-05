@@ -135,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1599052602609976873}
   - component: {fileID: 2807673004840079668}
+  - component: {fileID: 7498571086878695158}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -217,6 +218,24 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.0043404535, z: 4.656613e-10}
     m_Extent: {x: 0.009788095, y: 0.004365305, z: 0.00934105}
   m_DirtyAABB: 0
+--- !u!114 &7498571086878695158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3913009043762435274}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4129301224710085085
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +438,6 @@ GameObject:
   - component: {fileID: 6581771175346339984}
   - component: {fileID: 893209488827966802}
   - component: {fileID: 2453400021162241044}
-  - component: {fileID: 8142967948493889858}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -491,24 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkManager: {fileID: 0}
---- !u!114 &8142967948493889858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6311319695366099905}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
+  Outline: {fileID: 7498571086878695158}
 --- !u!1 &7400624668117336951
 GameObject:
   m_ObjectHideFlags: 0

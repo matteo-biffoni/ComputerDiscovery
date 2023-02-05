@@ -8,13 +8,13 @@
         {
           "Name": "Cat.jpg",
           "Format": "jpeg",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 2.3
         },
         {
           "Name": "Dog.png",
           "Format": "png",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 1.7
         }
       ]
@@ -26,19 +26,19 @@
         {
           "Name": "Appunti.pdf",
           "Format": "pdf",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 12.3
         },
         {
           "Name": "Modulo.docx",
           "Format": "doc",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 7.1
         },
         {
           "Name": "Lezione.txt",
           "Format": "txt",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 0.3
         }
       ]
@@ -50,7 +50,7 @@
         {
           "Name": "Registrazione.mp3",
           "Format": "mp3",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 5
         }
       ]
@@ -62,7 +62,7 @@
         {
           "Name": "Recita.mov",
           "Format": "mov",
-          "Integrity": true,
+          "ImageIndex": -1,
           "Size": 200.5
         }
       ]
