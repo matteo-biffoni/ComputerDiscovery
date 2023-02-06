@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -112,6 +113,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             _thirdQuestInstantiation = true;
             Folder.TriggerReloading(Operation.Quest2Completed);
+            GameObject.FindGameObjectWithTag("Serranda").transform.GetComponent<BoxCollider>().enabled = true;
         }
         DialogueCanvas.SetActive(false);
         InteractCanvas.SetActive(true);
