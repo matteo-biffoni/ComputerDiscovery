@@ -34,7 +34,7 @@ public class HouseManager : MonoBehaviour
 
     public TrashBinController TrashBinController;
 
-    public static int ActualQuest = 2;
+    public static int ActualQuest = 1;
 
     private static readonly List<string> ImageFileNames = new() { "IimMaAggGiInE", "FfooTOoGRaFia", "gejYdEeNmW", "lsrhlhfGpV" };
     private static readonly List<string> DocFileNames = new () { "Passaporto", "Carta d'identità", "Patente", "Tessera sanitaria", "Biglietto del treno", "Tesi", "Assicurazione auto", "Ricetta" };

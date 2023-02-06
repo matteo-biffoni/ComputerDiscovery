@@ -74,6 +74,7 @@ public class AD5LNavController : MonoBehaviour
         yield return new WaitUntil(() =>
             _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "AD5L_Armature|AD5L_IdleWithBox");
         Ad5LIoAnimator.SetBool(AD5LDeparting, true);
+        AudioManager.Instance.StartCoroutine(AudioManager.PlayAD5L_OpenDoor(Ad5LIoAnimator.transform));
         yield return new WaitForSeconds(0.5f);
         Ad5LIoAnimator.SetBool(AD5LDeparting, false);
         _animator.SetBool(Walking, true);
@@ -97,6 +98,8 @@ public class AD5LNavController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         Ad5LIoAnimator.SetBool(AD5LArriving, false);
         yield return new WaitUntil(TargetReached);
+        yield return new WaitForSeconds(0.5f);
+        AudioManager.Instance.StartCoroutine(AudioManager.PlayAD5L_OpenDoor(Ad5LIoAnimator.transform));
         yield return new WaitWhile(() => Ad5LIoAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.7f);
         if (_navMeshAgent.CalculatePath(BoxPosition.position, navMeshPath))
         {

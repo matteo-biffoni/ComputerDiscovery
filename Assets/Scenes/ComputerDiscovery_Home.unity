@@ -551,6 +551,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1302801593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1302801595}
+  - component: {fileID: 1302801594}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1302801594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302801593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75fb4bf3fc3af3c4da8b358393e9c343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DropClip: {fileID: 8300000, guid: 9e733841410d74c4891051c55584021b, type: 3}
+  GrabClip: {fileID: 8300000, guid: 9680287e55567064cbb03ccc9dff7288, type: 3}
+  OpenDoor: {fileID: 8300000, guid: 5b7983c98dc690343b602d7763abd7cf, type: 3}
+  AD5LDoor: {fileID: 8300000, guid: a6f2d54f75c04cf4da57288b12db6762, type: 3}
+  Notification: {fileID: 8300000, guid: 6e6ffbe474d069c41ae2b31db578d393, type: 3}
+  RobotTalking: {fileID: 8300000, guid: afab6768c791216468dba62c761da30a, type: 3}
+  DeleteNotification: {fileID: 8300000, guid: 4db07668b70f22741827a325127a1873, type: 3}
+  ConfirmNotification: {fileID: 8300000, guid: 76dfbc9509dc23d438985e1f03058bb9, type: 3}
+--- !u!4 &1302801595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302801593}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1663533261 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2586040516652387876, guid: 12f0a380cd09f9747ab34dc27a7d209a, type: 3}
