@@ -20,52 +20,52 @@ public class QuestManager : MonoBehaviour
                 case "png":
                     if (parentName != "Immagini")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Immagini");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Immagini");
                     }
                     break;
                 case "jpeg":
                     if (parentName != "Immagini")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Immagini");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Immagini");
                     }
                     break;
                 case "doc":
                     if (parentName != "Documenti")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Documenti");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Documenti");
                     }
                     break;
                 case "pdf":
                     if (parentName != "Documenti")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Immagini");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Immagini");
                     }
                     break;
                 case "txt":
                     if (parentName != "Documenti")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Documenti");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Documenti");
                     }
                     break;
                 case "mp3":
                     if (parentName != "Audio")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Audio");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Audio");
                     }
                     break;
                 case "mov":
                     if (parentName != "Video")
                     {
-                        wrongAllocatedFilesList.Add($"Il file {fileName} deve essere posizionato nella cartella Video");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Video");
                     }
                     break;
             }
         }
-        LavagnettaManager.WriteOnLavagnetta(wrongAllocatedFilesList, "INFO");
+        LavagnettaManager.WriteOnLavagnetta(wrongAllocatedFilesList, "INFORMAZIONI");
         //Check fine quest, tutti i file allocati correttamente
         if (filesActual.Count == 8 && wrongAllocatedFilesList.Count == 0) {
             HouseManager.ActualQuest = 2;
-            LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
+            LavagnettaManager.WriteOnLavagnetta(null, "BEN FATTO!"); //messaggio fine quest
             
             NotificationManager.Instance.StartCoroutine(ShowLastNotifyAndNotifyQuest1());
         }
@@ -90,14 +90,14 @@ public class QuestManager : MonoBehaviour
             var fileName = file.GetName();
             if (ImageNamesAtQuest2Start.Contains(fileName))
             {
-                notRenamedFiles.Add($"Il file '{fileName}' deve essere rinominato");
+                notRenamedFiles.Add($"- Il file '{fileName}' deve essere rinominato");
             }
         }
-        LavagnettaManager.WriteOnLavagnetta(notRenamedFiles, "INFO");
+        LavagnettaManager.WriteOnLavagnetta(notRenamedFiles, "INFORMAZIONI");
         //Check fine quest, tutti i file allocati correttamente
         if (notRenamedFiles.Count == 0) {
             HouseManager.ActualQuest = 3;
-            LavagnettaManager.WriteOnLavagnetta(null, "COMPLIMENTI!"); //messaggio fine quest
+            LavagnettaManager.WriteOnLavagnetta(null, "BEN FATTO!"); //messaggio fine quest
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }
