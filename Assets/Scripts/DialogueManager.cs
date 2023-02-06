@@ -16,13 +16,14 @@ public class DialogueManager : MonoBehaviour
     private bool _dialogRunning;
     
 
-    public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
+    public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite, Transform actorTransform)
     {
         _currentMessages = messages;
         ActorNameText.text = actorName;
         ActorImage.sprite = sprite;
         _endDialogCallback = endDialogCallback;
         _activeMessage = 0;
+        StartCoroutine(PlaySoundAndPause(actorTransform));
         StartCoroutine(ScaleAndStartDialogue());
     }
 
@@ -41,6 +42,20 @@ public class DialogueManager : MonoBehaviour
     {
         var messageToDisplay = _currentMessages[_activeMessage];
         Message.text = messageToDisplay;
+        AudioManager.Pause = false;
+        StartCoroutine(PauseAfterSec(1.5f));
+    }
+
+    private IEnumerator PauseAfterSec(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        AudioManager.Pause = true;
+    }
+
+    private IEnumerator PlaySoundAndPause(Transform actorTransform)
+    {
+        AudioManager.Instance.StartCoroutine(AudioManager.PlayRobotTalking(actorTransform));
+        yield return PauseAfterSec(1.5f);
     }
 
     private void NextMessage()
@@ -52,6 +67,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
+            AudioManager.DialogFinished = true;
             StartCoroutine(ScaleBackAndCallback());
         }
     }
