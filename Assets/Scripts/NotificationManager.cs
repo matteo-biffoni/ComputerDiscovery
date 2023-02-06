@@ -20,6 +20,7 @@ public class NotificationManager : MonoBehaviour
     //Notifiche operazioni su file e cartelle
     public static void Notify(Operation operation)
     {
+        AudioManager.Instance.StartCoroutine(AudioManager.Play(Instance.transform, AudioManager.Instance.Notification));
         Instance.backgroundBox.gameObject.SetActive(true);
         
         switch (operation)
