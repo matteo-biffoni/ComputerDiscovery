@@ -12,6 +12,7 @@ TagManager:
   - GrabbedFileText
   - FileNameRaycast
   - Serranda
+  - CarDownloader
   layers:
   - Default
   - TransparentFX

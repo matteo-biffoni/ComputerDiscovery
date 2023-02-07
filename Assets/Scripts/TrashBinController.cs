@@ -29,7 +29,7 @@ public class TrashBinController : MonoBehaviour
     private float _startTimeAnimation;
     private bool _endAlphaAnimation;
 
-    public static bool EmptyOperation = false;
+    public static bool EmptyOperation;
     private int TrashItemsCount()
     {
         return transform.Cast<Transform>().Sum(child => child.childCount);

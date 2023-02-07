@@ -19,6 +19,7 @@ public class Magnet0Raycaster : MonoBehaviour
     private GameObject _objMenu, _renameMenu;
     private NetworkManager _previousNetworkManager;
     private NetworkBox _previousNetworkBox;
+    private CarDownloader _previousCarDownloader;
     private Transform _boxObjHolderT;
 
     public static bool Operating = true;
@@ -234,6 +235,28 @@ public class Magnet0Raycaster : MonoBehaviour
                         }
                     }
                 }
+                if (hit.transform.CompareTag("CarDownloader") && !CarDownloader.FilesDownloaded)
+                {
+                    var carDownloader = hit.transform.GetComponent<CarDownloader>();
+                    if (_previousCarDownloader != null && _previousCarDownloader != carDownloader)
+                    {
+                        if (_previousCarDownloader.GetActualRaycast())
+                        {
+                            _previousCarDownloader.SetActualRaycast(false);
+                            _previousCarDownloader = null;
+                            return;
+                        }
+                    }
+
+                    if (carDownloader)
+                    {
+                        _previousCarDownloader = carDownloader;
+                        if (!_previousCarDownloader.GetActualRaycast())
+                        {
+                            _previousCarDownloader.SetActualRaycast(true);
+                        }
+                    }
+                }
             }
             else
             {
@@ -312,6 +335,15 @@ public class Magnet0Raycaster : MonoBehaviour
                     _previousNetworkBox.SetActualRaycast(false);
                     _previousNetworkBox = null;
                     _boxObjHolderT = null;
+                }
+            }
+
+            if (_previousCarDownloader != null)
+            {
+                if (_previousCarDownloader.GetActualRaycast())
+                {
+                    _previousCarDownloader.SetActualRaycast(false);
+                    _previousCarDownloader = null;
                 }
             }
         }

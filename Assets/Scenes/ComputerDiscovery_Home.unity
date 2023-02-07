@@ -899,6 +899,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 150842339, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1862197109}
+    - target: {fileID: 150842339, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: InteractCanvas
+      value: 
+      objectReference: {fileID: 288984559}
+    - target: {fileID: 150842339, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: InteractCanvasText
+      value: 
+      objectReference: {fileID: 1663533261}
     - target: {fileID: 1655889605496224719, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
       propertyPath: Player
       value: 
