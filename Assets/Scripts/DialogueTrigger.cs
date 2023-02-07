@@ -47,7 +47,7 @@ public class DialogueTrigger : MonoBehaviour
         };
         DialogueCanvas.SetActive(true);
         NotificationManager.HardCloseNotification();
-        DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite, transform);
+        DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite);
     }
     
     private IEnumerator SmoothTurnToLamp()

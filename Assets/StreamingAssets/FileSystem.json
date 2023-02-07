@@ -22,5 +22,12 @@
       "Files": []
     }
   ],
-  "Files": []
+  "Files": [
+    {
+      "Name": "Biglietto del treno.pdf",
+      "Format": "pdf",
+      "ImageIndex": -1,
+      "Size": 72.0
+    }
+  ]
 }

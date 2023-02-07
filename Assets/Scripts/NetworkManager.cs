@@ -100,7 +100,7 @@ public class NetworkManager : MonoBehaviour
         _playerShouldLookAtMe = false;
         yield return SmoothTurnToAD5L();
         DialogueCanvas.SetActive(true);
-        DialogueManager.OpenDialogue(EndDialogue, InfoDialog, ActorName, ActorSprite, transform);
+        DialogueManager.OpenDialogue(EndDialogue, InfoDialog, ActorName, ActorSprite);
     }
 
     private IEnumerator SmoothTurnToAD5L()
@@ -152,10 +152,10 @@ public class NetworkManager : MonoBehaviour
         switch (_currentInserted.GetReferred())
         {
             case Folder:
-                DialogueManager.OpenDialogue(EndDialogueErr, ErrInsertionInBox, ActorName, ActorSprite, transform);
+                DialogueManager.OpenDialogue(EndDialogueErr, ErrInsertionInBox, ActorName, ActorSprite);
                 break;
             case RoomFile:
-                DialogueManager.OpenDialogue(EndDialogueOk, OkInsertionInBox, ActorName, ActorSprite, transform);
+                DialogueManager.OpenDialogue(EndDialogueOk, OkInsertionInBox, ActorName, ActorSprite);
                 break;
         }
     }
@@ -177,7 +177,7 @@ public class NetworkManager : MonoBehaviour
         _currentInserted = null;
         _shouldLookAtPlayer = true;
         DialogueCanvas.SetActive(true);
-        DialogueManager.OpenDialogue(EndDialogue, CameBackFromNetworkDialog, ActorName, ActorSprite, transform);
+        DialogueManager.OpenDialogue(EndDialogue, CameBackFromNetworkDialog, ActorName, ActorSprite);
     }
     
 

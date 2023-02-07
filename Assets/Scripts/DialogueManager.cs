@@ -14,16 +14,16 @@ public class DialogueManager : MonoBehaviour
     private string[] _currentMessages;
     private int _activeMessage;
     private bool _dialogRunning;
+    private Coroutine _runningPauseTimer;
     
 
-    public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite, Transform actorTransform)
+    public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
     {
         _currentMessages = messages;
         ActorNameText.text = actorName;
         ActorImage.sprite = sprite;
         _endDialogCallback = endDialogCallback;
         _activeMessage = 0;
-        StartCoroutine(PlaySoundAndPause(actorTransform));
         StartCoroutine(ScaleAndStartDialogue());
     }
 
@@ -42,20 +42,24 @@ public class DialogueManager : MonoBehaviour
     {
         var messageToDisplay = _currentMessages[_activeMessage];
         Message.text = messageToDisplay;
-        AudioManager.Pause = false;
-        StartCoroutine(PauseAfterSec(1.5f));
+        PlaySoundForDuration(transform, 1.5f);
     }
 
-    private IEnumerator PauseAfterSec(float duration)
+    private IEnumerator StopAfterDuration(Transform actorTransform, float duration)
     {
         yield return new WaitForSeconds(duration);
-        AudioManager.Pause = true;
+        AudioManager.PauseRobotTalking(actorTransform);
+        _runningPauseTimer = null;
     }
 
-    private IEnumerator PlaySoundAndPause(Transform actorTransform)
+    private void PlaySoundForDuration(Transform actorTransform, float duration)
     {
-        AudioManager.Instance.StartCoroutine(AudioManager.PlayRobotTalking(actorTransform));
-        yield return PauseAfterSec(1.5f);
+        if (_runningPauseTimer != null)
+        {
+            StopCoroutine(_runningPauseTimer);
+        }
+        AudioManager.PlayRobotTalking(actorTransform);
+        _runningPauseTimer = StartCoroutine(StopAfterDuration(actorTransform, duration));
     }
 
     private void NextMessage()
@@ -67,7 +71,6 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            AudioManager.DialogFinished = true;
             StartCoroutine(ScaleBackAndCallback());
         }
     }
@@ -80,6 +83,7 @@ public class DialogueManager : MonoBehaviour
             yield return null;
         }
         _dialogRunning = false;
+        AudioManager.StopRobotTalking(transform);
         _endDialogCallback();
     }
 
