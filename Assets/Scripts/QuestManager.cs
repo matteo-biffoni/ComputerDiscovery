@@ -101,4 +101,36 @@ public class QuestManager : MonoBehaviour
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }
+
+    public static void Quest4FormatChecker()
+    {
+        var messages = new List<string>();
+        if (!(Folder.Root.GetChildren().Exists(folder => folder.GetName() == "Viaggi") || Folder.Root.GetChildren().Exists(folder => folder.GetName() == "viaggi")))
+        {
+            messages.Add("Crea una nuova cartella 'Viaggi' nel Desktop");
+        }
+        else
+        {
+            string[] possiblePath1 = { "Desktop", "Viaggi" };
+            string[] possiblePath2 = { "Desktop", "viaggi" };
+            var viaggi = Folder.GetFolderFromAbsolutePath(possiblePath1, Folder.Root);
+            if (viaggi == null)
+            {
+                viaggi = Folder.GetFolderFromAbsolutePath(possiblePath2, Folder.Root);
+            }
+
+            if (viaggi.GetFiles().Count < 5)
+            {
+                messages.Add($"Devi ancora posizionare {5 - viaggi.GetFiles().Count} file nella cartella Viaggi");
+            }
+            else
+            {
+                HouseManager.ActualQuest = 5;
+                LavagnettaManager.WriteOnLavagnetta(null, "BEN FATTO!"); //messaggio fine quest
+                NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+                return;
+            }
+        }
+        LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI");
+    }
 }

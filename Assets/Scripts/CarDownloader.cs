@@ -27,7 +27,7 @@ public class CarDownloader : MonoBehaviour
         Outline.enabled = value;
         if (value)
         {
-            InteractCanvasText.text = "Fai click per scaricare i file nel Desktop";
+            InteractCanvasText.text = "Fai click per scaricare";
         }
         else
         {
@@ -41,11 +41,15 @@ public class CarDownloader : MonoBehaviour
         if (_operationOngoing) return;
         if (_actualRaycast && Input.GetMouseButtonDown(0))
         {
+            while (Folder.Root.GetFiles().Count > 5)
+            {
+                Folder.Root.GetFiles()[0].PermDelete();
+            }
             _operationOngoing = true;
             Player.IgnoreInput();
-            InteractCanvasText.text = "Premi E per interagire";
             InteractCanvas.SetActive(false);
-            StartCoroutine(Operate(5f));
+            InteractCanvasText.text = "Premi E per interagire";
+            StartCoroutine(Operate(4f));
         }
     }
 
@@ -69,11 +73,32 @@ public class CarDownloader : MonoBehaviour
 
     private void FinishAndDestroy()
     {
+        DownloadFileInDesktop();
         DownloadText.text = "File scaricati nel Desktop";
         InteractCanvasText.text = "Premi E per interagire";
         InteractCanvas.SetActive(false);
         Player.ReactivateInput();
         SetActualRaycast(false);
+        StartCoroutine(ChangeDownloadText(10f));
+    }
+
+    private static void DownloadFileInDesktop()
+    {
+        var file1 = new RoomFile("Centaurus IX.jpg", "jpeg", 13, 70, Folder.Root, false);
+        var file2 = new RoomFile("Metallo X79.jpg", "jpeg", 14, 70, Folder.Root, false);
+        var file3 = new RoomFile("Blaster a infrarossi.png", "png", 15, 70, Folder.Root, false);
+        var file4 = new RoomFile("Scoperte.docx", "doc", -1, 70, Folder.Root, false);
+        var file5 = new RoomFile("Tramonto 3 soli.mov", "mov", -1, 70, Folder.Root, false);
+        var files = new List<RoomFile> { file1, file2, file3, file4, file5 };
+        Folder.Root.GetFiles().AddRange(files);
+        Folder.TriggerReloading(Operation.Nop);
+        HouseManager.ActualQuest = 4;
+    }
+
+    private IEnumerator ChangeDownloadText(float afterSec)
+    {
+        yield return new WaitForSeconds(afterSec);
+        DownloadText.text = "Nessun file presente nella macchina USB";
         Destroy(gameObject);
     }
 }

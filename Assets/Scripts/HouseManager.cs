@@ -101,8 +101,8 @@ public class HouseManager : MonoBehaviour
         ImageFileNames.Remove(nomeImmagine2);
         nomeImmagine1 += ".png";
         nomeImmagine2 += ".jpg";
-        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null);
-        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null);
+        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null, false);
+        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null, false);
         indiceNome = random.Next(0, DocFileNames.Count);
         var nomeDocumento1 = DocFileNames[indiceNome];
         DocFileNames.Remove(nomeDocumento1);
@@ -115,9 +115,9 @@ public class HouseManager : MonoBehaviour
         nomeDocumento1 += ".docx";
         nomeDocumento2 += ".pdf";
         nomeDocumento3 += ".txt";
-        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null);
-        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null);
-        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null);
+        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null, false);
+        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null, false);
+        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null, false);
         indiceNome = random.Next(0, MultimediaFileNames.Count);
         var nomeMultFile1 = MultimediaFileNames[indiceNome];
         MultimediaFileNames.Remove(nomeMultFile1);
@@ -126,9 +126,9 @@ public class HouseManager : MonoBehaviour
         MultimediaFileNames.Remove(nomeMultFile2);
         nomeMultFile1 += ".mp3";
         nomeMultFile2 += ".mov";
-        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null);
-        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null);
-        var fileBonus = new RoomFile("", "", -1, 0f, null);
+        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null, false);
+        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null, false);
+        var fileBonus = new RoomFile("", "", -1, 0f, null, false);
         string nomeFileBonus;
         var formatoBonusIndice = random.Next(0, 1);
         switch (formatoBonusIndice)
@@ -139,7 +139,7 @@ public class HouseManager : MonoBehaviour
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
                 nomeFileBonus += ".png";
-                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null);
+                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null, false);
                 break;
             }
             case 1:
@@ -148,7 +148,7 @@ public class HouseManager : MonoBehaviour
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
                 nomeFileBonus += ".jpg";
-                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null);
+                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null, false);
                 break;
             }
         }
@@ -326,14 +326,16 @@ public class RoomFile : Grabbable
     private readonly float _size;
     private Folder _parent;
     private string _parentOnDeletionAbsolutePath;
+    private bool _isACopy;
 
-    public RoomFile(string name, string format, int imageIndex, float size, Folder parent)
+    public RoomFile(string name, string format, int imageIndex, float size, Folder parent, bool isACopy)
     {
         _name = name;
         _format = format;
         _imageIndex = imageIndex;
         _size = size;
         _parent = parent;
+        _isACopy = isACopy;
     }
 
     public override string GetName()
@@ -365,7 +367,7 @@ public class RoomFile : Grabbable
     {
         return _parent;
     }
-    
+
     public override string GetAbsolutePath()
     {
         return _parent.GetAbsolutePath() + "/" + _name;
@@ -421,10 +423,15 @@ public class RoomFile : Grabbable
         }
     }
 
+    public bool IsACopy()
+    {
+        return _isACopy;
+    }
+
     public override Grabbable GetACopy()
     {
         var copyName = _name.Split(".")[0] + "_copia." + _name.Split(".")[1];
-        return new RoomFile(copyName, _format, _imageIndex, _size, null);
+        return new RoomFile(copyName, _format, _imageIndex, _size, null, true);
     }
 
     public override void Rename(string newName)
@@ -484,7 +491,6 @@ public enum Operation
 {
     Nop,
     FileOrFolderInserted,
-    FileCreated,
     FileDeleted,
     FilePermDeleted,
     FileRenamed,
@@ -505,7 +511,9 @@ public enum Operation
     FolderFullOfFiles,
     Quest2Completed,
     LockedFunctionality,
-    RestoreRedirectedToDesktop
+    RestoreRedirectedToDesktop,
+    Quest3Completed,
+    ReleaseIONotCopy
 }
 
 
@@ -532,7 +540,7 @@ public class Folder : Grabbable
 
     public static void TriggerReloading(Operation lastOp)
     {
-        if (lastOp == Operation.Quest2Completed)
+        if (lastOp == Operation.Quest3Completed)
         {
             ShouldDoorsHaveGrabberAttached = true;
             CreateFolderManager.EnabledByQuest = true;
@@ -745,6 +753,10 @@ public class Folder : Grabbable
             file.SetParent(this);
         }
         TriggerReloading(Operation.FileOrFolderInserted);
+        if (HouseManager.ActualQuest == 4)
+        {
+            QuestManager.Quest4FormatChecker();
+        }
     }
 
     /*
@@ -1125,7 +1137,7 @@ public class Folder : Grabbable
         var folder = new Folder(jsonFolder.Name, father);
         foreach (var file in jsonFolder.Files)
         {
-            folder._files.Add(new RoomFile(file.Name, file.Format, file.ImageIndex, file.Size, folder));
+            folder._files.Add(new RoomFile(file.Name, file.Format, file.ImageIndex, file.Size, folder, false));
         }
         foreach (var child in jsonFolder.Children)
         {

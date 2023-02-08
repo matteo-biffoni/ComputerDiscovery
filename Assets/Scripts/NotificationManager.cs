@@ -123,12 +123,17 @@ public class NotificationManager : MonoBehaviour
                 Instance.message.text = "Ripristino non riuscito, quindi è stato effettuato nel Desktop";
                 Instance.NotificationImage.sprite = Instance.successSprite;
                 break;
+            case Operation.ReleaseIONotCopy:
+                Instance.message.text = "Effettua prima una copia del file";
+                Instance.NotificationImage.sprite = Instance.successSprite;
+                break;
         }
         Instance.StartCoroutine(CloseNotification(2f));
     }
 
     public static IEnumerator QuestNotify(string message)
     {
+        yield return new WaitForSeconds(1f);
         yield return new WaitUntil(() => !Instance.backgroundBox.gameObject.activeSelf);
         Instance.backgroundBox.gameObject.SetActive(true);
         Instance.message.text = message;

@@ -363,7 +363,6 @@ public class Magnet0Raycaster : MonoBehaviour
     {
         fileGrabber.Outlined.OutlineWidth = 0f;
         _grabbedFile = fileGrabber.Copy(transform.Find("ObjHolder"));
-        Debug.Log("Assegnato");
         _grabbedFile.SetReferred(fileGrabber.GetReferred().GetACopy());
     }
 
@@ -390,11 +389,28 @@ public class Magnet0Raycaster : MonoBehaviour
                 NotificationManager.Notify(Operation.ReleaseNotAllowed);
                 return;
             }
-            _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
-            _previousNetworkBox.FileInserted(_grabbedFile);
-            //qui
-            _grabbedFile = null;
-            return;
+
+            if (_grabbedFile.GetReferred() is RoomFile roomFile)
+            {
+                if (roomFile.IsACopy())
+                {
+                    _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+                    _previousNetworkBox.FileInserted(_grabbedFile);
+                    //qui
+                    _grabbedFile = null;
+                    return;
+                }
+                NotificationManager.Notify(Operation.ReleaseIONotCopy);
+                return;
+            }
+            if (_grabbedFile.GetReferred() is Folder)
+            {
+                _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+                _previousNetworkBox.FileInserted(_grabbedFile);
+                //qui
+                _grabbedFile = null;
+                return;
+            }
         }
         if (roomIn != null)
         {
