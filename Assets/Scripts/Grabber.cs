@@ -2,6 +2,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+
 // ReSharper disable Unity.InefficientPropertyAccess
 
 
@@ -125,6 +127,7 @@ public class Grabber : MonoBehaviour
         }
         if (_fileNameTextRaycast.text.Trim() != "")
         {
+            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
             _fileNameTextRaycast.text = "";
         }
         Magnet0Raycaster.Operating = true;
@@ -145,6 +148,7 @@ public class Grabber : MonoBehaviour
         }
         if (_fileNameTextRaycast.text.Trim() != "")
         {
+            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
             _fileNameTextRaycast.text = "";
         }
         Magnet0Raycaster.Operating = true;
@@ -172,8 +176,10 @@ public class Grabber : MonoBehaviour
         {
             text += "_copia";
         }
+        _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
         _fileNameTextRaycast.text = "";
         _fileNameTextGrabbed.text = text;
+        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = true;
         Transform t;
         GameObject duplicate;
         switch (_file)
@@ -234,6 +240,7 @@ public class Grabber : MonoBehaviour
         }
         if (_fileNameTextRaycast.text.Trim() != "")
         {
+            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
             _fileNameTextRaycast.text = "";
         }
         Magnet0Raycaster.Operating = true;
@@ -287,6 +294,8 @@ public class Grabber : MonoBehaviour
         Magnet0Raycaster.Operating = false;
         AudioManager.Play(transform, AudioManager.Instance.GrabClip);
         _fileNameTextGrabbed.text = _fileNameTextRaycast.text.Trim();
+        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = true;
+        _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
         _fileNameTextRaycast.text = "";
         Transform t;
         switch (_file)
@@ -319,6 +328,7 @@ public class Grabber : MonoBehaviour
     public void DropInBox(Transform player, Transform boxObjHolder)
     {
         Magnet0Raycaster.Operating = false;
+        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = false;
         _fileNameTextGrabbed.text = "";
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
@@ -342,6 +352,7 @@ public class Grabber : MonoBehaviour
     public void DropReferred(Transform player, Folder room, GameObject explosion)
     {
         Magnet0Raycaster.Operating = false;
+        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = false;
         _fileNameTextGrabbed.text = "";
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
@@ -358,10 +369,12 @@ public class Grabber : MonoBehaviour
             if (!_labelVisibility && _fileNameTextRaycast != null && _file?.GetName() != null)
             {
                 _fileNameTextRaycast.text = _file.GetName().Trim();
+                _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = true;
             }
         }
         else if (_labelVisibility && _fileNameTextRaycast != null && _fileNameTextRaycast.text.Trim() != "")
         {
+            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
             _fileNameTextRaycast.text = "";
         }
         _labelVisibility = value;

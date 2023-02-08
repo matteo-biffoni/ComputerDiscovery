@@ -20,44 +20,7 @@
       "Name": "Audio",
       "Children": [],
       "Files": []
-    },
-    {
-      "Name": "Viaggi",
-      "Children": [],
-      "Files": [
-        {
-          "Name": "Centaurus IX.jpg",
-          "Format": "jpeg",
-          "ImageIndex": 13,
-          "Size": 70.0
-        },
-        {
-          "Name": "Blaster a infrarossi.png",
-          "Format": "png",
-          "ImageIndex": 15,
-          "Size": 70.0
-        },
-        {
-          "Name": "Metallo X79.jpg",
-          "Format": "jpeg",
-          "ImageIndex": 14,
-          "Size": 70.0
-        },
-        {
-          "Name": "Tramonto 3 soli.mov",
-          "Format": "mov",
-          "ImageIndex": -1,
-          "Size": 70.0
-        }
-      ]
     }
   ],
-  "Files": [
-    {
-      "Name": "Scoperte.docx",
-      "Format": "doc",
-      "ImageIndex": -1,
-      "Size": 70.0
-    }
-  ]
+  "Files": []
 }
