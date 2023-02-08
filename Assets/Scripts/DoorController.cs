@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
@@ -80,7 +78,7 @@ public class DoorController : MonoBehaviour
         }
         _doorAnimator.SetBool(CloseDoor, false);
         _doorAnimator.SetBool(OpenDoor, true);
-        AudioManager.Instance.StartCoroutine(AudioManager.Play(transform, AudioManager.Instance.OpenDoor));
+        AudioManager.Play(transform, AudioManager.Instance.OpenDoor);
     }
 
     private void DeactivateChildren()
@@ -106,7 +104,7 @@ public class DoorController : MonoBehaviour
         //if (playerRoom != _room && playerRoom != _roomTo) return;
         _doorAnimator.SetBool(OpenDoor, false);
         _doorAnimator.SetBool(CloseDoor, true);
-        AudioManager.Instance.StartCoroutine(AudioManager.Play(transform, AudioManager.Instance.OpenDoor));
+        AudioManager.Play(transform, AudioManager.Instance.OpenDoor);
         //if (playerRoom == _room)
         //{
         //    StartCoroutine(WaitForDoorToBeClosedAndDeactivateChildComponents());

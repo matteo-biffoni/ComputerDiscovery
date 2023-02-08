@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 5113767202510468037}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11.8, y: -8.7}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 163.3, y: -2.8}
+  m_SizeDelta: {x: 222.1, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5113767202078904773
 CanvasRenderer:
@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Testo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fe278c371e0311a409b38c9b0ad74577, type: 2}
+  m_sharedMaterial: {fileID: 1935316740428845091, guid: fe278c371e0311a409b38c9b0ad74577, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -93,18 +93,18 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 13
+  m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
+  m_characterSpacing: -8
+  m_wordSpacing: -8
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -14.827942, w: 16.572937}
+  m_margin: {x: 5.673271, y: 9.57906, z: 4.2929764, w: 8.9071045}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -168,10 +168,10 @@ RectTransform:
   m_Father: {fileID: 5113767202510468037}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 22.3, y: -22}
-  m_SizeDelta: {x: 35, y: 35}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 32.1, y: -3.1}
+  m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5113767202278259321
 CanvasRenderer:
@@ -249,7 +249,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 172, y: -49.19995}
-  m_SizeDelta: {x: 283.5, y: 43.1}
+  m_SizeDelta: {x: 283.5, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5113767202510468039
 CanvasRenderer:
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f76651a0b922d55438fa82a2236e11f7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -366,7 +366,14 @@ MonoBehaviour:
   NotificationImage: {fileID: 5113767202278259320}
   message: {fileID: 5113767202078904772}
   backgroundBox: {fileID: 5113767202510468037}
-  successSprite: {fileID: 21300000, guid: 02c9f12d705daa0499868fc2fa1dd3a0, type: 3}
+  SuccessSprite: {fileID: 21300000, guid: 02c9f12d705daa0499868fc2fa1dd3a0, type: 3}
+  NotAllowedSprite: {fileID: 21300000, guid: 97142f39e8150804f9aa7a0f968dd52e, type: 3}
+  DeleteSprite: {fileID: 21300000, guid: 202097ec6a755fd47abc3870806f94dd, type: 3}
+  PermDeleteSprite: {fileID: 21300000, guid: 806b2910d70150240bd18228038cc761, type: 3}
+  AD5LSprite: {fileID: 21300000, guid: b355437df6e6c58428f84eeaf9e0f060, type: 3}
+  LampSprite: {fileID: 21300000, guid: a71b07a14702efc44ab01c9ce05510d0, type: 3}
+  IOSprite: {fileID: 21300000, guid: c3bb37bf00fcdb743958e097084a7f3b, type: 3}
+  ZipSprite: {fileID: 21300000, guid: 0ac111fbf46f7184c81d5728e5a8db31, type: 3}
 --- !u!114 &5113767203098233448
 MonoBehaviour:
   m_ObjectHideFlags: 0

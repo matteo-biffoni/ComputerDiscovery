@@ -352,7 +352,7 @@ MonoBehaviour:
   InteractCanvas: {fileID: 0}
   DialogueCanvas: {fileID: 0}
   DialogueManager: {fileID: 0}
-  ActorSprite: {fileID: 0}
+  ActorSprite: {fileID: 21300000, guid: a71b07a14702efc44ab01c9ce05510d0, type: 3}
   ActorName: Lamp
   HouseManager: {fileID: 0}
   LookAtLamp: {fileID: 9079690250338815246}
@@ -366,6 +366,17 @@ MonoBehaviour:
   Quest3Messages:
   - Addirittura....
   - Fortissimi
+  Quest4Messages:
+  - Hai scaricato correttamente i file
+  - Adesso crea una nuova cartella Viaggi nel Desktop
+  - Poi sposta i file che hai scaricato in quella cartella
+  - Durante la missione puoi guardare la lavagnetta qua dietro per avere informazioni
+  Quest5Messages:
+  - AD5L mi ha inoltrato un messaggio dalla rete...
+  - Un tuo amico vorrebbe avere informazioni sulle tue scoperte
+  - Crea una copia del file Scoperte.docx e inseriscila nella scatola vicino ad AD5L
+    in Garage
+  - "AD5L si occuper\xE0 del resto"
 --- !u!1 &5544208384248771020
 GameObject:
   m_ObjectHideFlags: 0

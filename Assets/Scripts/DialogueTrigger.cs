@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,6 +22,7 @@ public class DialogueTrigger : MonoBehaviour
     public Transform LookAtLamp;
     private bool _secondQuestInstantiation;
     private bool _thirdQuestInstantiation;
+    private bool _fourthQuestInstantiation;
     
     
     [FormerlySerializedAs("quest1Messages")] [SerializeField]
@@ -31,6 +33,12 @@ public class DialogueTrigger : MonoBehaviour
     
     [FormerlySerializedAs("quest3Messages")] [SerializeField]
     string[] Quest3Messages;
+
+    [SerializeField]
+    string[] Quest4Messages;
+
+    [SerializeField]
+    string[] Quest5Messages;
     
     private IEnumerator StartDialogue(int questNumber)
     {
@@ -42,11 +50,13 @@ public class DialogueTrigger : MonoBehaviour
             1 => Quest1Messages,
             2 => Quest2Messages,
             3 => Quest3Messages,
+            4 => Quest4Messages,
+            5 => Quest5Messages,
             _ => null
         };
         DialogueCanvas.SetActive(true);
         NotificationManager.HardCloseNotification();
-        DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite, transform);
+        DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite);
     }
     
     private IEnumerator SmoothTurnToLamp()
@@ -93,10 +103,10 @@ public class DialogueTrigger : MonoBehaviour
             _secondQuestInstantiation = true;
             var Immagini = Folder.GetFolderFromAbsolutePath(new [] { "Desktop", "Immagini"}, Folder.Root);
             var Torino = new Folder("Torino", Immagini);
-            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino);
-            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino);
-            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino);
-            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino);
+            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, false);
+            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, false);
+            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, false);
+            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, false);
             var fileList = new List<RoomFile> { file1, file2, file3, file4 };
             Torino.SetFiles(fileList);
             Immagini.GetChildren().Add(Torino);
@@ -112,6 +122,13 @@ public class DialogueTrigger : MonoBehaviour
         {
             _thirdQuestInstantiation = true;
             Folder.TriggerReloading(Operation.Quest2Completed);
+            GameObject.FindGameObjectWithTag("Serranda").transform.GetComponent<BoxCollider>().enabled = true;
+        }
+
+        if (HouseManager.ActualQuest == 4 && !_fourthQuestInstantiation)
+        {
+            _fourthQuestInstantiation = true;
+            Folder.TriggerReloading(Operation.Quest3Completed);
         }
         DialogueCanvas.SetActive(false);
         InteractCanvas.SetActive(true);
