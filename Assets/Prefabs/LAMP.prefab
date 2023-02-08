@@ -366,6 +366,17 @@ MonoBehaviour:
   Quest3Messages:
   - Addirittura....
   - Fortissimi
+  Quest4Messages:
+  - Hai scaricato correttamente i file
+  - Adesso crea una nuova cartella Viaggi nel Desktop
+  - Poi sposta i file che hai scaricato in quella cartella
+  - Durante la missione puoi guardare la lavagnetta qua dietro per avere informazioni
+  Quest5Messages:
+  - AD5L mi ha inoltrato un messaggio dalla rete...
+  - Un tuo amico vorrebbe avere informazioni sulle tue scoperte
+  - Crea una copia del file Scoperte.docx e inseriscila nella scatola vicino ad AD5L
+    in Garage
+  - "AD5L si occuper\xE0 del resto"
 --- !u!1 &5544208384248771020
 GameObject:
   m_ObjectHideFlags: 0
