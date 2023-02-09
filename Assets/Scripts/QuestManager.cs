@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -133,4 +134,51 @@ public class QuestManager : MonoBehaviour
         }
         LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI");
     }
+    
+    public static void Quest6FormatChecker()
+        {
+            var messages = new List<string>();
+            var Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "Viaggi");
+            if (Viaggio == null)
+            {
+                Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "viaggi");
+            }
+            if (!(Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") || Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video")))
+            {
+                messages.Add("Crea una nuova cartella 'immagini e video' nella cartella 'Viaggi'");
+            }
+            else
+            {
+                
+                string[] possiblePath1 = { "Desktop", Viaggio.GetName(), "immagini e video"};
+                string[] possiblePath2 = { "Desktop", Viaggio.GetName(), "immagini e video"};
+                var ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath1, Folder.Root);
+                if (ImmaginiVideo == null)
+                {
+                    ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath2, Folder.Root);
+                }
+                foreach (var file in ImmaginiVideo.GetFiles().FindAll(file =>
+                             file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov"))
+                {
+                    messages.Add($"Il file {file.GetName()} deve essere portato fuori dalla cartella 'Immagini e video'");
+                    
+                }
+                
+                var FilesToMove = Viaggio.GetFiles().FindAll(file => file.GetFormat() == "png" || file.GetFormat() == "jpeg" || file.GetFormat() == "mov");
+                if (FilesToMove.Count != 0)
+                {
+                    for (int i = 0; i < FilesToMove.Count; i++)
+                    {
+                        messages.Add(
+                            $"Il file {FilesToMove[i].GetName()} deve essere spostato nella cartella 'Immagini e Video'");
+                    }
+                }
+
+                if (messages.Count == 0)
+                {
+                    messages.Add("Crea una copia della cartella 'Foto e video' e consegnala ad AD5L");
+                }
+            }
+            LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI");
+        }
 }

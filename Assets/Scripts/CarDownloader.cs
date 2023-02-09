@@ -84,15 +84,17 @@ public class CarDownloader : MonoBehaviour
 
     private static void DownloadFileInDesktop()
     {
-        var file1 = new RoomFile("Centaurus IX.jpg", "jpeg", 13, 70, Folder.Root, false);
-        var file2 = new RoomFile("Metallo X79.jpg", "jpeg", 14, 70, Folder.Root, false);
-        var file3 = new RoomFile("Blaster a infrarossi.png", "png", 15, 70, Folder.Root, false);
-        var file4 = new RoomFile("Scoperte.docx", "doc", -1, 70, Folder.Root, false);
-        var file5 = new RoomFile("Tramonto 3 soli.mov", "mov", -1, 70, Folder.Root, false);
+        var file1 = new RoomFile("Centaurus IX.jpg", "jpeg", 13, 70, Folder.Root, null);
+        var file2 = new RoomFile("Metallo X79.jpg", "jpeg", 14, 70, Folder.Root, null);
+        var file3 = new RoomFile("Blaster a infrarossi.png", "png", 15, 70, Folder.Root, null);
+        var file4 = new RoomFile("Scoperte.docx", "doc", -2, 70, Folder.Root, null);
+        var file5 = new RoomFile("Tramonto 3 soli.mov", "mov", -1, 70, Folder.Root, null);
         var files = new List<RoomFile> { file1, file2, file3, file4, file5 };
         Folder.Root.GetFiles().AddRange(files);
+        RoomFile.ScoperteFile = file4;
         Folder.TriggerReloading(Operation.Nop);
         HouseManager.ActualQuest = 4;
+        NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
     }
 
     private IEnumerator ChangeDownloadText(float afterSec)

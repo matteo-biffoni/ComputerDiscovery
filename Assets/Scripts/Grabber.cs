@@ -16,6 +16,7 @@ public class Grabber : MonoBehaviour
     private TMP_Text _fileNameTextRaycast;
     private TMP_Text _fileNameTextGrabbed;
     private Transform _bachecaLookAt;
+    private bool _ignoreRaycast;
     public Outline Outlined;
     [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
     public GameObject TrashItemCanvasPrefab;
@@ -95,6 +96,10 @@ public class Grabber : MonoBehaviour
         {
             QuestManager.Quest1FormatChecker(Folder.Root);
         }
+        else if (HouseManager.ActualQuest == 6)
+        {
+            QuestManager.Quest6FormatChecker();
+        }
         switch (_file)
         {
             case Folder:
@@ -125,6 +130,7 @@ public class Grabber : MonoBehaviour
                 break;
         }
         TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         Magnet0Raycaster.Operating = true;
     }
 
@@ -142,6 +148,7 @@ public class Grabber : MonoBehaviour
                 break;
         }
         TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         Magnet0Raycaster.Operating = true;
     }
 
@@ -168,6 +175,7 @@ public class Grabber : MonoBehaviour
             text += "_copia";
         }
         TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         TriggerLabelGrabbed(true, text);
         Transform t;
         GameObject duplicate;
@@ -217,17 +225,12 @@ public class Grabber : MonoBehaviour
     public void Delete()
     {
         Magnet0Raycaster.Operating = false;
+        var type = _file is Folder;
         _file.Delete();
-        switch (_file)
-        {
-            case Folder:
-                Destroy(transform.parent.parent.parent.parent.gameObject);
-                break;
-            case RoomFile:
-                Destroy(gameObject);
-                break;
-        }
+        _ignoreRaycast = true;
         TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
+        Destroy(type ? transform.parent.parent.parent.parent.gameObject : gameObject);
         Magnet0Raycaster.Operating = true;
     }
 
@@ -280,6 +283,7 @@ public class Grabber : MonoBehaviour
         AudioManager.Play(transform, AudioManager.Instance.GrabClip);
         TriggerLabelGrabbed(true, _fileNameTextRaycast.text.Trim());
         TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         Transform t;
         switch (_file)
         {
@@ -345,8 +349,8 @@ public class Grabber : MonoBehaviour
 
     public void TriggerLabelRaycast(bool value)
     {
-        if (_fileNameTextRaycast == null || _file?.GetName() == null) return;
-        if (value)
+        if (_fileNameTextRaycast == null) return;
+        if (value && _file != null && !_ignoreRaycast)
         {
             _fileNameTextRaycast.text = _file.GetName().Trim();
             _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = true;
@@ -355,6 +359,7 @@ public class Grabber : MonoBehaviour
         {
             _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
             _fileNameTextRaycast.text = "";
+            _ignoreRaycast = false;
         }
     }
 

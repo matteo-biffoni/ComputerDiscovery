@@ -426,28 +426,47 @@ public class Magnet0Raycaster : MonoBehaviour
                 NotificationManager.Notify(Operation.ReleaseNotAllowed);
                 return;
             }
-
-            if (_grabbedFile.GetReferred() is RoomFile roomFile)
+            if (_grabbedFile.GetReferred().IsACopy())
             {
-                if (roomFile.IsACopy())
+                if (_grabbedFile.GetReferred() is RoomFile roomFile)
                 {
-                    _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
-                    _previousNetworkBox.FileInserted(_grabbedFile);
-                    //qui
-                    _grabbedFile = null;
+                    if (HouseManager.ActualQuest == 5 && DialogueTrigger.FifthQuestInstantiation && roomFile.IsACopyOf(RoomFile.ScoperteFile))
+                    {
+                        NetworkManager.SendingScoperte = true;
+                        _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+                        _previousNetworkBox.FileInserted(_grabbedFile);
+                        _grabbedFile = null;
+                    }
+                    else if (HouseManager.ActualQuest == 5 && DialogueTrigger.FifthQuestInstantiation)
+                    {
+                        NotificationManager.Notify(Operation.ShouldBringScoperte);
+                    }
+                    else if (HouseManager.ActualQuest < 5 || !DialogueTrigger.FifthQuestInstantiation)
+                    {
+                        NotificationManager.Notify(Operation.LockedFunctionality);
+                    }
                     return;
                 }
-                NotificationManager.Notify(Operation.ReleaseIONotCopy);
+                if (_grabbedFile.GetReferred() is Folder folder)
+                {
+                    if (HouseManager.ActualQuest == 6 && DialogueTrigger.SixthQuestInstantiation)
+                    {
+                        _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+                        _previousNetworkBox.FileInserted(_grabbedFile);
+                        //qui
+                        _grabbedFile = null;
+                    }
+                    else if (HouseManager.ActualQuest < 6 || !DialogueTrigger.SixthQuestInstantiation)
+                    {
+                        NotificationManager.Notify(Operation.LockedFunctionality);
+                    }
+                    return;
+                }
                 return;
             }
-            if (_grabbedFile.GetReferred() is Folder)
-            {
-                _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
-                _previousNetworkBox.FileInserted(_grabbedFile);
-                //qui
-                _grabbedFile = null;
-                return;
-            }
+            
+            NotificationManager.Notify(Operation.ReleaseIONotCopy);
+            return;
         }
         if (roomIn != null)
         {
