@@ -113,7 +113,7 @@ public class ZipperHandler : MonoBehaviour
         tr.SetParent(ObjHolder);
         tr.localScale *= 0.75f;
         var fileGrabber = objInstantiated.transform.GetComponent<Grabber>();
-        var zipFile = new RoomFile(_grabber.GetReferred().GetName().Split(".")[0] + ".zip", "zip", -1, 0, null, true);
+        var zipFile = new RoomFile(_grabber.GetReferred().GetName().Split(".")[0] + ".zip", "zip", -1, 0, null, _grabber.GetReferred());
         fileGrabber.SetReferred(zipFile);
         yield return new WaitForSeconds(2f);
         positionNotReached = true;

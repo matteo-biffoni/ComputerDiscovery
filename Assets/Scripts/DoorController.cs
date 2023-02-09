@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -36,8 +37,33 @@ public class DoorController : MonoBehaviour
 
     private void Start()
     {
-        if (!(Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position,
+        var player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (!(Vector3.Distance(player.position,
                 transform.position) < 1.17197f)) return;
+        StartCoroutine(PlayerInsideAtStart(player));
+    }
+
+    private IEnumerator PlayerInsideAtStart(Transform player)
+    {
+        yield return new WaitUntil(() => _roomTo != null);
+        var playerRoom = player.transform.GetComponent<PlayerNavigatorManager>().GetRoomIn();
+        _roomTo.ActivateRoomComponents(true);
+        if (playerRoom == _roomTo && _room == Folder.Root && !Folder.IsMainRoomVisible())
+        {
+            Folder.ShowMainRoom(true);
+        }
+        else if (_room != Folder.Root && Folder.IsMainRoomVisible())
+        {
+            Folder.ShowMainRoom(false);
+        }
+        if (playerRoom == _room)
+        {
+            DeactivateOtherChildren();
+        }
+        else if (playerRoom == _roomTo)
+        {
+            DeactivateChildren();
+        }
         _doorAnimator.SetBool(CloseDoor, false);
         _doorAnimator.SetBool(OpenDoor, true);
     }
