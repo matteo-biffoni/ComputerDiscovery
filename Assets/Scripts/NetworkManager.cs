@@ -139,7 +139,6 @@ public class NetworkManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Player.ReactivateInput();
         _shouldListenForRaycastChanges = true;
-        yield return null;
     }
 
     public IEnumerator FileInsertedInBox(Grabber grabber)

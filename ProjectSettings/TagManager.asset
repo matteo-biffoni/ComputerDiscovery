@@ -13,6 +13,7 @@ TagManager:
   - FileNameRaycast
   - Serranda
   - CarDownloader
+  - Zipper
   layers:
   - Default
   - TransparentFX

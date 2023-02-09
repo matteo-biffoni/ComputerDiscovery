@@ -137,7 +137,6 @@ public class AD5LNavController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 3f);
             yield return null;
         }
-        yield return null;
     }
 
     private void Update()

@@ -123,6 +123,22 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 38874bf599f976d4c8c396017304d64f, type: 2}
+--- !u!114 &23299377 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 149664025427641268, guid: 99659a47430f9744687bccf090c470b9, type: 3}
+  m_PrefabInstance: {fileID: 5490408625511555647}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c15c18322e31c1478294cc987868c12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &246681050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8259162050543959256, guid: 99659a47430f9744687bccf090c470b9, type: 3}
+  m_PrefabInstance: {fileID: 5490408625511555647}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &288984559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2586040516999234410, guid: 12f0a380cd09f9747ab34dc27a7d209a, type: 3}
@@ -911,6 +927,22 @@ PrefabInstance:
       propertyPath: InteractCanvasText
       value: 
       objectReference: {fileID: 1663533261}
+    - target: {fileID: 1507563999, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1862197109}
+    - target: {fileID: 1507563999, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: ObjHolder
+      value: 
+      objectReference: {fileID: 246681050}
+    - target: {fileID: 1507563999, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: InteractCanvas
+      value: 
+      objectReference: {fileID: 288984559}
+    - target: {fileID: 1507563999, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: Magnet0Raycaster
+      value: 
+      objectReference: {fileID: 23299377}
     - target: {fileID: 1655889605496224719, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
       propertyPath: Player
       value: 
