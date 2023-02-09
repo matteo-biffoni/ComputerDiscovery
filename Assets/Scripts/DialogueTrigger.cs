@@ -86,13 +86,12 @@ public class DialogueTrigger : MonoBehaviour
         while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.1f)
         {
             Player.transform.rotation =
-                Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 12f);
+                Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 8f);
             cameraT.localRotation =
-                Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 12f);
+                Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 8f);
             yield return null;
         }
         Player.ReactivateInput();
-        yield return null;
     }
 
     private void EndDialogue()

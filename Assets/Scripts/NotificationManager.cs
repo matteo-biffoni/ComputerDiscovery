@@ -135,6 +135,14 @@ public class NotificationManager : MonoBehaviour
                 Instance.message.text = "Effettua prima una copia del file";
                 Instance.NotificationImage.sprite = Instance.NotAllowedSprite;
                 break;
+            case Operation.BringFolderToUseZipper:
+                Instance.message.text = "Porta una cartella da elaborare";
+                Instance.NotificationImage.sprite = Instance.ZipSprite;
+                break;
+            case Operation.UnzipNotAllowed:
+                Instance.message.text = "Unzip non disponibile in questo momento";
+                Instance.NotificationImage.sprite = Instance.ZipSprite;
+                break;
         }
         Instance.StartCoroutine(CloseNotification(2f));
     }
