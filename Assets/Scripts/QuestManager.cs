@@ -160,7 +160,7 @@ public class QuestManager : MonoBehaviour
             {
                 Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "viaggi");
             }
-            if (!(Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") || Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video")))
+            if (!Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") && !Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video"))
             {
                 info = "Crea una nuova cartella 'immagini e video' nella cartella 'Viaggi'";
             }
@@ -173,21 +173,22 @@ public class QuestManager : MonoBehaviour
                 {
                     ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath2, Folder.Root);
                 }
-                foreach (var file in ImmaginiVideo.GetFiles().FindAll(file =>
+
+                if (Folder.ImmaginiEVideoFolder == null)
+                {
+                    Folder.ImmaginiEVideoFolder = ImmaginiVideo;
+                }
+                foreach (var file in ImmaginiVideo.GetFiles().Where(file =>
                              file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov"))
                 {
                     messages.Add($"Il file {file.GetName()} deve essere portato fuori dalla cartella 'Immagini e video'");
                     
                 }
-                
-                var FilesToMove = Viaggio.GetFiles().FindAll(file => file.GetFormat() == "png" || file.GetFormat() == "jpeg" || file.GetFormat() == "mov");
-                if (FilesToMove.Count != 0)
+                var FilesToMove = Viaggio.GetFiles().Where(file => file.GetFormat() == "png" || file.GetFormat() == "jpeg" || file.GetFormat() == "mov");
+                foreach (var fileToMove in FilesToMove)
                 {
-                    for (int i = 0; i < FilesToMove.Count; i++)
-                    {
-                        messages.Add(
-                            $"Il file {FilesToMove[i].GetName()} deve essere spostato nella cartella 'Immagini e Video'");
-                    }
+                    messages.Add(
+                        $"Il file {fileToMove.GetName()} deve essere spostato nella cartella 'Immagini e Video'");
                 }
 
                 info = $"Ancora {FilesToMove.Count + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";

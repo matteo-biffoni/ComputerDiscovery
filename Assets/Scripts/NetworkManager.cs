@@ -38,6 +38,7 @@ public class NetworkManager : MonoBehaviour
 
     private bool _shouldListenForRaycastChanges = true;
     public static bool SendingScoperte;
+    public static bool SendingImmaginiEVideoFolder;
 
     // Start is called before the first frame update
     private void Start()
@@ -205,6 +206,13 @@ public class NetworkManager : MonoBehaviour
                 "Grazie Magneto, ho ricevuto i tuoi documenti, non vedo l'ora di leggerli!"
             });
             LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Messaggio da Electr4", messagesToSend); 
+        }
+        else if (SendingImmaginiEVideoFolder)
+        {
+            SendingImmaginiEVideoFolder = false;
+            Folder.ImmaginiEVideoFolder = null;
+            HouseManager.ActualQuest = 7;
+            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }
 

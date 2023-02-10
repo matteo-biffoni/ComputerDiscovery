@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -51,7 +52,8 @@ public class CreateFolderManager : MonoBehaviour
             if (!error)
             {
                 var newFolderName = folderNameInputField.text.Trim();
-                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null), false);
+
+                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null, GUID.Generate().ToString()), false);
                 if (HouseManager.ActualQuest == 4)
                 {
                     QuestManager.Quest4FormatChecker();
@@ -82,7 +84,14 @@ public class CreateFolderManager : MonoBehaviour
             {
                 if (_fps.IsMagnet0Free() && _pnm.CanCreateFolder() && EnabledByQuest)
                 {
-                    GetLockAndShowMenu();
+                    if (_pnm.GetRoomIn().GetChildrenCount() == Folder.MaxNumberOfSubfolders)
+                    {
+                        NotificationManager.Notify(Operation.FolderFullOfSubfolders);
+                    }
+                    else
+                    {
+                        GetLockAndShowMenu();
+                    }
                 }
             }
         }

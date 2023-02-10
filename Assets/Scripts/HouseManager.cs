@@ -6,6 +6,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -101,8 +102,8 @@ public class HouseManager : MonoBehaviour
         ImageFileNames.Remove(nomeImmagine2);
         nomeImmagine1 += ".png";
         nomeImmagine2 += ".jpg";
-        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null, null);
-        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null, null);
+        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null, null, GUID.Generate().ToString());
+        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null, null, GUID.Generate().ToString());
         indiceNome = random.Next(0, DocFileNames.Count);
         var nomeDocumento1 = DocFileNames[indiceNome];
         DocFileNames.Remove(nomeDocumento1);
@@ -115,9 +116,9 @@ public class HouseManager : MonoBehaviour
         nomeDocumento1 += ".docx";
         nomeDocumento2 += ".pdf";
         nomeDocumento3 += ".txt";
-        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null,  null);
-        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null, null);
-        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null, null);
+        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null,  null, GUID.Generate().ToString());
+        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
+        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
         indiceNome = random.Next(0, MultimediaFileNames.Count);
         var nomeMultFile1 = MultimediaFileNames[indiceNome];
         MultimediaFileNames.Remove(nomeMultFile1);
@@ -126,9 +127,9 @@ public class HouseManager : MonoBehaviour
         MultimediaFileNames.Remove(nomeMultFile2);
         nomeMultFile1 += ".mp3";
         nomeMultFile2 += ".mov";
-        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null, null);
-        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null, null);
-        var fileBonus = new RoomFile("", "", -1, 0f, null, null);
+        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
+        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
+        var fileBonus = new RoomFile("", "", -1, 0f, null, null, GUID.Generate().ToString());
         string nomeFileBonus;
         var formatoBonusIndice = random.Next(0, 1);
         switch (formatoBonusIndice)
@@ -139,7 +140,7 @@ public class HouseManager : MonoBehaviour
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
                 nomeFileBonus += ".png";
-                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null, null);
+                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null, null, GUID.Generate().ToString());
                 break;
             }
             case 1:
@@ -148,7 +149,7 @@ public class HouseManager : MonoBehaviour
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
                 nomeFileBonus += ".jpg";
-                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null, null);
+                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null, null, GUID.Generate().ToString());
                 break;
             }
         }
@@ -311,6 +312,8 @@ public abstract class Grabbable
 
     public abstract void SetParentOnDeletionAbsolutePath(string folder);
 
+    public abstract string GetParentOnDeletionAbsolutePath();
+
     public abstract void Recover();
 
     public abstract Grabbable GetACopy();
@@ -320,6 +323,10 @@ public abstract class Grabbable
     public abstract bool IsACopyOf(Grabbable grabbable);
 
     public abstract bool IsACopy();
+
+    public abstract string GetIndex();
+
+    public abstract string GetCopyOf();
 }
 
 public class RoomFile : Grabbable
@@ -331,9 +338,10 @@ public class RoomFile : Grabbable
     private Folder _parent;
     private string _parentOnDeletionAbsolutePath;
     public static RoomFile ScoperteFile;
-    private Grabbable _copyOf;
+    private string _index;
+    private string _copyOf;
 
-    public RoomFile(string name, string format, int imageIndex, float size, Folder parent, Grabbable copyOf)
+    public RoomFile(string name, string format, int imageIndex, float size, Folder parent, string copyOf, string index)
     {
         _name = name;
         _format = format;
@@ -341,12 +349,18 @@ public class RoomFile : Grabbable
         _size = size;
         _parent = parent;
         _copyOf = copyOf;
+        _index = index;
     }
 
     public override bool IsACopyOf(Grabbable grabbable)
     {
         if (_copyOf == null) return false;
-        return _copyOf == grabbable || _copyOf.IsACopyOf(grabbable);
+        return _copyOf == grabbable.GetIndex() || Folder.FindGrabbableWithIndexFromRoot(_copyOf).IsACopyOf(grabbable);
+    }
+
+    public override string GetCopyOf()
+    {
+        return _copyOf;
     }
 
     public override string GetName()
@@ -411,6 +425,11 @@ public class RoomFile : Grabbable
         _parentOnDeletionAbsolutePath = folder;
     }
 
+    public override string GetParentOnDeletionAbsolutePath()
+    {
+        return _parentOnDeletionAbsolutePath;
+    }
+
     public override void Recover()
     {
         if (_parentOnDeletionAbsolutePath != null)
@@ -442,7 +461,7 @@ public class RoomFile : Grabbable
     public override Grabbable GetACopy()
     {
         var copyName = _name.Split(".")[0] + "_copia." + _name.Split(".")[1];
-        return new RoomFile(copyName, _format, this == ScoperteFile ? -1 : _imageIndex, _size, null, this);
+        return new RoomFile(copyName, _format, this == ScoperteFile ? -1 : _imageIndex, _size, null, _index, GUID.Generate().ToString());
     }
 
     public override void Rename(string newName)
@@ -466,6 +485,11 @@ public class RoomFile : Grabbable
     public bool IsScoperte()
     {
         return _imageIndex == -2;
+    }
+
+    public bool IsZipOf(Grabbable grabbable)
+    {
+        return _format == "zip" && IsACopyOf(grabbable);
     }
 
     private static string GetFormatExtensionFromFormat(string format)
@@ -501,6 +525,11 @@ public class RoomFile : Grabbable
                 "Format extension error")
         };
     }
+
+    public override string GetIndex()
+    {
+        return _index;
+    }
 }
 
 public enum Operation
@@ -534,7 +563,8 @@ public enum Operation
     ReleaseIONotCopy,
     BringFolderToUseZipper,
     UnzipNotAllowed,
-    ShouldBringScoperte
+    ShouldBringScoperte,
+    ShouldBringImmaginiEVideoFolder
 }
 
 
@@ -543,14 +573,15 @@ public class Folder : Grabbable
     public static bool DirtyAfterInsertion;
     public static string CurrentFileName;
     public static Folder Root;
-    public static readonly Folder TrashBin = new("TrashBin", null, null);
+    public static readonly Folder TrashBin = new("TrashBin", null, null, GUID.Generate().ToString());
     private GameObject _container;
     private Folder _father;
     private readonly List<Folder> _children;
     private List<RoomFile> _files;
     private string _name;
-    public static readonly Folder MainRoom = new("Main Room", null, null);
-    public static readonly Folder Garage = new("Garage", null, null);
+    public static readonly Folder MainRoom = new("Main Room", null, null, GUID.Generate().ToString());
+    public static readonly Folder Garage = new("Garage", null, null, GUID.Generate().ToString());
+    public static Folder ImmaginiEVideoFolder;
     public static GameObject MainRoomGo;
     private BachecaFileController _bacheca;
     //private static Operation _lastOperation = Operation.Nop;
@@ -558,17 +589,48 @@ public class Folder : Grabbable
     public const int MaxNumberOfSubfolders = 9;
     public const int MaxNumberOfFilesPerFolder = 10;
     public static bool ShouldDoorsHaveGrabberAttached;
-    private Grabbable _copyOf;
+    private string _index;
+    private string _copyOf;
+
+    public override string GetCopyOf()
+    {
+        return _copyOf;
+    }
+
+    private List<Folder> GetAllChildren()
+    {
+        var list = new List<Folder>();
+        foreach (var child in _children)
+        {
+            list.Add(child);
+            list.AddRange(child.GetAllChildren());
+        }
+        return list;
+    }
+
+    public static Grabbable FindGrabbableWithIndexFromRoot(string index)
+    {
+        var allFiles = Root.GetAllFiles();
+        var allFolders = Root.GetAllChildren();
+        if (allFiles.FirstOrDefault(file => file.GetIndex() == index) is Grabbable possibility) return possibility;
+        possibility = allFolders.FirstOrDefault(folder => folder.GetIndex() == index);
+        return possibility;
+    }
 
     public override bool IsACopy()
     {
         return _copyOf != null;
     }
 
+    public override string GetIndex()
+    {
+        return _index;
+    }
+
     public override bool IsACopyOf(Grabbable grabbable)
     {
         if (_copyOf == null) return false;
-        return _copyOf == grabbable || _copyOf.IsACopyOf(grabbable);
+        return _copyOf == grabbable.GetIndex() || FindGrabbableWithIndexFromRoot(_copyOf).IsACopyOf(grabbable);
     }
 
     public static void TriggerReloading(Operation lastOp)
@@ -600,7 +662,7 @@ public class Folder : Grabbable
 
     public override Grabbable GetACopy()
     {
-        var f = new Folder(_name + "_copia", null, this);
+        var f = new Folder(_name + "_copia", null, _index, GUID.Generate().ToString());
         foreach (var child in _children)
         {
             f._children.Add(child.GetACopy() as Folder);
@@ -633,13 +695,14 @@ public class Folder : Grabbable
         }
         return list;
     }
-    public Folder(string name, Folder father, Grabbable copyOf)
+    public Folder(string name, Folder father, string copyOf, string index)
     {
         _father = father;
         _name = name;
         _children = new List<Folder>();
         _files = new List<RoomFile>();
         _copyOf = copyOf;
+        _index = index;
     }
 
     public void SetFiles(List<RoomFile> files)
@@ -678,7 +741,11 @@ public class Folder : Grabbable
     {
         _parentOnDeletionAbsolutePath = folder;
     }
-
+    
+    public override string GetParentOnDeletionAbsolutePath()
+    {
+        return _parentOnDeletionAbsolutePath;
+    }
     public override void SetParent(Folder folder)
     {
         _father = folder;
@@ -1157,12 +1224,6 @@ public class Folder : Grabbable
         return (Direction) (((int) parentDirection + (int) direction) % 360);
     }
 
-    public static Folder RetrieveQuest1()
-    {
-        var jsonFolderStructure = JsonFolder.FromFileName("Quest1");
-        return ConvertJsonFolderStructureToFolderStructure(jsonFolderStructure, null);
-    }
-
     public static Folder GenerateFolderStructureFromFile()
     {
         var jsonFolderStructure = JsonFolder.FromFileName(CurrentFileName);
@@ -1171,10 +1232,10 @@ public class Folder : Grabbable
     
     private static Folder ConvertJsonFolderStructureToFolderStructure(JsonFolder jsonFolder, Folder father)
     {
-        var folder = new Folder(jsonFolder.Name, father, null);
+        var folder = new Folder(jsonFolder.Name, father, jsonFolder.CopyOf, jsonFolder.Index);
         foreach (var file in jsonFolder.Files)
         {
-            var fileToAdd = new RoomFile(file.Name, file.Format, file.ImageIndex, file.Size, folder, null);
+            var fileToAdd = new RoomFile(file.Name, file.Format, file.ImageIndex, file.Size, folder, file.CopyOf, file.Index);
             folder._files.Add(fileToAdd);
             if (fileToAdd.IsScoperte()) RoomFile.ScoperteFile = fileToAdd;
         }
@@ -1191,7 +1252,9 @@ public class Folder : Grabbable
         {
             Name = folder._name,
             Children = new List<JsonFolder>(),
-            Files = new List<JsonFile>()
+            Files = new List<JsonFile>(),
+            Index = folder._index,
+            CopyOf = folder._copyOf
         };
         // ciclo per aggiungere i file di ogni cartella nella struttura json
         foreach (var file in folder._files)
@@ -1201,7 +1264,9 @@ public class Folder : Grabbable
                 Name = file.GetName(),
                 Format = file.GetFormat(),
                 ImageIndex = file.GetImageIndex(),
-                Size = file.GetSize()
+                Size = file.GetSize(),
+                Index =  file.GetIndex(),
+                CopyOf = file.GetCopyOf()
             });
         }
         foreach (var child in folder._children)
@@ -1230,6 +1295,12 @@ public class JsonFile
     
     [JsonProperty("Size")]
     public float Size { get; set; }
+
+    [JsonProperty("Index")]
+    public string Index;
+    
+    [JsonProperty("CopyOf")]
+    public string CopyOf;
     
     
     // ReSharper disable once UnusedMember.Local
@@ -1258,6 +1329,12 @@ public class JsonFolder
     
     [JsonProperty("Files")]
     public List<JsonFile> Files { get; set; }
+
+    [JsonProperty("Index")]
+    public string Index;
+    
+    [JsonProperty("CopyOf")]
+    public string CopyOf;
 
     private static JsonFolder FromJson(string json)
     {

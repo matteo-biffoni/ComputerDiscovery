@@ -263,8 +263,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.82250476, y: 3.5513008, z: 0.7934618}
-  m_Center: {x: 0.0000020302655, y: -0.035821557, z: 0.000000022351742}
+  m_Size: {x: 2.3627915, y: 3.5513003, z: 2.4596512}
+  m_Center: {x: -0.016567493, y: -0.035821512, z: 0.035955794}
 --- !u!1 &5509073248637899031
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,8 +333,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3.1249664
-  m_Center: {x: -0.19850582, y: 1.5535032, z: 0.87295467}
+  m_Radius: 5.319286
+  m_Center: {x: -0.91700333, y: 1.4735844, z: 2.8653965}
 --- !u!114 &1162527104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
     i nomi dei file che si trovavano all\u2019interno della cartella \u201CImmagini\u201D
     e nelle sue sotto cartelle\u2026"
   - "Rinomina tutti i file nella cartella \u201CImmagini\u201D e nelle sue sotto
-    cartelle."
+    cartelle in base a quello che vedi."
   - Per farlo devi mirare un file e poi fare click con il tasto destro.
   - Se hai qualche dubbio, guarda sempre la lavagnetta. Buon lavoro!
   Quest3Messages:
