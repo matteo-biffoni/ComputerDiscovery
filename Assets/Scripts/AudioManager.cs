@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.Audio;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
@@ -14,14 +15,18 @@ public class AudioManager : MonoBehaviour
     public AudioClip Notification;
     public AudioClip RobotTalking;
     public AudioClip DeleteNotification;
-    public AudioClip ConfirmNotification;
+    public AudioClip NotAllowed;
+    [FormerlySerializedAs("Lamp_Calling")] [FormerlySerializedAs("LAMP_Calling")] [FormerlySerializedAs("ConfirmNotification")] 
+    public AudioClip LampCalling;
+
+    public bool StopIfLooping;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public static void Play(Transform source, AudioClip clip)
+    public static void Play(Transform source, AudioClip clip, bool loop)
     {
         if (clip == Instance.AD5LDoor)
         {
@@ -29,14 +34,15 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Instance.StartCoroutine(PlayCoroutine(source, clip));
+            Instance.StartCoroutine(PlayCoroutine(source, clip, loop));
         }
     }
 
-    private static IEnumerator PlayCoroutine(Transform source, AudioClip clip)
+    private static IEnumerator PlayCoroutine(Transform source, AudioClip clip, bool loop)
     {
         var audioSource = source.AddComponent<AudioSource>();
         audioSource.clip = clip;
+        audioSource.loop = loop;
         audioSource.spatialize = true;
         audioSource.spatialBlend = 1f;
         audioSource.minDistance = 0f;
@@ -48,15 +54,24 @@ public class AudioManager : MonoBehaviour
         audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, volumeCurve);
         audioSource.rolloffMode = AudioRolloffMode.Custom;
         audioSource.Play();
-        yield return new WaitUntil(() => audioSource == null || !audioSource.isPlaying);
+        if (loop)
+        {
+            Instance.StopIfLooping = false;
+            yield return new WaitUntil(() => Instance.StopIfLooping);
+            Instance.StopIfLooping = false;
+        }
+        else
+        {
+            yield return new WaitUntil(() => audioSource == null || !audioSource.isPlaying);
+        }
         Destroy(audioSource);
     }
 
     private static IEnumerator PlayAD5L_OpenDoor(Transform source)
     {
-        yield return PlayCoroutine(source, Instance.AD5LDoor);
+        yield return PlayCoroutine(source, Instance.AD5LDoor, false);
         yield return new WaitForSeconds(0.5f);
-        yield return PlayCoroutine(source, Instance.AD5LDoor);
+        yield return PlayCoroutine(source, Instance.AD5LDoor, false);
     }
 
     public static void StopRobotTalking(Transform source)

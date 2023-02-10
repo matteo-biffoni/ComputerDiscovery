@@ -182,6 +182,22 @@ PrefabInstance:
       propertyPath: DialogueManager
       value: 
       objectReference: {fileID: 3986692677947787110}
+    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
+      propertyPath: m_Radius
+      value: 3.3171701
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
+      propertyPath: m_Center.x
+      value: -0.10402993
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
+      propertyPath: m_Center.y
+      value: 1.4735686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
+      propertyPath: m_Center.z
+      value: 3.1378243
+      objectReference: {fileID: 0}
     - target: {fileID: 5134095066605489069, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -464,6 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1302801595}
   - component: {fileID: 1302801594}
+  - component: {fileID: 1302801596}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -490,7 +507,9 @@ MonoBehaviour:
   Notification: {fileID: 8300000, guid: 6e6ffbe474d069c41ae2b31db578d393, type: 3}
   RobotTalking: {fileID: 8300000, guid: afab6768c791216468dba62c761da30a, type: 3}
   DeleteNotification: {fileID: 8300000, guid: 4db07668b70f22741827a325127a1873, type: 3}
-  ConfirmNotification: {fileID: 8300000, guid: 76dfbc9509dc23d438985e1f03058bb9, type: 3}
+  NotAllowed: {fileID: 8300000, guid: 8bd7df9bf01d9624fb674a7ae89af494, type: 3}
+  LampCalling: {fileID: 8300000, guid: 76dfbc9509dc23d438985e1f03058bb9, type: 3}
+  StopIfLooping: 0
 --- !u!4 &1302801595
 Transform:
   m_ObjectHideFlags: 0
@@ -506,6 +525,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1302801596
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302801593}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 3e026562c740df6489af33b73fab5781, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1663533261 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2586040516652387876, guid: 12f0a380cd09f9747ab34dc27a7d209a, type: 3}
@@ -927,6 +1042,10 @@ PrefabInstance:
       propertyPath: InteractCanvasText
       value: 
       objectReference: {fileID: 1663533261}
+    - target: {fileID: 181397885, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
+      propertyPath: m_text
+      value: 5 file nella macchina USB
+      objectReference: {fileID: 0}
     - target: {fileID: 1507563999, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
       propertyPath: Player
       value: 

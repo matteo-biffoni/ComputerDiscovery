@@ -191,7 +191,7 @@ public class QuestManager : MonoBehaviour
                         $"Il file {fileToMove.GetName()} deve essere spostato nella cartella 'Immagini e Video'");
                 }
 
-                info = $"Ancora {FilesToMove.Count + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";
+                info = $"Ancora {FilesToMove.Count() + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";
 
                 if (messages.Count == 0)
                 {

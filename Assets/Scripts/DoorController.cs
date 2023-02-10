@@ -104,7 +104,7 @@ public class DoorController : MonoBehaviour
         }
         _doorAnimator.SetBool(CloseDoor, false);
         _doorAnimator.SetBool(OpenDoor, true);
-        AudioManager.Play(transform, AudioManager.Instance.OpenDoor);
+        AudioManager.Play(transform, AudioManager.Instance.OpenDoor, false);
     }
 
     private void DeactivateChildren()
@@ -130,7 +130,7 @@ public class DoorController : MonoBehaviour
         //if (playerRoom != _room && playerRoom != _roomTo) return;
         _doorAnimator.SetBool(OpenDoor, false);
         _doorAnimator.SetBool(CloseDoor, true);
-        AudioManager.Play(transform, AudioManager.Instance.OpenDoor);
+        AudioManager.Play(transform, AudioManager.Instance.OpenDoor, false);
         //if (playerRoom == _room)
         //{
         //    StartCoroutine(WaitForDoorToBeClosedAndDeactivateChildComponents());

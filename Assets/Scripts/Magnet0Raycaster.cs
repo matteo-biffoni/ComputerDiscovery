@@ -430,10 +430,8 @@ public class Magnet0Raycaster : MonoBehaviour
             {
                 if (_grabbedFile.GetReferred() is RoomFile roomFile)
                 {
-                    Debug.Log("1");
                     if (HouseManager.ActualQuest == 5 && DialogueTrigger.FifthQuestInstantiation && roomFile.IsACopyOf(RoomFile.ScoperteFile))
                     {
-                        Debug.Log("2");
                         NetworkManager.SendingScoperte = true;
                         _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
                         _previousNetworkBox.FileInserted(_grabbedFile);
@@ -441,19 +439,15 @@ public class Magnet0Raycaster : MonoBehaviour
                     }
                     else if (HouseManager.ActualQuest == 5 && DialogueTrigger.FifthQuestInstantiation)
                     {
-                        Debug.Log("3");
                         NotificationManager.Notify(Operation.ShouldBringScoperte);
                     }
-                    /* MODIFICATO SOLO PER PROVARE LA QUEST 6*/
-                    else if (HouseManager.ActualQuest < 5)// || !DialogueTrigger.FifthQuestInstantiation)
+                    else if (HouseManager.ActualQuest < 5 || !DialogueTrigger.FifthQuestInstantiation)
                     {
-                        Debug.Log("4");
                         NotificationManager.Notify(Operation.LockedFunctionality);
                     }
                     else if (HouseManager.ActualQuest == 6 && DialogueTrigger.SixthQuestInstantiation &&
                              roomFile.IsZipOf(Folder.ImmaginiEVideoFolder))
                     {
-                        Debug.Log("5");
                         NetworkManager.SendingImmaginiEVideoFolder = true;
                         _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
                         _previousNetworkBox.FileInserted(_grabbedFile);
@@ -461,17 +455,14 @@ public class Magnet0Raycaster : MonoBehaviour
                     }
                     else if (HouseManager.ActualQuest == 6 && DialogueTrigger.SixthQuestInstantiation)
                     {
-                        Debug.Log("6");
                         NotificationManager.Notify(Operation.ShouldBringImmaginiEVideoFolder);
                     }
                     else if (HouseManager.ActualQuest > 6)
                     {
-                        Debug.Log("7");
                         _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
                         _previousNetworkBox.FileInserted(_grabbedFile);
                         _grabbedFile = null;
                     }
-                    Debug.Log("8");
                     return;
                 }
                 if (_grabbedFile.GetReferred() is Folder)

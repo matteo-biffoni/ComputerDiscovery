@@ -64,6 +64,7 @@ public class DialogueTrigger : MonoBehaviour
         };
         DialogueCanvas.SetActive(true);
         NotificationManager.HardCloseNotification();
+        AudioManager.Instance.StopIfLooping = true;
         DialogueManager.OpenDialogue(EndDialogue, messages, ActorName, ActorSprite);
     }
     

@@ -65,7 +65,7 @@ public class Grabber : MonoBehaviour
         };
         if (t != null)
         {
-            AudioManager.Play(transform, AudioManager.Instance.DropClip);
+            AudioManager.Play(transform, AudioManager.Instance.DropClip, false);
             while (Vector3.Distance(t.position, _bachecaLookAt.position) > 0.1f)
             {
                 t.position = Vector3.MoveTowards(t.position, _bachecaLookAt.position, Time.deltaTime * 8f);
@@ -280,7 +280,7 @@ public class Grabber : MonoBehaviour
     public void GrabReferred(Transform objHolder)
     {
         Magnet0Raycaster.Operating = false;
-        AudioManager.Play(transform, AudioManager.Instance.GrabClip);
+        AudioManager.Play(transform, AudioManager.Instance.GrabClip, false);
         TriggerLabelGrabbed(true, _fileNameTextRaycast.text.Trim());
         TriggerLabelRaycast(false);
         _ignoreRaycast = true;
