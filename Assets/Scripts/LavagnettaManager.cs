@@ -26,13 +26,14 @@ public class LavagnettaManager : MonoBehaviour
         Instance.infoGenerali.text = "BENTORNATO!";
     }
 
-    public static void WriteOnLavagnetta(List<string> messages, string info)
+    
+    public static void WriteOnLavagnetta(List<string> messages, string infoGenerali, string infoCorretti )
     {
-        Instance.infoGenerali.text = info;
+        Instance.infoGenerali.text = infoGenerali;
+        Instance.infoCorretti.text = infoCorretti;
         switch (messages)
         {
             case null:
-                Instance.infoCorretti.text = "";
                 Instance.message1.text = "";
                 Instance.message2.text = "";
                 Instance.message3.text = "";
@@ -44,7 +45,6 @@ public class LavagnettaManager : MonoBehaviour
             {
                 if (messages.Count == 0)
                 {
-                    Instance.infoCorretti.text = "Nessun problema rilevato";
                     Instance.message1.text = "";
                     Instance.message2.text = "";
                     Instance.message3.text = "";
@@ -54,7 +54,6 @@ public class LavagnettaManager : MonoBehaviour
                 }
                 else if (messages.Count == 1)
                 {
-                    Instance.infoCorretti.text = "1 problema rilevato";
                     Instance.message1.text = messages[0];
                     Instance.message2.text = "";
                     Instance.message3.text = "";
@@ -64,7 +63,6 @@ public class LavagnettaManager : MonoBehaviour
                 }
                 else if (messages.Count == 2)
                 {
-                    Instance.infoCorretti.text = "2 problemi rilevati";
                     Instance.message1.text = messages[0];
                     Instance.message2.text = "*  *  *  *  *  *";
                     Instance.message3.text = messages[1];
@@ -74,7 +72,6 @@ public class LavagnettaManager : MonoBehaviour
                 }
                 else if (messages.Count == 3)
                 {
-                    Instance.infoCorretti.text = "3 problemi rilevati";
                     Instance.message1.text = messages[0];
                     Instance.message2.text = "*  *  *  *  *  *";
                     Instance.message3.text = messages[1];
@@ -84,7 +81,6 @@ public class LavagnettaManager : MonoBehaviour
                 }
                 else if (messages.Count > 3)
                 {
-                    Instance.infoCorretti.text = $"{messages.Count} problemi rilevati";
                     Instance.message1.text = messages[0];
                     Instance.message2.text = "*  *  *  *  *  *";
                     Instance.message3.text = messages[1];
@@ -95,6 +91,73 @@ public class LavagnettaManager : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public static void SpecialWriteOnLavagnetta(string infoGenerali, string info, List<string> messages)
+    {
+        Instance.infoGenerali.text = infoGenerali;
+        Instance.infoCorretti.text = info;
+
+        switch (messages)
+        {
+            case null:
+                Instance.message1.text = "";
+                Instance.message2.text = "";
+                Instance.message3.text = "";
+                Instance.message4.text = "";
+                Instance.message5.text = "";
+                Instance.message6.text = "";
+                break;
+            default:
+            {
+                if (messages.Count == 0)
+                {
+                    Instance.message1.text = "";
+                    Instance.message2.text = "";
+                    Instance.message3.text = "";
+                    Instance.message4.text = "";
+                    Instance.message5.text = "";
+                    Instance.message6.text = "";
+                }
+                else if (messages.Count == 1)
+                {
+                    Instance.message1.text = messages[0];
+                    Instance.message2.text = "";
+                    Instance.message3.text = "";
+                    Instance.message4.text = "";
+                    Instance.message5.text = "";
+                    Instance.message6.text = "";
+                }
+                else if (messages.Count == 2)
+                {
+                    Instance.message1.text = messages[0];
+                    Instance.message2.text = "*  *  *  *  *  *";
+                    Instance.message3.text = messages[1];
+                    Instance.message4.text = "";
+                    Instance.message5.text = "";
+                    Instance.message6.text = "";
+                }
+                else if (messages.Count == 3)
+                {
+                    Instance.message1.text = messages[0];
+                    Instance.message2.text = "*  *  *  *  *  *";
+                    Instance.message3.text = messages[1];
+                    Instance.message4.text = "*  *  *  *  *  *";
+                    Instance.message5.text = messages[2];
+                    Instance.message6.text = "";
+                }
+                else if (messages.Count > 3)
+                {
+                    Instance.message1.text = messages[0];
+                    Instance.message2.text = "*  *  *  *  *  *";
+                    Instance.message3.text = messages[1];
+                    Instance.message4.text = "*  *  *  *  *  *";
+                    Instance.message5.text = messages[2];
+                }
+                break;
+            }
+        }
+        
     }
 
     // Update is called once per frame

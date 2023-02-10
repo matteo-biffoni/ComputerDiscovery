@@ -95,6 +95,12 @@ public class CarDownloader : MonoBehaviour
         RoomFile.ScoperteFile = file4;
         Folder.TriggerReloading(Operation.Nop);
         HouseManager.ActualQuest = 4;
+        //messaggi su lavagnetta
+        List<string> messagesToSend = new List<string>(new string[]
+        {
+            "Tutti i file scaricati dalla macchina USB sono disponibili nel Desktop"
+        });
+        LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Osserva bene...", messagesToSend); 
         NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
     }
 

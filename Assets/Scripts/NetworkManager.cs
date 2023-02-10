@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -200,6 +201,11 @@ public class NetworkManager : MonoBehaviour
             RoomFile.ScoperteFile = null;
             HouseManager.ActualQuest = 6;
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+            List<string> messagesToSend = new List<string>(new string[]
+            {
+                "Grazie Magneto, ho ricevuto i tuoi documenti, non vedo l'ora di leggerli!"
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Messaggio da Electr4", messagesToSend); 
         }
         else if (SendingImmaginiEVideoFolder)
         {

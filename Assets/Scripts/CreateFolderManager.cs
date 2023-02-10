@@ -52,7 +52,16 @@ public class CreateFolderManager : MonoBehaviour
             if (!error)
             {
                 var newFolderName = folderNameInputField.text.Trim();
+
                 _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null, GUID.Generate().ToString()), false);
+                if (HouseManager.ActualQuest == 4)
+                {
+                    QuestManager.Quest4FormatChecker();
+                }
+                if (HouseManager.ActualQuest == 6)
+                {
+                    QuestManager.Quest6FormatChecker();
+                }
                 NotificationManager.Notify(Operation.FolderCreated);
                 GoBackToGame();
             }
