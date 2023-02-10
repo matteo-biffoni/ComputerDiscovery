@@ -357,26 +357,60 @@ MonoBehaviour:
   HouseManager: {fileID: 0}
   LookAtLamp: {fileID: 9079690250338815246}
   Quest1Messages:
-  - Benvenuto
-  - ti aspettavo
-  - Ciao
+  - Bentornato nella tua casa computer, ti stavo aspettando!
+  - "Mentre eri via un vento magnetico \xE8 entrato in casa e ha sparpagliato alcuni
+    file in giro per l\u2019atrio\u2026"
+  - Aiutami a rimettere tutto in ordine, riportando i file che trovi in giro nelle
+    rispettive cartelle. Ad esempio i file immagine nella cartella immagini e i file
+    documento nella cartella documenti.
+  - Per prendere un file devi mirarlo e poi fare click con tasto sinistro. Per rilasciarlo
+    in una cartella fai di nuovo click con tasto sinistro quando ti trovi al suo
+    interno.
+  - "Ti ricordo che ogni file ha un nome ed un formato. Ad esempio in \u201Cluna.png\u201D
+    il nome \xE8 \u201Cluna\u201D mentre il formato \xE8 \u201Cpng\u201D."
+  - "Alla tua destra troverai una lavagnetta che ti aiuter\xE0 se avrai problemi.
+    Buon lavoro!"
   Quest2Messages:
-  - Congratulazioni, hai protetto la casa computer!
-  - E' il momento di una nuova sfida, spero tu sia pronto...
+  - Grande, hai riportato correttamente i file nelle loro cartelle.
+  - "Ora che ci sei tu in casa posso rigenerare alcune cartelle che avevo nascosto\u2026"
+  - "Purtroppo ho notato che il vento magnetico \xE8 riuscito a modificare tutti
+    i nomi dei file che si trovavano all\u2019interno della cartella \u201CImmagini\u201D
+    e nelle sue sotto cartelle\u2026"
+  - "Rinomina tutti i file nella cartella \u201CImmagini\u201D e nelle sue sotto
+    cartelle."
+  - Per farlo devi mirare un file e poi fare click con il tasto destro.
+  - Se hai qualche dubbio, guarda sempre la lavagnetta. Buon lavoro!
   Quest3Messages:
-  - Addirittura....
-  - Fortissimi
+  - Ben fatto!
+  - "Adesso che in casa \xE8 tutto sistemato puoi scaricare i file del tuo ultimo
+    viaggio dalla macchina USB"
+  - Recati al piano di sopra e scarica i file, ti aspetto qui!
   Quest4Messages:
-  - Hai scaricato correttamente i file
-  - Adesso crea una nuova cartella Viaggi nel Desktop
-  - Poi sposta i file che hai scaricato in quella cartella
-  - Durante la missione puoi guardare la lavagnetta qua dietro per avere informazioni
+  - "Un consiglio? non lasciare i file del desktop\u2026"
+  - "Crea una nuova cartella dal nome \u201CViaggi\u201D mentre sei nel desktop premendo
+    il tasto \u201Cn\u201D"
+  - Una volta fatto porta dentro tutti i file del tuo ultimo viaggio
+  - Se hai bisogno di consigli guarda la lavagnetta!
   Quest5Messages:
-  - AD5L mi ha inoltrato un messaggio dalla rete...
-  - Un tuo amico vorrebbe avere informazioni sulle tue scoperte
-  - Crea una copia del file Scoperte.docx e inseriscila nella scatola vicino ad AD5L
-    in Garage
-  - "AD5L si occuper\xE0 del resto"
+  - "Ben fatto! E\u2019 sempre comodo utilizzare delle cartelle per contenere dei
+    file che abbiano un qualche legame tra loro."
+  - "Mentre ti occupavi di spostare i file, AD5L mi ha inoltrato un messaggio dalla
+    rete da parte della tua collega Electr4\u2026"
+  - Vorrebbe conoscere le scoperte che hai fatto sul pianeta che hai esplorato nel
+    tuo ultimo viaggio
+  - "Crea una copia del file \u201CScoperte.docx\u201D e portala da AD5L in garage,
+    si occuper\xE0 lui del resto."
+  - "Per copiare il file mira l\u2019oggetto e fai click con il tasto destro."
+  Quest6Messages:
+  - "Ben fatto, il file \xE8 stato inviato ad Electr4!"
+  - "A quanto pare sono tutti interessati al tuo viaggio\u2026AD5L mi ha inoltrato
+    un messaggio dal tuo amico RAD4R che vorrebbe vedere tutte le foto e i video
+    del tuo viaggio."
+  - "Dentro la cartella \u201CViaggio\u201D crea una sottocartella chiamata \u201Cfoto
+    e video\u201D e porta dentro tutte le immagini e i video che hai raccolto."
+  - Una volta fatto questo crea una copia della cartella mirando la porta di ingresso
+    e facendo click con il tasto destro.
+  - "A questo punto puoi consegnarla ad AD5L che si occuper\xE0 del resto."
 --- !u!1 &5544208384248771020
 GameObject:
   m_ObjectHideFlags: 0

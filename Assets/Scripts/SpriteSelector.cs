@@ -13,6 +13,6 @@ public class SpriteSelector : MonoBehaviour
 
     public static Sprite GetSpriteFromInt(int value)
     {
-        return value == -1 ? null : Instance.Sprites[value];
+        return value < 0 ? null : Instance.Sprites[value];
     }
 }

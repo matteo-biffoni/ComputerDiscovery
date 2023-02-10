@@ -133,7 +133,19 @@ public class NotificationManager : MonoBehaviour
                 break;
             case Operation.ReleaseIONotCopy:
                 Instance.message.text = "Effettua prima una copia del file";
-                Instance.NotificationImage.sprite = Instance.NotAllowedSprite;
+                Instance.NotificationImage.sprite = Instance.AD5LSprite;
+                break;
+            case Operation.BringFolderToUseZipper:
+                Instance.message.text = "Porta una cartella da elaborare";
+                Instance.NotificationImage.sprite = Instance.ZipSprite;
+                break;
+            case Operation.UnzipNotAllowed:
+                Instance.message.text = "Unzip non disponibile in questo momento";
+                Instance.NotificationImage.sprite = Instance.ZipSprite;
+                break;
+            case Operation.ShouldBringScoperte:
+                Instance.message.text = "Consegnami prima il file richiesto da Electr4!";
+                Instance.NotificationImage.sprite = Instance.AD5LSprite;
                 break;
         }
         Instance.StartCoroutine(CloseNotification(2f));

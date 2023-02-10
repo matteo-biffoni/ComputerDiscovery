@@ -57,11 +57,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: CourierPrime-Regular SDF
+  m_Name: CourierPrime-Regular SDF GlowingPurple
   m_EditorClassIdentifier: 
-  hashCode: -956939248
+  hashCode: 150004333
   material: {fileID: 1935316740428845091}
-  materialHashCode: 551524784
+  materialHashCode: -497402195
   m_Version: 1.1.0
   m_SourceFontFileGUID: 7ef17284059ebe149a7a1419dcf9ff09
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 7ef17284059ebe149a7a1419dcf9ff09, type: 3}
@@ -5562,7 +5562,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: CourierPrime-Regular SDF Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - GLOW_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -5597,9 +5598,9 @@ Material:
     m_Floats:
     - _Ambient: 0.5
     - _Bevel: 0.5
-    - _BevelClamp: 0
+    - _BevelClamp: 1
     - _BevelOffset: 0
-    - _BevelRoundness: 0
+    - _BevelRoundness: 1
     - _BevelWidth: 0
     - _BumpFace: 0
     - _BumpOutline: 0
@@ -5628,7 +5629,7 @@ Material:
     - _ScaleRatioC: 0.6770833
     - _ScaleX: 1
     - _ScaleY: 1
-    - _ShaderFlags: 0
+    - _ShaderFlags: 1
     - _Sharpness: 0
     - _SpecularPower: 2
     - _Stencil: 0
@@ -5650,7 +5651,7 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0.97264934, g: 1, b: 0, a: 0.5}
+    - _GlowColor: {r: 0.06140977, g: 0.06140977, b: 0.5660378, a: 1}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}

@@ -51,7 +51,7 @@ public class CreateFolderManager : MonoBehaviour
             if (!error)
             {
                 var newFolderName = folderNameInputField.text.Trim();
-                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null), false);
+                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null), false);
                 NotificationManager.Notify(Operation.FolderCreated);
                 GoBackToGame();
             }

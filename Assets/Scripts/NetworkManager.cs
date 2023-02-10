@@ -36,6 +36,7 @@ public class NetworkManager : MonoBehaviour
     private Quaternion _previousCameraRotation;
 
     private bool _shouldListenForRaycastChanges = true;
+    public static bool SendingScoperte;
 
     // Start is called before the first frame update
     private void Start()
@@ -139,7 +140,6 @@ public class NetworkManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Player.ReactivateInput();
         _shouldListenForRaycastChanges = true;
-        yield return null;
     }
 
     public IEnumerator FileInsertedInBox(Grabber grabber)
@@ -193,6 +193,13 @@ public class NetworkManager : MonoBehaviour
         _playerShouldLookAtMe = false;
         StartCoroutine(SmoothReturnToPreviousOrientation());
         NetworkBox.ReOpenBox();
+        if (SendingScoperte)
+        {
+            SendingScoperte = false;
+            RoomFile.ScoperteFile = null;
+            HouseManager.ActualQuest = 6;
+            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+        }
     }
 
     private void EndDialogueOk()

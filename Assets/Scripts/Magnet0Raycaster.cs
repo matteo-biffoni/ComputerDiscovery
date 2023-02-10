@@ -20,6 +20,7 @@ public class Magnet0Raycaster : MonoBehaviour
     private NetworkManager _previousNetworkManager;
     private NetworkBox _previousNetworkBox;
     private CarDownloader _previousCarDownloader;
+    private ZipperHandler _previousZipperHandler;
     private Transform _boxObjHolderT;
 
     public static bool Operating = true;
@@ -94,7 +95,7 @@ public class Magnet0Raycaster : MonoBehaviour
                 if (_previousPointedFile != null && _previousPointedFile != fileGrabber)
                 {
                     _previousPointedFile.Outlined.OutlineWidth = 0f;
-                    _previousPointedFile.TriggerLabel(false);
+                    _previousPointedFile.TriggerLabelRaycast(false);
                 }
 
                 if (fileGrabber)
@@ -102,7 +103,7 @@ public class Magnet0Raycaster : MonoBehaviour
                     _previousPointedFile = fileGrabber;
                     if (fileGrabber.Outlined)
                         fileGrabber.Outlined.OutlineWidth = 7f;
-                    fileGrabber.TriggerLabel(true);
+                    fileGrabber.TriggerLabelRaycast(true);
                     if (Input.GetMouseButtonDown(0))
                     {
                         if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
@@ -308,6 +309,28 @@ public class Magnet0Raycaster : MonoBehaviour
                     }
                 }
             }
+            else if (hit.transform.CompareTag("Zipper"))
+            {
+                var zipperHandler = hit.transform.GetComponent<ZipperHandler>();
+                if (_previousZipperHandler != null && _previousZipperHandler != zipperHandler)
+                {
+                    if (_previousZipperHandler.GetActualRaycast())
+                    {
+                        _previousZipperHandler.SetActualRaycast(false, null);
+                        _previousZipperHandler = null;
+                        return;
+                    }
+                }
+
+                if (zipperHandler)
+                {
+                    _previousZipperHandler = zipperHandler;
+                    if (!_previousZipperHandler.GetActualRaycast())
+                    {
+                        _previousZipperHandler.SetActualRaycast(true, _grabbedFile);
+                    }
+                }
+            }
         }
         else
         {
@@ -315,7 +338,7 @@ public class Magnet0Raycaster : MonoBehaviour
             {
                 _previousPointedFile.Outlined.OutlineWidth = 0f;
                 if (!_grabbedFile)
-                    _previousPointedFile.TriggerLabel(false);
+                    _previousPointedFile.TriggerLabelRaycast(false);
                 _previousPointedFile = null;
             }
 
@@ -346,7 +369,21 @@ public class Magnet0Raycaster : MonoBehaviour
                     _previousCarDownloader = null;
                 }
             }
+
+            if (_previousZipperHandler != null)
+            {
+                if (_previousZipperHandler.GetActualRaycast())
+                {
+                    _previousZipperHandler.SetActualRaycast(false, null);
+                    _previousZipperHandler = null;
+                }
+            }
         }
+    }
+
+    public void SetGrabbedFile(Grabber grabber)
+    {
+        _grabbedFile = grabber;
     }
 
     private void Recover(Grabber grabber)
@@ -389,28 +426,47 @@ public class Magnet0Raycaster : MonoBehaviour
                 NotificationManager.Notify(Operation.ReleaseNotAllowed);
                 return;
             }
-
-            if (_grabbedFile.GetReferred() is RoomFile roomFile)
+            if (_grabbedFile.GetReferred().IsACopy())
             {
-                if (roomFile.IsACopy())
+                if (_grabbedFile.GetReferred() is RoomFile roomFile)
                 {
-                    _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
-                    _previousNetworkBox.FileInserted(_grabbedFile);
-                    //qui
-                    _grabbedFile = null;
+                    if (HouseManager.ActualQuest == 5 && DialogueTrigger.FifthQuestInstantiation && roomFile.IsACopyOf(RoomFile.ScoperteFile))
+                    {
+                        NetworkManager.SendingScoperte = true;
+                        _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+                        _previousNetworkBox.FileInserted(_grabbedFile);
+                        _grabbedFile = null;
+                    }
+                    else if (HouseManager.ActualQuest == 5 && DialogueTrigger.FifthQuestInstantiation)
+                    {
+                        NotificationManager.Notify(Operation.ShouldBringScoperte);
+                    }
+                    else if (HouseManager.ActualQuest < 5 || !DialogueTrigger.FifthQuestInstantiation)
+                    {
+                        NotificationManager.Notify(Operation.LockedFunctionality);
+                    }
                     return;
                 }
-                NotificationManager.Notify(Operation.ReleaseIONotCopy);
+                if (_grabbedFile.GetReferred() is Folder folder)
+                {
+                    if (HouseManager.ActualQuest == 6 && DialogueTrigger.SixthQuestInstantiation)
+                    {
+                        _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
+                        _previousNetworkBox.FileInserted(_grabbedFile);
+                        //qui
+                        _grabbedFile = null;
+                    }
+                    else if (HouseManager.ActualQuest < 6 || !DialogueTrigger.SixthQuestInstantiation)
+                    {
+                        NotificationManager.Notify(Operation.LockedFunctionality);
+                    }
+                    return;
+                }
                 return;
             }
-            if (_grabbedFile.GetReferred() is Folder)
-            {
-                _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
-                _previousNetworkBox.FileInserted(_grabbedFile);
-                //qui
-                _grabbedFile = null;
-                return;
-            }
+            
+            NotificationManager.Notify(Operation.ReleaseIONotCopy);
+            return;
         }
         if (roomIn != null)
         {

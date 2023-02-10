@@ -13,10 +13,10 @@ public class Grabber : MonoBehaviour
     private Transform _player;
     private Folder _destinationRoom;
     private GameObject _explosion;
-    private bool _labelVisibility;
     private TMP_Text _fileNameTextRaycast;
     private TMP_Text _fileNameTextGrabbed;
     private Transform _bachecaLookAt;
+    private bool _ignoreRaycast;
     public Outline Outlined;
     [FormerlySerializedAs("ObjMenuCanvas")] public GameObject ObjMenuCanvasPrefab;
     public GameObject TrashItemCanvasPrefab;
@@ -96,6 +96,10 @@ public class Grabber : MonoBehaviour
         {
             QuestManager.Quest1FormatChecker(Folder.Root);
         }
+        else if (HouseManager.ActualQuest == 6)
+        {
+            QuestManager.Quest6FormatChecker();
+        }
         switch (_file)
         {
             case Folder:
@@ -125,11 +129,8 @@ public class Grabber : MonoBehaviour
                 NotificationManager.Notify(Operation.FileRestored);
                 break;
         }
-        if (_fileNameTextRaycast.text.Trim() != "")
-        {
-            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
-            _fileNameTextRaycast.text = "";
-        }
+        TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         Magnet0Raycaster.Operating = true;
     }
 
@@ -146,11 +147,8 @@ public class Grabber : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
-        if (_fileNameTextRaycast.text.Trim() != "")
-        {
-            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
-            _fileNameTextRaycast.text = "";
-        }
+        TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         Magnet0Raycaster.Operating = true;
     }
 
@@ -176,10 +174,9 @@ public class Grabber : MonoBehaviour
         {
             text += "_copia";
         }
-        _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
-        _fileNameTextRaycast.text = "";
-        _fileNameTextGrabbed.text = text;
-        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = true;
+        TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
+        TriggerLabelGrabbed(true, text);
         Transform t;
         GameObject duplicate;
         switch (_file)
@@ -228,21 +225,12 @@ public class Grabber : MonoBehaviour
     public void Delete()
     {
         Magnet0Raycaster.Operating = false;
+        var type = _file is Folder;
         _file.Delete();
-        switch (_file)
-        {
-            case Folder:
-                Destroy(transform.parent.parent.parent.parent.gameObject);
-                break;
-            case RoomFile:
-                Destroy(gameObject);
-                break;
-        }
-        if (_fileNameTextRaycast.text.Trim() != "")
-        {
-            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
-            _fileNameTextRaycast.text = "";
-        }
+        _ignoreRaycast = true;
+        TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
+        Destroy(type ? transform.parent.parent.parent.parent.gameObject : gameObject);
         Magnet0Raycaster.Operating = true;
     }
 
@@ -293,10 +281,9 @@ public class Grabber : MonoBehaviour
     {
         Magnet0Raycaster.Operating = false;
         AudioManager.Play(transform, AudioManager.Instance.GrabClip);
-        _fileNameTextGrabbed.text = _fileNameTextRaycast.text.Trim();
-        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = true;
-        _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
-        _fileNameTextRaycast.text = "";
+        TriggerLabelGrabbed(true, _fileNameTextRaycast.text.Trim());
+        TriggerLabelRaycast(false);
+        _ignoreRaycast = true;
         Transform t;
         switch (_file)
         {
@@ -328,8 +315,7 @@ public class Grabber : MonoBehaviour
     public void DropInBox(Transform player, Transform boxObjHolder)
     {
         Magnet0Raycaster.Operating = false;
-        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = false;
-        _fileNameTextGrabbed.text = "";
+        TriggerLabelGrabbed(false, "");
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         switch (_file)
@@ -352,8 +338,7 @@ public class Grabber : MonoBehaviour
     public void DropReferred(Transform player, Folder room, GameObject explosion)
     {
         Magnet0Raycaster.Operating = false;
-        _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = false;
-        _fileNameTextGrabbed.text = "";
+        TriggerLabelGrabbed(false, "");
         _player = player;
         _player.GetComponent<FirstPersonCharacterController>().IgnoreInput();
         _destinationRoom = room;
@@ -362,21 +347,34 @@ public class Grabber : MonoBehaviour
         StartCoroutine(AnimationAfterDrop());
     }
 
-    public void TriggerLabel(bool value)
+    public void TriggerLabelRaycast(bool value)
     {
-        if (value)
+        if (_fileNameTextRaycast == null) return;
+        if (value && _file != null && !_ignoreRaycast)
         {
-            if (!_labelVisibility && _fileNameTextRaycast != null && _file?.GetName() != null)
-            {
-                _fileNameTextRaycast.text = _file.GetName().Trim();
-                _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = true;
-            }
+            _fileNameTextRaycast.text = _file.GetName().Trim();
+            _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = true;
         }
-        else if (_labelVisibility && _fileNameTextRaycast != null && _fileNameTextRaycast.text.Trim() != "")
+        else
         {
             _fileNameTextRaycast.transform.parent.GetComponent<Image>().enabled = false;
             _fileNameTextRaycast.text = "";
+            _ignoreRaycast = false;
         }
-        _labelVisibility = value;
+    }
+
+    public void TriggerLabelGrabbed(bool value, string text)
+    {
+        if (_fileNameTextGrabbed == null) return;
+        if (value)
+        {
+            _fileNameTextGrabbed.text = text;
+            _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = true;
+        }
+        else
+        {
+            _fileNameTextGrabbed.transform.parent.GetComponent<Image>().enabled = false;
+            _fileNameTextGrabbed.text = "";
+        }
     }
 }

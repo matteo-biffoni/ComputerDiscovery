@@ -23,6 +23,8 @@ public class DialogueTrigger : MonoBehaviour
     private bool _secondQuestInstantiation;
     private bool _thirdQuestInstantiation;
     private bool _fourthQuestInstantiation;
+    public static bool FifthQuestInstantiation;
+    public static bool SixthQuestInstantiation;
     
     
     [FormerlySerializedAs("quest1Messages")] [SerializeField]
@@ -39,6 +41,9 @@ public class DialogueTrigger : MonoBehaviour
 
     [SerializeField]
     string[] Quest5Messages;
+
+    [SerializeField]
+    string[] Quest6Messages;
     
     private IEnumerator StartDialogue(int questNumber)
     {
@@ -52,6 +57,7 @@ public class DialogueTrigger : MonoBehaviour
             3 => Quest3Messages,
             4 => Quest4Messages,
             5 => Quest5Messages,
+            6 => Quest6Messages,
             _ => null
         };
         DialogueCanvas.SetActive(true);
@@ -80,37 +86,37 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
     
-    private IEnumerator SmoothReturnToPreviousOrientation()
+    private IEnumerator SmoothReturnToPreviousOrientation(Operation operation)
     {
         var cameraT = Player.transform.GetComponentInChildren<Camera>().transform;
         while (Quaternion.Angle(Player.transform.rotation, _previousPlayerRotation) > 0.1f)
         {
             Player.transform.rotation =
-                Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 12f);
+                Quaternion.Slerp(Player.transform.rotation, _previousPlayerRotation, Time.deltaTime * 8f);
             cameraT.localRotation =
-                Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 12f);
+                Quaternion.Slerp(cameraT.localRotation, _previousCameraRotation, Time.deltaTime * 8f);
             yield return null;
         }
-        Player.ReactivateInput();
-        yield return null;
+        Folder.TriggerReloading(operation);
+        _checkInteraction = true;
     }
 
     private void EndDialogue()
     {
+        var oper = Operation.Nop;
         //Controllo sulla quest 2 per generazione nuovo albero
         if (HouseManager.ActualQuest == 2 && !_secondQuestInstantiation)
         {
             _secondQuestInstantiation = true;
             var Immagini = Folder.GetFolderFromAbsolutePath(new [] { "Desktop", "Immagini"}, Folder.Root);
-            var Torino = new Folder("Torino", Immagini);
-            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, false);
-            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, false);
-            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, false);
-            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, false);
+            var Torino = new Folder("Torino", Immagini, null);
+            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, null);
+            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, null);
+            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, null);
+            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, null);
             var fileList = new List<RoomFile> { file1, file2, file3, file4 };
             Torino.SetFiles(fileList);
             Immagini.GetChildren().Add(Torino);
-            Folder.TriggerReloading(Operation.Nop);
             QuestManager.ImageNamesAtQuest2Start = new List<string>();
             foreach (var roomFile in Immagini.GetAllFiles())
             {
@@ -121,19 +127,30 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 3 && !_thirdQuestInstantiation)
         {
             _thirdQuestInstantiation = true;
-            Folder.TriggerReloading(Operation.Quest2Completed);
+            oper = Operation.Quest2Completed;
             GameObject.FindGameObjectWithTag("Serranda").transform.GetComponent<BoxCollider>().enabled = true;
         }
 
         if (HouseManager.ActualQuest == 4 && !_fourthQuestInstantiation)
         {
             _fourthQuestInstantiation = true;
-            Folder.TriggerReloading(Operation.Quest3Completed);
+            oper = Operation.Quest3Completed;
+        }
+
+        if (HouseManager.ActualQuest == 5 && !FifthQuestInstantiation)
+        {
+            FifthQuestInstantiation = true;
+            oper = Operation.Quest4Completed;
+        }
+
+        if (HouseManager.ActualQuest == 6 && !SixthQuestInstantiation)
+        {
+            SixthQuestInstantiation = true;
+            oper = Operation.Quest5Completed;
         }
         DialogueCanvas.SetActive(false);
         InteractCanvas.SetActive(true);
-        _checkInteraction = true;
-        StartCoroutine(SmoothReturnToPreviousOrientation());
+        StartCoroutine(SmoothReturnToPreviousOrientation(oper));
     }
     private void OnTriggerEnter(Collider other)
     {
