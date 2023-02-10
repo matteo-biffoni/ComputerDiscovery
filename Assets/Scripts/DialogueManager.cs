@@ -91,7 +91,7 @@ public class DialogueManager : MonoBehaviour
     private void Update()
     {
         if (!_dialogRunning) return;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             NextMessage();
         }

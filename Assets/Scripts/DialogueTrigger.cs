@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -109,11 +110,11 @@ public class DialogueTrigger : MonoBehaviour
         {
             _secondQuestInstantiation = true;
             var Immagini = Folder.GetFolderFromAbsolutePath(new [] { "Desktop", "Immagini"}, Folder.Root);
-            var Torino = new Folder("Torino", Immagini, null);
-            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, null);
-            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, null);
-            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, null);
-            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, null);
+            var Torino = new Folder("Torino", Immagini, null, GUID.Generate().ToString());
+            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, null, GUID.Generate().ToString());
+            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, null, GUID.Generate().ToString());
+            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, null, GUID.Generate().ToString());
+            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, null, GUID.Generate().ToString());
             var fileList = new List<RoomFile> { file1, file2, file3, file4 };
             Torino.SetFiles(fileList);
             Immagini.GetChildren().Add(Torino);

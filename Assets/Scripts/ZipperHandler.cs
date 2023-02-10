@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class ZipperHandler : MonoBehaviour
@@ -105,7 +106,7 @@ public class ZipperHandler : MonoBehaviour
         yield return new WaitUntil(() => Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Armature|Zipper_Action");
         Animator.SetBool(Zipping, false);
         yield return new WaitWhile(() => Animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.5f);
-        _grabber.GetReferred().SetParentOnDeletionAbsolutePath(_grabber.GetReferred().GetParent().GetAbsolutePath());
+        _grabber.GetReferred().SetParentOnDeletionAbsolutePath(_grabber.GetReferred().GetParent()?.GetAbsolutePath());
         var referred = _grabber.GetReferred();
         Destroy(tr.gameObject);
         var objInstantiated = Instantiate(ZipPrefab, InZipperPosition);
@@ -113,7 +114,7 @@ public class ZipperHandler : MonoBehaviour
         tr.SetParent(ObjHolder);
         tr.localScale *= 0.75f;
         var fileGrabber = objInstantiated.transform.GetComponent<Grabber>();
-        var zipFile = new RoomFile(_grabber.GetReferred().GetName().Split(".")[0] + ".zip", "zip", -1, 0, null, _grabber.GetReferred());
+        var zipFile = new RoomFile(referred.GetName().Split(".")[0] + ".zip", "zip", -1, 0, null, referred.IsACopy() ? referred.GetCopyOf() : referred.GetIndex(), GUID.Generate().ToString());
         fileGrabber.SetReferred(zipFile);
         yield return new WaitForSeconds(2f);
         positionNotReached = true;
@@ -129,7 +130,10 @@ public class ZipperHandler : MonoBehaviour
             yield return null;
         }
         fileGrabber.TriggerLabelGrabbed(true, zipFile.GetName().Trim());
-        referred.Recover();
+        if (referred.GetParentOnDeletionAbsolutePath() != null)
+            referred.Recover();
+        else
+            Folder.TriggerReloading(Operation.Nop);
         _grabber = fileGrabber;
         Magnet0Raycaster.SetGrabbedFile(_grabber);
         InteractCanvas.SetActive(_actualRaycast);

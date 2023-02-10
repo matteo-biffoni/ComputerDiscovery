@@ -37,6 +37,7 @@ public class NetworkManager : MonoBehaviour
 
     private bool _shouldListenForRaycastChanges = true;
     public static bool SendingScoperte;
+    public static bool SendingImmaginiEVideoFolder;
 
     // Start is called before the first frame update
     private void Start()
@@ -198,6 +199,13 @@ public class NetworkManager : MonoBehaviour
             SendingScoperte = false;
             RoomFile.ScoperteFile = null;
             HouseManager.ActualQuest = 6;
+            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+        }
+        else if (SendingImmaginiEVideoFolder)
+        {
+            SendingImmaginiEVideoFolder = false;
+            Folder.ImmaginiEVideoFolder = null;
+            HouseManager.ActualQuest = 7;
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }

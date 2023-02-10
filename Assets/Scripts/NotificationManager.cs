@@ -17,6 +17,8 @@ public class NotificationManager : MonoBehaviour
     public Sprite LampSprite;
     public Sprite IOSprite;
     public Sprite ZipSprite;
+
+    private Coroutine _notifyingTimer;
     
     
 
@@ -28,6 +30,10 @@ public class NotificationManager : MonoBehaviour
     //Notifiche operazioni su file e cartelle
     public static void Notify(Operation operation)
     {
+        if (Instance._notifyingTimer != null)
+        {
+            Instance.StopCoroutine(Instance._notifyingTimer);
+        }
         AudioManager.Play(Instance.transform, AudioManager.Instance.Notification);
         Instance.backgroundBox.gameObject.SetActive(true);
         
@@ -147,8 +153,12 @@ public class NotificationManager : MonoBehaviour
                 Instance.message.text = "Consegnami prima il file richiesto da Electr4!";
                 Instance.NotificationImage.sprite = Instance.AD5LSprite;
                 break;
+            case Operation.ShouldBringImmaginiEVideoFolder:
+                Instance.message.text = "Consegnami prima lo zip richiesto da Rad4r!";
+                Instance.NotificationImage.sprite = Instance.AD5LSprite;
+                break;
         }
-        Instance.StartCoroutine(CloseNotification(2f));
+        Instance._notifyingTimer = Instance.StartCoroutine(CloseNotification(2f));
     }
 
     public static IEnumerator QuestNotify(string message)
@@ -170,6 +180,7 @@ public class NotificationManager : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         Instance.backgroundBox.gameObject.SetActive(false);
+        Instance._notifyingTimer = null;
     }
 
     
