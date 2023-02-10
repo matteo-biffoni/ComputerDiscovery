@@ -7,7 +7,6 @@ public class PlayerNavigatorManager : MonoBehaviour
 
     public bool CanCreateFolder()
     {
-        // LA LOGICA PER IMPEDIRE DI CREARE CARTELLE A SECONDA DELLA QUEST FORSE VA INSERITA QUA
         return _roomIn != null && _roomIn != Folder.MainRoom && _roomIn != Folder.Garage;
     }
 

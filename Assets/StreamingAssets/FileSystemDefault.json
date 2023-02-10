@@ -1,26 +1,36 @@
 {
+  "Index": "ceb4601ca77b93747b5a6f69d9b7c95e",
   "Name": "Desktop",
   "Children": [
     {
+      "Index": "f68f137997d02da44b3ce676cf1010f5",
       "Name": "Video",
       "Children": [],
-      "Files": []
+      "Files": [],
+      "CopyOf": null
     },
     {
+      "Index": "de66a7267ff671047ac93056e265196d",
       "Name": "Immagini",
       "Children": [],
-      "Files": []
+      "Files": [],
+      "CopyOf": null
     },
     {
+      "Index": "6949dda84a06b6648834ca230fe24e29",
       "Name": "Documenti",
       "Children": [],
-      "Files": []
+      "Files": [],
+      "CopyOf": null
     },
     {
+      "Index": "02bdd91f1e2b5794988b7fe5c8d34c23",
       "Name": "Audio",
       "Children": [],
-      "Files": []
+      "Files": [],
+      "CopyOf": null
     }
   ],
-  "Files": []
+  "Files": [],
+  "CopyOf": null
 }
