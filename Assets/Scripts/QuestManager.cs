@@ -62,11 +62,18 @@ public class QuestManager : MonoBehaviour
                     break;
             }
         }
-        LavagnettaManager.WriteOnLavagnetta(wrongAllocatedFilesList, "INFORMAZIONI");
+
+        var fileToAllocate = 8 - Folder.Root.GetAllFiles().Count + wrongAllocatedFilesList.Count;
+        LavagnettaManager.WriteOnLavagnetta(wrongAllocatedFilesList, "INFORMAZIONI", $"Devi ancora posizionare correttamente {fileToAllocate} file");
         //Check fine quest, tutti i file allocati correttamente
         if (filesActual.Count == 8 && wrongAllocatedFilesList.Count == 0) {
             HouseManager.ActualQuest = 2;
-            LavagnettaManager.WriteOnLavagnetta(null, "BEN FATTO!"); //messaggio fine quest
+            //messaggio fine quest
+            List<string> messages = new List<string>(new string[]
+            {
+                "I formati '.png' e '.jpeg' sono Immagini, il formato '.mp3' è audio, i formati '.docx' e '.txt' sono documenti e infine il '.mov' è un formato video",
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Ricorda...", messages); //messaggio fine quest
             
             NotificationManager.Instance.StartCoroutine(ShowLastNotifyAndNotifyQuest1());
         }
@@ -94,21 +101,25 @@ public class QuestManager : MonoBehaviour
                 notRenamedFiles.Add($"- Il file '{fileName}' deve essere rinominato");
             }
         }
-        LavagnettaManager.WriteOnLavagnetta(notRenamedFiles, "INFORMAZIONI");
+        LavagnettaManager.WriteOnLavagnetta(notRenamedFiles, "INFORMAZIONI", $"Devi ancora rinominare {notRenamedFiles.Count} file");
         //Check fine quest, tutti i file allocati correttamente
         if (notRenamedFiles.Count == 0) {
             HouseManager.ActualQuest = 3;
-            LavagnettaManager.WriteOnLavagnetta(null, "BEN FATTO!"); //messaggio fine quest
+            List<string> messages = new List<string>(new string[]
+            {
+                "E' sempre possibile rinominare un file quando ne hai bisogno"
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Osserva bene...", messages); 
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
         }
     }
 
     public static void Quest4FormatChecker()
     {
-        var messages = new List<string>();
-        if (!(Folder.Root.GetChildren().Exists(folder => folder.GetName() == "Viaggi") || Folder.Root.GetChildren().Exists(folder => folder.GetName() == "viaggi")))
+        var info = "";
+        if (!Folder.Root.GetChildren().Exists(folder => folder.GetName() == "Viaggi") && !Folder.Root.GetChildren().Exists(folder => folder.GetName() == "viaggi"))
         {
-            messages.Add("Crea una nuova cartella 'Viaggi' nel Desktop");
+            info = "Crea una nuova cartella 'Viaggi' nel Desktop";
         }
         else
         {
@@ -120,24 +131,30 @@ public class QuestManager : MonoBehaviour
                 viaggi = Folder.GetFolderFromAbsolutePath(possiblePath2, Folder.Root);
             }
 
-            if (viaggi.GetFiles().Count < 5)
+            if (viaggi.GetAllFiles().Count < 5)
             {
-                messages.Add($"Devi ancora posizionare {5 - viaggi.GetFiles().Count} file nella cartella Viaggi");
+                info = $"Devi ancora posizionare {5 - viaggi.GetAllFiles().Count} file nella cartella 'Viaggi'";
             }
             else
             {
                 HouseManager.ActualQuest = 5;
-                LavagnettaManager.WriteOnLavagnetta(null, "BEN FATTO!"); //messaggio fine quest
+                List<string> messagesToSend = new List<string>(new string[]
+                {
+                    "E' sempre utile creare cartelle per raggruppare i file in base ad una caratteristica!"
+                });
+                LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Ricorda...", messagesToSend); 
                 NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
                 return;
             }
+            
         }
-        LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI");
+        LavagnettaManager.WriteOnLavagnetta(null, "INFORMAZIONI", info);
     }
     
     public static void Quest6FormatChecker()
         {
             var messages = new List<string>();
+            var info = "";
             var Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "Viaggi");
             if (Viaggio == null)
             {
@@ -145,13 +162,12 @@ public class QuestManager : MonoBehaviour
             }
             if (!(Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") || Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video")))
             {
-                messages.Add("Crea una nuova cartella 'immagini e video' nella cartella 'Viaggi'");
+                info = "Crea una nuova cartella 'immagini e video' nella cartella 'Viaggi'";
             }
             else
             {
-                
                 string[] possiblePath1 = { "Desktop", Viaggio.GetName(), "immagini e video"};
-                string[] possiblePath2 = { "Desktop", Viaggio.GetName(), "immagini e video"};
+                string[] possiblePath2 = { "Desktop", Viaggio.GetName(), "Immagini e video"};
                 var ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath1, Folder.Root);
                 if (ImmaginiVideo == null)
                 {
@@ -174,11 +190,14 @@ public class QuestManager : MonoBehaviour
                     }
                 }
 
+                info = $"Ancora {FilesToMove.Count + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";
+
                 if (messages.Count == 0)
                 {
-                    messages.Add("Crea una copia della cartella 'Foto e video' e consegnala ad AD5L");
+                    info = "E' ora di spedire in rete";
+                    messages.Add("Crea una copia della cartella 'Immagini e video' e consegnala ad AD5L");
                 }
             }
-            LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI");
+            LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI", info);
         }
 }

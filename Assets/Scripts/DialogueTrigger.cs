@@ -20,13 +20,14 @@ public class DialogueTrigger : MonoBehaviour
     private Quaternion _previousPlayerRotation;
     private Quaternion _previousCameraRotation;
     public Transform LookAtLamp;
+    private bool _firstQuestInstantiation;
     private bool _secondQuestInstantiation;
     private bool _thirdQuestInstantiation;
     private bool _fourthQuestInstantiation;
     public static bool FifthQuestInstantiation;
     public static bool SixthQuestInstantiation;
-    
-    
+
+
     [FormerlySerializedAs("quest1Messages")] [SerializeField]
     string[] Quest1Messages;
     
@@ -104,10 +105,29 @@ public class DialogueTrigger : MonoBehaviour
     private void EndDialogue()
     {
         var oper = Operation.Nop;
+        if (HouseManager.ActualQuest == 1 && !_firstQuestInstantiation)
+        {
+            _firstQuestInstantiation = true; 
+            List<string> messages = new List<string>(new string[]
+            {
+                "1. Mira un oggetto e fai click con pulsante sinistro per afferrarlo",  
+                "2. Spostati verso la cartella in cui vuoi posizionare il file",
+                "3. Fai click con pulsante sinistro per rilasciarlo"
+            });
+           LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "", messages);
+        }
         //Controllo sulla quest 2 per generazione nuovo albero
         if (HouseManager.ActualQuest == 2 && !_secondQuestInstantiation)
         {
             _secondQuestInstantiation = true;
+            List<string> messages = new List<string>(new string[]
+            {
+                "1. Mira un file e fai click con pulsante destro per aprire il pannello 'Operazioni'",  
+                "2. Clicca su 'Rinomina'",
+                "3. Inserisci un nuovo nome a tuo piacimento che rappresenti il file e fai click su 'Conferma'"
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Per rinominare un file immagine:", messages);
+            
             var Immagini = Folder.GetFolderFromAbsolutePath(new [] { "Desktop", "Immagini"}, Folder.Root);
             var Torino = new Folder("Torino", Immagini, null);
             var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, null);
@@ -127,6 +147,12 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 3 && !_thirdQuestInstantiation)
         {
             _thirdQuestInstantiation = true;
+            List<string> messages = new List<string>(new string[]
+            {
+                "1. Recati in Garage al piano di sopra",  
+                "2. Fai partire il download"
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Per scaricare dalla macchina USB:", messages);
             oper = Operation.Quest2Completed;
             GameObject.FindGameObjectWithTag("Serranda").transform.GetComponent<BoxCollider>().enabled = true;
         }
@@ -134,18 +160,42 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 4 && !_fourthQuestInstantiation)
         {
             _fourthQuestInstantiation = true;
+            List<string> messages = new List<string>(new string[]
+            {
+                "1. Posizionati nel luogo in cui vuoi creare una nuova cartella",  
+                "2. Premi 'n', poi inserisci il nome della cartella e conferma",
+                "Se proprio non te lo ricordavi...la cartella va creata nel Desktop e deve essere chiamata 'Viaggi'"
+                
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Crea una nuova cartella:", messages);
             oper = Operation.Quest3Completed;
         }
 
         if (HouseManager.ActualQuest == 5 && !FifthQuestInstantiation)
         {
             FifthQuestInstantiation = true;
+            List<string> messages = new List<string>(new string[]
+            {
+                "1. Cerca il file nella cartella 'Viaggi'",  
+                "2. Mira il file e fai click con il tasto destro per accedere alle operazioni",
+                "3. Copia il file e consegnalo ad ADSL"
+                
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Invia una copia del file 'Scoperte.docx' in rete:", messages);
             oper = Operation.Quest4Completed;
         }
 
         if (HouseManager.ActualQuest == 6 && !SixthQuestInstantiation)
         {
             SixthQuestInstantiation = true;
+            List<string> messages = new List<string>(new string[]
+            {
+                "1. Posizionati dentro la cartella 'Viaggi'",  
+                "2. Crea una nuova sottocartella chiamata 'Immagini e video'",
+                "3. Sposta dentro la cartella tutti i file di formato Immagine e video"
+                
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Crea una nuova sotto cartella 'Immagini e video':", messages);
             oper = Operation.Quest5Completed;
         }
         DialogueCanvas.SetActive(false);
