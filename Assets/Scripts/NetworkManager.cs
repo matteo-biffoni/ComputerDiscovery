@@ -205,7 +205,7 @@ public class NetworkManager : MonoBehaviour
             {
                 "Grazie Magneto, ho ricevuto i tuoi documenti, non vedo l'ora di leggerli!"
             });
-            LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Messaggio da Electr4", messagesToSend); 
+            LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Messaggio da ELECTR4", messagesToSend); 
         }
         else if (SendingImmaginiEVideoFolder)
         {

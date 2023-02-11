@@ -182,22 +182,6 @@ PrefabInstance:
       propertyPath: DialogueManager
       value: 
       objectReference: {fileID: 3986692677947787110}
-    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: m_Radius
-      value: 3.3171701
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: m_Center.x
-      value: -0.10402993
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: m_Center.y
-      value: 1.4735686
-      objectReference: {fileID: 0}
-    - target: {fileID: 1162527105, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
-      propertyPath: m_Center.z
-      value: 3.1378243
-      objectReference: {fileID: 0}
     - target: {fileID: 5134095066605489069, guid: 023bdf6a685538f4083c85529ac18b13, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1042,10 +1026,6 @@ PrefabInstance:
       propertyPath: InteractCanvasText
       value: 
       objectReference: {fileID: 1663533261}
-    - target: {fileID: 181397885, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
-      propertyPath: m_text
-      value: 5 file nella macchina USB
-      objectReference: {fileID: 0}
     - target: {fileID: 1507563999, guid: 17991839dbc67d343bdb036ac5052974, type: 3}
       propertyPath: Player
       value: 

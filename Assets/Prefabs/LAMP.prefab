@@ -333,8 +333,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5.319286
-  m_Center: {x: -0.91700333, y: 1.4735844, z: 2.8653965}
+  m_Radius: 3.3171701
+  m_Center: {x: -0.10402993, y: 1.4735686, z: 3.1378243}
 --- !u!114 &1162527104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,9 +363,9 @@ MonoBehaviour:
   - Aiutami a rimettere tutto in ordine, riportando i file che trovi in giro nelle
     rispettive cartelle. Ad esempio i file immagine nella cartella immagini e i file
     documento nella cartella documenti.
-  - Per prendere un file devi mirarlo e poi fare click con tasto sinistro. Per rilasciarlo
-    in una cartella fai di nuovo click con tasto sinistro quando ti trovi al suo
-    interno.
+  - Per prendere un file devi mirarlo e poi fare click con il tasto sinistro. Per
+    rilasciarlo in una cartella fai di nuovo click con il tasto sinistro quando ti
+    trovi al suo interno.
   - "Ti ricordo che ogni file ha un nome ed un formato. Ad esempio in \u201Cluna.png\u201D
     il nome \xE8 \u201Cluna\u201D mentre il formato \xE8 \u201Cpng\u201D."
   - "Alla tua destra troverai una lavagnetta che ti aiuter\xE0 se avrai problemi.
@@ -386,8 +386,8 @@ MonoBehaviour:
     viaggio dalla macchina USB"
   - Recati al piano di sopra e scarica i file, ti aspetto qui!
   Quest4Messages:
-  - "Un consiglio? non lasciare i file del desktop\u2026"
-  - "Crea una nuova cartella dal nome \u201CViaggi\u201D mentre sei nel desktop premendo
+  - "Un consiglio? non lasciare i file del Desktop\u2026"
+  - "Crea una nuova cartella dal nome \u201CViaggi\u201D mentre sei nel Desktop premendo
     il tasto \u201Cn\u201D"
   - Una volta fatto porta dentro tutti i file del tuo ultimo viaggio
   - Se hai bisogno di consigli guarda la lavagnetta!
@@ -395,22 +395,23 @@ MonoBehaviour:
   - "Ben fatto! E\u2019 sempre comodo utilizzare delle cartelle per contenere dei
     file che abbiano un qualche legame tra loro."
   - "Mentre ti occupavi di spostare i file, AD5L mi ha inoltrato un messaggio dalla
-    rete da parte della tua collega Electr4\u2026"
+    rete da parte della tua collega ELECTR4\u2026"
   - Vorrebbe conoscere le scoperte che hai fatto sul pianeta che hai esplorato nel
     tuo ultimo viaggio
   - "Crea una copia del file \u201CScoperte.docx\u201D e portala da AD5L in garage,
     si occuper\xE0 lui del resto."
   - "Per copiare il file mira l\u2019oggetto e fai click con il tasto destro."
   Quest6Messages:
-  - "Ben fatto, il file \xE8 stato inviato ad Electr4!"
-  - "A quanto pare sono tutti interessati al tuo viaggio\u2026AD5L mi ha inoltrato
+  - "Ben fatto, il file \xE8 stato inviato ad ELECTR4!"
+  - "A quanto pare sono tutti interessati al tuo viaggio\u2026 AD5L mi ha inoltrato
     un messaggio dal tuo amico RAD4R che vorrebbe vedere tutte le foto e i video
     del tuo viaggio."
-  - "Dentro la cartella \u201CViaggio\u201D crea una sottocartella chiamata \u201Cfoto
+  - "Dentro la cartella \u201CViaggio\u201D crea una sottocartella chiamata \u201CImmagini
     e video\u201D e porta dentro tutte le immagini e i video che hai raccolto."
   - Una volta fatto questo crea una copia della cartella mirando la porta di ingresso
     e facendo click con il tasto destro.
-  - "A questo punto puoi consegnarla ad AD5L che si occuper\xE0 del resto."
+  - "A questo punto prova a consegnarla ad AD5L per mandarla a RAD4R. AD5L ti guider\xE0
+    nel percorso!"
 --- !u!1 &5544208384248771020
 GameObject:
   m_ObjectHideFlags: 0

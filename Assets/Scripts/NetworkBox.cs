@@ -64,7 +64,11 @@ public class NetworkBox : MonoBehaviour
             case Folder:
                 StartCoroutine(FallInBox(grabber.transform.parent.parent.parent.parent, transform.Find("BoxObjHolder").position));
                 break;
-            case RoomFile:
+            case RoomFile roomFile:
+                if (roomFile.GetFormat() == "zip")
+                {
+                    _insertedFile.transform.localScale *= 0.75f;
+                }
                 StartCoroutine(FallInBox(grabber.transform, transform.Find("BoxObjHolder").position));
                 break;
         }

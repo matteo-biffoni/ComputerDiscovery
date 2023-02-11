@@ -162,7 +162,11 @@ public class QuestManager : MonoBehaviour
             }
             if (!Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") && !Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video"))
             {
-                info = "Crea una nuova cartella 'immagini e video' nella cartella 'Viaggi'";
+                info = "Crea una nuova cartella 'Immagini e video' nella cartella 'Viaggi'";
+                if (ZipperHandler.FirstHalfOfZipQuestCompleted)
+                {
+                    ZipperHandler.FirstHalfOfZipQuestCompleted = false;
+                }
             }
             else
             {
@@ -195,8 +199,19 @@ public class QuestManager : MonoBehaviour
 
                 if (messages.Count == 0)
                 {
+                    if (!ZipperHandler.FirstHalfOfZipQuestCompleted)
+                    {
+                        ZipperHandler.FirstHalfOfZipQuestCompleted = true;
+                    }
                     info = "E' ora di spedire in rete";
                     messages.Add("Crea una copia della cartella 'Immagini e video' e consegnala ad AD5L");
+                }
+                else
+                {
+                    if (ZipperHandler.FirstHalfOfZipQuestCompleted)
+                    {
+                        ZipperHandler.FirstHalfOfZipQuestCompleted = false;
+                    }
                 }
             }
             LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI", info);
