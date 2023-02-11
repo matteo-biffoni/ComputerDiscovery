@@ -25,6 +25,11 @@ public class Magnet0Raycaster : MonoBehaviour
 
     public static bool Operating = true;
 
+    public bool ShowingMenus()
+    {
+        return _showingObjMenu || _showingRenameMenu;
+    }
+
 
     // Update is called once per frame
     private void Update()
@@ -141,7 +146,7 @@ public class Magnet0Raycaster : MonoBehaviour
                         {
                             _objMenu = fileGrabber.ShowObjectMenu(Player.transform);
                             var copyButton = _objMenu.transform.GetChild(0).Find("CopyButton").GetComponent<Button>();
-                            if (HouseManager.ActualQuest <= 2)
+                            if (HouseManager.ActualQuest < 5)
                             {
                                 ColorBlock cb = copyButton.colors;
                                 cb.normalColor = Color.grey;
@@ -208,7 +213,7 @@ public class Magnet0Raycaster : MonoBehaviour
                                 });
                             });
                             var deleteButton = _objMenu.transform.GetChild(0).Find("DeleteButton").GetComponent<Button>();
-                            if (HouseManager.ActualQuest <= 2)
+                            if (HouseManager.ActualQuest < 5)
                             {
                                 ColorBlock cb = deleteButton.colors;
                                 cb.normalColor = Color.grey;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,8 +45,10 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField]
     string[] Quest5Messages;
 
-    [SerializeField]
-    string[] Quest6Messages;
+    [SerializeField] 
+    private string[] Quest6Messages;
+
+    private string _toReplace = "Scoperte.docx";
     
     private IEnumerator StartDialogue(int questNumber)
     {
@@ -62,6 +65,11 @@ public class DialogueTrigger : MonoBehaviour
             6 => Quest6Messages,
             _ => null
         };
+        if (questNumber == 5)
+        {
+            Quest5Messages[3] = Quest5Messages[3].Replace(_toReplace, RoomFile.ScoperteFile.GetName());
+            _toReplace = RoomFile.ScoperteFile.GetName();
+        }
         DialogueCanvas.SetActive(true);
         NotificationManager.HardCloseNotification();
         AudioManager.Instance.StopIfLooping = true;
@@ -131,11 +139,11 @@ public class DialogueTrigger : MonoBehaviour
             LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Per rinominare un file immagine:", messages);
             
             var Immagini = Folder.GetFolderFromAbsolutePath(new [] { "Desktop", "Immagini"}, Folder.Root);
-            var Torino = new Folder("Torino", Immagini, null, GUID.Generate().ToString());
-            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, null, GUID.Generate().ToString());
-            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, null, GUID.Generate().ToString());
-            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, null, GUID.Generate().ToString());
-            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, null, GUID.Generate().ToString());
+            var Torino = new Folder("Torino", Immagini, null, Guid.NewGuid().ToString());
+            var file1 = new RoomFile("wByLQTNYLN.png", "png", 9, 70, Torino, null, Guid.NewGuid().ToString());
+            var file2 = new RoomFile("jesnotNaJF.png", "png", 10, 70, Torino, null, Guid.NewGuid().ToString());
+            var file3 = new RoomFile("sUhVzbsXFg.jpg", "jpeg", 11, 70, Torino, null, Guid.NewGuid().ToString());
+            var file4 = new RoomFile("rncyZCLgUV.jpg", "jpeg", 12, 70, Torino, null, Guid.NewGuid().ToString());
             var fileList = new List<RoomFile> { file1, file2, file3, file4 };
             Torino.SetFiles(fileList);
             Immagini.GetChildren().Add(Torino);

@@ -17,12 +17,32 @@ public class GarageDoorOpener : MonoBehaviour
             yield return null;
         }
     }
+
+    private IEnumerator RotateDoorTo(Quaternion target)
+    {
+        while (Quaternion.Angle(Door.localRotation, target) > 0.01f)
+        {
+            Door.localRotation = Quaternion.Slerp(Door.localRotation, target, Time.deltaTime * 4f);
+            yield return null;
+        }    
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             StopAllCoroutines();
             StartCoroutine(MoveDoorTo(OpenedPosition.position));
+            if (other.transform.GetComponent<PlayerNavigatorManager>().GetRoomIn() == Folder.Garage)
+            {
+                StartCoroutine(RotateDoorTo(Quaternion.Euler(90f, Door.localRotation.eulerAngles.y,
+                    Door.localRotation.eulerAngles.z)));
+            }
+            else
+            {
+                StartCoroutine(RotateDoorTo(Quaternion.Euler(-90f, Door.localRotation.eulerAngles.y,
+                    Door.localRotation.eulerAngles.z)));
+            }
         }
     }
 
@@ -32,6 +52,8 @@ public class GarageDoorOpener : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(MoveDoorTo(ClosedPosition.position));
+            StartCoroutine(RotateDoorTo(Quaternion.Euler(0f, Door.localRotation.eulerAngles.y,
+                Door.localRotation.eulerAngles.z)));
         }
     }
 }

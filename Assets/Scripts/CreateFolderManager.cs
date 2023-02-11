@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -53,7 +54,7 @@ public class CreateFolderManager : MonoBehaviour
             {
                 var newFolderName = folderNameInputField.text.Trim();
 
-                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null, GUID.Generate().ToString()), false);
+                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null, Guid.NewGuid().ToString()), false);
                 if (HouseManager.ActualQuest == 4)
                 {
                     QuestManager.Quest4FormatChecker();

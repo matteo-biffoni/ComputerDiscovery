@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class ZipperHandler : MonoBehaviour
@@ -28,6 +28,9 @@ public class ZipperHandler : MonoBehaviour
 
     public TMP_Text ZipText;
     public TMP_Text UnzipText;
+
+    private static bool _immaginiEVideoZipped;
+    public static bool FirstHalfOfZipQuestCompleted;
 
     private void Start()
     {
@@ -65,16 +68,48 @@ public class ZipperHandler : MonoBehaviour
                 NotificationManager.Notify(Operation.BringFolderToUseZipper);
                 break;
             case true when _grabber != null && Input.GetKeyDown(KeyPressed):
-                if (_grabber.GetReferred() is RoomFile roomFile && roomFile.GetFormat() == "zip")
+                if (HouseManager.ActualQuest < 6)
+                {
+                    NotificationManager.Notify(Operation.LockedFunctionality);
+                }
+                else if (_grabber.GetReferred() is RoomFile roomFile && roomFile.GetFormat() == "zip")
                 {
                     NotificationManager.Notify(Operation.UnzipNotAllowed);
                 }
                 else
                 {
-                    _operating = true;
-                    InteractCanvas.SetActive(false);
-                    Player.IgnoreInput();
-                    StartCoroutine(ZipFolder());
+                    if (_immaginiEVideoZipped || 
+                            (_grabber.GetReferred() is Folder && 
+                                (_grabber.GetReferred().GetIndex() == Folder.ImmaginiEVideoFolder.GetIndex() 
+                                || _grabber.GetReferred().IsACopyOf(Folder.ImmaginiEVideoFolder))))
+                    {
+                        if (!_immaginiEVideoZipped)
+                        {
+                            if (FirstHalfOfZipQuestCompleted)
+                            {
+                                _immaginiEVideoZipped = true;
+                                _operating = true;
+                                InteractCanvas.SetActive(false);
+                                Player.IgnoreInput();
+                                StartCoroutine(ZipFolder());
+                            }
+                            else
+                            {
+                                NotificationManager.Notify(Operation.CompleteFirstHalfOfZip);
+                            }
+                        }
+                        else
+                        {
+                            _operating = true;
+                            InteractCanvas.SetActive(false);
+                            Player.IgnoreInput();
+                            StartCoroutine(ZipFolder());
+                        }
+                    }
+                    else
+                    {
+                        NotificationManager.Notify(Operation.ShouldBringImmaginiEVideoFolderToZip);
+                    }
                 }
                 break;
         }
@@ -114,7 +149,7 @@ public class ZipperHandler : MonoBehaviour
         tr.SetParent(ObjHolder);
         tr.localScale *= 0.75f;
         var fileGrabber = objInstantiated.transform.GetComponent<Grabber>();
-        var zipFile = new RoomFile(referred.GetName().Split(".")[0] + ".zip", "zip", -1, 0, null, referred.IsACopy() ? referred.GetCopyOf() : referred.GetIndex(), GUID.Generate().ToString());
+        var zipFile = new RoomFile(referred.GetName().Split(".")[0] + ".zip", "zip", -1, 0, null, referred.IsACopy() ? referred.GetCopyOf() : referred.GetIndex(), Guid.NewGuid().ToString());
         fileGrabber.SetReferred(zipFile);
         yield return new WaitForSeconds(2f);
         positionNotReached = true;

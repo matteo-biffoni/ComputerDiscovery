@@ -28,6 +28,7 @@ public class HouseManager : MonoBehaviour
     public GameObject[] EntrancesPrefabs;
 
     public string FileName = "FileSystem";
+    public string DefaultFileSystem = "FileSystemDefault";
 
     public PlayerNavigatorManager Player;
 
@@ -35,7 +36,7 @@ public class HouseManager : MonoBehaviour
 
     public TrashBinController TrashBinController;
 
-    public static int ActualQuest = 3;
+    public static int ActualQuest = 1;
 
     private static readonly List<string> ImageFileNames = new() { "IimMaAggGiInE", "FfooTOoGRaFia", "IiCCcoONNnAa", "RrriItTRraTtTOo" };
     private static readonly List<string> DocFileNames = new () { "Appunti", "Itinerari Solari", "Regolamento Intergalattico", "Archivio Storico", "Diario Personale", "Racconti Galassia X34", "Elenco Contatti", "Ricette Terrestri" };
@@ -102,8 +103,8 @@ public class HouseManager : MonoBehaviour
         ImageFileNames.Remove(nomeImmagine2);
         nomeImmagine1 += ".png";
         nomeImmagine2 += ".jpg";
-        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null, null, GUID.Generate().ToString());
-        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null, null, GUID.Generate().ToString());
+        var immagine1 = new RoomFile(nomeImmagine1, "png", random.Next(0, 3), random.Next(1, 150), null, null, Guid.NewGuid().ToString());
+        var immagine2 = new RoomFile(nomeImmagine2, "jpeg", random.Next(4, 8), random.Next(1, 150), null, null, Guid.NewGuid().ToString());
         indiceNome = random.Next(0, DocFileNames.Count);
         var nomeDocumento1 = DocFileNames[indiceNome];
         DocFileNames.Remove(nomeDocumento1);
@@ -116,9 +117,9 @@ public class HouseManager : MonoBehaviour
         nomeDocumento1 += ".docx";
         nomeDocumento2 += ".pdf";
         nomeDocumento3 += ".txt";
-        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null,  null, GUID.Generate().ToString());
-        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
-        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
+        var documento1 = new RoomFile(nomeDocumento1, "doc", -1, random.Next(1, 150), null,  null, Guid.NewGuid().ToString());
+        var documento2 = new RoomFile(nomeDocumento2, "pdf", -1, random.Next(1, 150), null, null, Guid.NewGuid().ToString());
+        var documento3 = new RoomFile(nomeDocumento3, "txt", -1, random.Next(1, 150), null, null, Guid.NewGuid().ToString());
         indiceNome = random.Next(0, MultimediaFileNames.Count);
         var nomeMultFile1 = MultimediaFileNames[indiceNome];
         MultimediaFileNames.Remove(nomeMultFile1);
@@ -127,9 +128,9 @@ public class HouseManager : MonoBehaviour
         MultimediaFileNames.Remove(nomeMultFile2);
         nomeMultFile1 += ".mp3";
         nomeMultFile2 += ".mov";
-        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
-        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null, null, GUID.Generate().ToString());
-        var fileBonus = new RoomFile("", "", -1, 0f, null, null, GUID.Generate().ToString());
+        var multFile1 = new RoomFile(nomeMultFile1, "mp3", -1, random.Next(1, 150), null, null, Guid.NewGuid().ToString());
+        var multFile2 = new RoomFile(nomeMultFile2, "mov", -1, random.Next(1, 150), null, null, Guid.NewGuid().ToString());
+        var fileBonus = new RoomFile("", "", -1, 0f, null, null, Guid.NewGuid().ToString());
         string nomeFileBonus;
         var formatoBonusIndice = random.Next(0, 1);
         switch (formatoBonusIndice)
@@ -140,7 +141,7 @@ public class HouseManager : MonoBehaviour
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
                 nomeFileBonus += ".png";
-                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null, null, GUID.Generate().ToString());
+                fileBonus = new RoomFile(nomeFileBonus, "png", 3, random.Next(1, 150), null, null, Guid.NewGuid().ToString());
                 break;
             }
             case 1:
@@ -149,7 +150,7 @@ public class HouseManager : MonoBehaviour
                 nomeFileBonus = ImageFileNames[indiceNome];
                 ImageFileNames.Remove(nomeFileBonus);
                 nomeFileBonus += ".jpg";
-                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null, null, GUID.Generate().ToString());
+                fileBonus = new RoomFile(nomeFileBonus, "jpeg", 8, random.Next(1, 150), null, null, Guid.NewGuid().ToString());
                 break;
             }
         }
@@ -243,7 +244,7 @@ public class HouseManager : MonoBehaviour
         try
         {
             Folder.CurrentFileName = FileName;
-            var desktop = Folder.GenerateFolderStructureFromFile();
+            var desktop = Folder.GenerateFolderStructureFromFile(Folder.CurrentFileName);
             if (desktop == null)
             {
                 throw new Exception("Could not generate folder structure");
@@ -273,6 +274,13 @@ public class HouseManager : MonoBehaviour
         {
             Debug.Log(fileNotFoundException.Message);
         }
+    }
+    
+
+    public void RestoreFileSystemToDefault()
+    {
+        var defaultFolderStructure = Folder.GenerateFolderStructureFromFile(DefaultFileSystem);
+        Folder.WriteFolderStructureToFile(defaultFolderStructure);
     }
 }
 
@@ -461,7 +469,7 @@ public class RoomFile : Grabbable
     public override Grabbable GetACopy()
     {
         var copyName = _name.Split(".")[0] + "_copia." + _name.Split(".")[1];
-        return new RoomFile(copyName, _format, this == ScoperteFile ? -1 : _imageIndex, _size, null, _index, GUID.Generate().ToString());
+        return new RoomFile(copyName, _format, this == ScoperteFile ? -1 : _imageIndex, _size, null, _index, Guid.NewGuid().ToString());
     }
 
     public override void Rename(string newName)
@@ -564,7 +572,9 @@ public enum Operation
     BringFolderToUseZipper,
     UnzipNotAllowed,
     ShouldBringScoperte,
-    ShouldBringImmaginiEVideoFolder
+    ShouldBringImmaginiEVideoFolder,
+    ShouldBringImmaginiEVideoFolderToZip,
+    CompleteFirstHalfOfZip
 }
 
 
@@ -573,14 +583,14 @@ public class Folder : Grabbable
     public static bool DirtyAfterInsertion;
     public static string CurrentFileName;
     public static Folder Root;
-    public static readonly Folder TrashBin = new("TrashBin", null, null, GUID.Generate().ToString());
+    public static readonly Folder TrashBin = new("TrashBin", null, null, Guid.NewGuid().ToString());
     private GameObject _container;
     private Folder _father;
     private readonly List<Folder> _children;
     private List<RoomFile> _files;
     private string _name;
-    public static readonly Folder MainRoom = new("Main Room", null, null, GUID.Generate().ToString());
-    public static readonly Folder Garage = new("Garage", null, null, GUID.Generate().ToString());
+    public static readonly Folder MainRoom = new("Main Room", null, null, Guid.NewGuid().ToString());
+    public static readonly Folder Garage = new("Garage", null, null, Guid.NewGuid().ToString());
     public static Folder ImmaginiEVideoFolder;
     public static GameObject MainRoomGo;
     private BachecaFileController _bacheca;
@@ -662,7 +672,7 @@ public class Folder : Grabbable
 
     public override Grabbable GetACopy()
     {
-        var f = new Folder(_name + "_copia", null, _index, GUID.Generate().ToString());
+        var f = new Folder(_name + "_copia", null, _index, Guid.NewGuid().ToString());
         foreach (var child in _children)
         {
             f._children.Add(child.GetACopy() as Folder);
@@ -1218,15 +1228,21 @@ public class Folder : Grabbable
         var jsonFolderStructure = ConvertFolderStructureToJsonFolderStructure(Root);
         JsonFolder.SaveToFile(CurrentFileName, jsonFolderStructure);
     }
+
+    public static void WriteFolderStructureToFile(Folder root)
+    {
+        var jsonRoot = ConvertFolderStructureToJsonFolderStructure(root);
+        JsonFolder.SaveToFile(CurrentFileName, jsonRoot);
+    }
     
     private static Direction ComputeAbsoluteDirection(Direction direction, Direction parentDirection)
     {
         return (Direction) (((int) parentDirection + (int) direction) % 360);
     }
 
-    public static Folder GenerateFolderStructureFromFile()
+    public static Folder GenerateFolderStructureFromFile(string fileName)
     {
-        var jsonFolderStructure = JsonFolder.FromFileName(CurrentFileName);
+        var jsonFolderStructure = JsonFolder.FromFileName(fileName);
         return ConvertJsonFolderStructureToFolderStructure(jsonFolderStructure, null);
     } 
     

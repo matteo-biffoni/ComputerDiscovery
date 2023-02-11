@@ -172,13 +172,23 @@ public class NotificationManager : MonoBehaviour
                 break;
             case Operation.ShouldBringScoperte:
                 AudioManager.Play(Instance.transform, AudioManager.Instance.NotAllowed, false);
-                Instance.message.text = "Consegnami prima il file richiesto da Electr4!";
+                Instance.message.text = "Consegnami prima il file richiesto da ELECTR4!";
                 Instance.NotificationImage.sprite = Instance.AD5LSprite;
                 break;
             case Operation.ShouldBringImmaginiEVideoFolder:
                 AudioManager.Play(Instance.transform, AudioManager.Instance.NotAllowed, false);
-                Instance.message.text = "Consegnami prima lo zip richiesto da Rad4r!";
+                Instance.message.text = "Consegnami prima lo zip richiesto da RAD4R!";
                 Instance.NotificationImage.sprite = Instance.AD5LSprite;
+                break;
+            case Operation.ShouldBringImmaginiEVideoFolderToZip:
+                AudioManager.Play(Instance.transform, AudioManager.Instance.NotAllowed, false);
+                Instance.message.text = "Devi prima zippare la cartella 'Immagini e video' da portare ad AD5L!";
+                Instance.NotificationImage.sprite = Instance.ZipSprite;
+                break;
+            case Operation.CompleteFirstHalfOfZip:
+                AudioManager.Play(Instance.transform, AudioManager.Instance.NotAllowed, false);
+                Instance.message.text = "Manca qualcosa... Controlla la lavagnetta!";
+                Instance.NotificationImage.sprite = Instance.ZipSprite;
                 break;
         }
         Instance._notifyingTimer = Instance.StartCoroutine(CloseNotification(2f));

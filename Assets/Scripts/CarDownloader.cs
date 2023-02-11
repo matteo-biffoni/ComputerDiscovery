@@ -85,11 +85,11 @@ public class CarDownloader : MonoBehaviour
 
     private static void DownloadFileInDesktop()
     {
-        var file1 = new RoomFile("Centaurus IX.jpg", "jpeg", 13, 70, Folder.Root, null, GUID.Generate().ToString());
-        var file2 = new RoomFile("Metallo X79.jpg", "jpeg", 14, 70, Folder.Root, null, GUID.Generate().ToString());
-        var file3 = new RoomFile("Blaster a infrarossi.png", "png", 15, 70, Folder.Root, null, GUID.Generate().ToString());
-        var file4 = new RoomFile("Scoperte.docx", "doc", -2, 70, Folder.Root, null, GUID.Generate().ToString());
-        var file5 = new RoomFile("Tramonto 3 soli.mov", "mov", -1, 70, Folder.Root, null, GUID.Generate().ToString());
+        var file1 = new RoomFile("Centaurus IX.jpg", "jpeg", 13, 70, Folder.Root, null, Guid.NewGuid().ToString());
+        var file2 = new RoomFile("Metallo X79.jpg", "jpeg", 14, 70, Folder.Root, null, Guid.NewGuid().ToString());
+        var file3 = new RoomFile("Blaster a infrarossi.png", "png", 15, 70, Folder.Root, null, Guid.NewGuid().ToString());
+        var file4 = new RoomFile("Scoperte.docx", "doc", -2, 70, Folder.Root, null, Guid.NewGuid().ToString());
+        var file5 = new RoomFile("Tramonto 3 soli.mov", "mov", -1, 70, Folder.Root, null, Guid.NewGuid().ToString());
         var files = new List<RoomFile> { file1, file2, file3, file4, file5 };
         Folder.Root.GetFiles().AddRange(files);
         RoomFile.ScoperteFile = file4;
