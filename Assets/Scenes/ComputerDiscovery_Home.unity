@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 1140861215}
   - component: {fileID: 1140861214}
   - component: {fileID: 1140861213}
+  - component: {fileID: 1140861216}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -454,6 +455,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1140861216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140861212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9faf0268bf09b3d44bd64ef285f98f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PauseCanvas: {fileID: 4663971909621484781, guid: d905ab4384b3d8a41bc3b09d02c6a914, type: 3}
+  Player: {fileID: 1862197109}
+  Magnet0Raycaster: {fileID: 23299377}
+  PauseKey: 112
 --- !u!1 &1302801593
 GameObject:
   m_ObjectHideFlags: 0

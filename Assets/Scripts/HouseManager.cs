@@ -28,6 +28,7 @@ public class HouseManager : MonoBehaviour
     public GameObject[] EntrancesPrefabs;
 
     public string FileName = "FileSystem";
+    public string DefaultFileSystem = "FileSystemDefault";
 
     public PlayerNavigatorManager Player;
 
@@ -243,7 +244,7 @@ public class HouseManager : MonoBehaviour
         try
         {
             Folder.CurrentFileName = FileName;
-            var desktop = Folder.GenerateFolderStructureFromFile();
+            var desktop = Folder.GenerateFolderStructureFromFile(Folder.CurrentFileName);
             if (desktop == null)
             {
                 throw new Exception("Could not generate folder structure");
@@ -273,6 +274,13 @@ public class HouseManager : MonoBehaviour
         {
             Debug.Log(fileNotFoundException.Message);
         }
+    }
+    
+
+    public void RestoreFileSystemToDefault()
+    {
+        var defaultFolderStructure = Folder.GenerateFolderStructureFromFile(DefaultFileSystem);
+        Folder.WriteFolderStructureToFile(defaultFolderStructure);
     }
 }
 
@@ -1220,15 +1228,21 @@ public class Folder : Grabbable
         var jsonFolderStructure = ConvertFolderStructureToJsonFolderStructure(Root);
         JsonFolder.SaveToFile(CurrentFileName, jsonFolderStructure);
     }
+
+    public static void WriteFolderStructureToFile(Folder root)
+    {
+        var jsonRoot = ConvertFolderStructureToJsonFolderStructure(root);
+        JsonFolder.SaveToFile(CurrentFileName, jsonRoot);
+    }
     
     private static Direction ComputeAbsoluteDirection(Direction direction, Direction parentDirection)
     {
         return (Direction) (((int) parentDirection + (int) direction) % 360);
     }
 
-    public static Folder GenerateFolderStructureFromFile()
+    public static Folder GenerateFolderStructureFromFile(string fileName)
     {
-        var jsonFolderStructure = JsonFolder.FromFileName(CurrentFileName);
+        var jsonFolderStructure = JsonFolder.FromFileName(fileName);
         return ConvertJsonFolderStructureToFolderStructure(jsonFolderStructure, null);
     } 
     

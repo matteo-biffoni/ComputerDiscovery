@@ -203,7 +203,7 @@ public class NetworkManager : MonoBehaviour
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
             List<string> messagesToSend = new List<string>(new string[]
             {
-                "Grazie Magneto, ho ricevuto i tuoi documenti, non vedo l'ora di leggerli!"
+                "Grazie Magnet0, ho ricevuto i tuoi documenti, non vedo l'ora di leggerli!"
             });
             LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Messaggio da ELECTR4", messagesToSend); 
         }
@@ -212,7 +212,8 @@ public class NetworkManager : MonoBehaviour
             SendingImmaginiEVideoFolder = false;
             Folder.ImmaginiEVideoFolder = null;
             HouseManager.ActualQuest = 7;
-            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+            Player.EnableSlowMovementAndShakeCamera();
+            NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Sta succedendo qualcosa di strano! Vai da Lamp per saperne di più!"));
         }
     }
 

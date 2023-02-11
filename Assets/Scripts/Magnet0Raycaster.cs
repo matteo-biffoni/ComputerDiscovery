@@ -25,6 +25,11 @@ public class Magnet0Raycaster : MonoBehaviour
 
     public static bool Operating = true;
 
+    public bool ShowingMenus()
+    {
+        return _showingObjMenu || _showingRenameMenu;
+    }
+
 
     // Update is called once per frame
     private void Update()

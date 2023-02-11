@@ -76,4 +76,10 @@ public class FirstPersonCharacterController : MonoBehaviour
         _velocity.y += Gravity * Time.deltaTime;
         _characterController.Move(_velocity * Time.deltaTime);
     }
+
+    public void EnableSlowMovementAndShakeCamera()
+    {
+        Speed /= 2;
+        CameraT.GetComponent<CameraShaker>().Shake();
+    }
 }
