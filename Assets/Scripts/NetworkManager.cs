@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -212,9 +213,117 @@ public class NetworkManager : MonoBehaviour
             SendingImmaginiEVideoFolder = false;
             Folder.ImmaginiEVideoFolder = null;
             HouseManager.ActualQuest = 7;
+            GenerateMaliciousStructure();
             Player.EnableSlowMovementAndShakeCamera();
             NotificationManager.Instance.StartCoroutine(NotificationManager.QuestNotify("Sta succedendo qualcosa di strano! Vai da Lamp per saperne di più!"));
         }
+    }
+
+    private static void GenerateMaliciousStructure()
+    {
+        var documentiGrabbable = Folder.FindGrabbableWithIndexFromRoot(Folder.DocumentiIndex);
+        Folder documenti;
+        if (documentiGrabbable is not Folder)
+        {
+            documenti = new Folder("Documenti", Folder.Root, null, Guid.NewGuid().ToString());
+            Folder.DocumentiIndex = documenti.GetIndex();
+        }
+        else
+        {
+            documenti = documentiGrabbable as Folder;
+        }
+        var lavoro = new Folder("Lavoro", documenti, null, Guid.NewGuid().ToString());
+        var ricerche = new Folder("Ricerche", lavoro, null, Guid.NewGuid().ToString());
+        var newEra1320 = new Folder("1320 Nuova Era", ricerche, null, Guid.NewGuid().ToString());
+        var newEra1320Luoghi = new Folder("Luoghi", newEra1320, null, Guid.NewGuid().ToString());
+        var apex21 = new RoomFile("Apex 21.docx", "doc", -1, 70, newEra1320Luoghi, null, Guid.NewGuid().ToString());
+        var venut = new RoomFile("Venut.docx", "doc", -1, 70, newEra1320Luoghi, null, Guid.NewGuid().ToString());
+        var combor14 = new RoomFile("Combor 14.docx", "doc", -1, 70, newEra1320Luoghi, null, Guid.NewGuid().ToString());
+        var cocun = new RoomFile("Cocun.docx", "doc", -1, 70, newEra1320Luoghi, null, Guid.NewGuid().ToString());
+        var malicious1 = new RoomFile("101001.zip", "zip", -1, 70, newEra1320Luoghi, null, Guid.NewGuid().ToString());
+        var newEra1320LuoghiFiles = new List<RoomFile> { apex21, venut, combor14, cocun, malicious1 };
+        newEra1320Luoghi.SetFiles(newEra1320LuoghiFiles);
+        var newEra1320Specie = new Folder("Specie", newEra1320, null, Guid.NewGuid().ToString());
+        var rettili1 = new RoomFile("Rettili.pdf", "pdf", -1, 70, newEra1320Specie, null, Guid.NewGuid().ToString());
+        var anfibi = new RoomFile("Anfibi.pdf", "pdf", -1, 70, newEra1320Specie, null, Guid.NewGuid().ToString());
+        var amangore = new RoomFile("Amangore.pdf", "pdf", -1, 70, newEra1320Specie, null, Guid.NewGuid().ToString());
+        var sferilli = new RoomFile("Sferilli.pdf", "pdf", -1, 70, newEra1320Specie, null, Guid.NewGuid().ToString());
+        var newEra1320SpecieFiles = new List<RoomFile> { rettili1, anfibi, amangore, sferilli };
+        newEra1320Specie.SetFiles(newEra1320SpecieFiles);
+        var newEra1321 = new Folder("1321 Nuova Era", ricerche, null, Guid.NewGuid().ToString());
+        var newEra1321Luoghi = new Folder("Luoghi", newEra1321, null, Guid.NewGuid().ToString());
+        var ratat = new RoomFile("Ratat.docx", "doc", -1, 70, newEra1321Luoghi, null, Guid.NewGuid().ToString());
+        var menep = new RoomFile("Menep.docx", "doc", -1, 70, newEra1321Luoghi, null, Guid.NewGuid().ToString());
+        var peril = new RoomFile("Peril.docx", "doc", -1, 70, newEra1321Luoghi, null, Guid.NewGuid().ToString());
+        var tagheri = new RoomFile("Tagheri.docx", "doc", -1, 70, newEra1321Luoghi, null, Guid.NewGuid().ToString());
+        var newEra1321LuoghiFiles = new List<RoomFile> { ratat, menep, peril, tagheri };
+        newEra1321Luoghi.SetFiles(newEra1321LuoghiFiles);
+        var newEra1321Specie = new Folder("Specie", newEra1321, null, Guid.NewGuid().ToString());
+        var righettiAlati = new RoomFile("RighettiAlati.pdf", "pdf", -1, 70, newEra1321Specie, null,
+            Guid.NewGuid().ToString());
+        var rettili2 = new RoomFile("Rettili.pdf", "pdf", -1, 70, newEra1321Specie, null,
+            Guid.NewGuid().ToString());
+        var serperossa = new RoomFile("Serperossa.pdf", "pdf", -1, 70, newEra1321Specie, null,
+            Guid.NewGuid().ToString());
+        var malicious2 = new RoomFile("011010.zip", "zip", -1, 70, newEra1321Specie, null, Guid.NewGuid().ToString());
+        var newEra1321SpecieFiles = new List<RoomFile> { righettiAlati, rettili2, serperossa, malicious2 };
+        newEra1321Specie.SetFiles(newEra1321SpecieFiles);
+        var articoliImportanti = new Folder("Articoli importanti", lavoro, null, Guid.NewGuid().ToString());
+        var scopertaDiCiviltà132 = new RoomFile("Scoperta della civilità 10Uni.pdf", "pdf", -1, 70, articoliImportanti,
+            null, Guid.NewGuid().ToString());
+        var potenzialitàMacchineALaser = new RoomFile("Potenzialità macchine a laser.pdf", "pdf", -1, 70,
+            articoliImportanti, null, Guid.NewGuid().ToString());
+        var ad5LAiutoOMinaccia = new RoomFile("Robot AD5L: aiuti o minacce?.pdf", "pdf", -1, 70, articoliImportanti,
+            null, Guid.NewGuid().ToString());
+        var articoliImportantiFiles = new List<RoomFile>
+            { scopertaDiCiviltà132, potenzialitàMacchineALaser, ad5LAiutoOMinaccia };
+        articoliImportanti.SetFiles(articoliImportantiFiles);
+        var personali = new Folder("Personali", documenti, null, Guid.NewGuid().ToString());
+        var diariDiBordo = new Folder("Diari di bordo", personali, null, Guid.NewGuid().ToString());
+        var viaggio10Dcem = new Folder("Viaggio su 10DCem", diariDiBordo, null, Guid.NewGuid().ToString());
+        var luoghiEsplorati1 = new RoomFile("Luoghi esplorati.docx", "doc", -1, 70, viaggio10Dcem, null,
+            Guid.NewGuid().ToString());
+        var lingueLocali1 = new RoomFile("Lingue locali.docx", "doc", -1, 70, viaggio10Dcem, null,
+            Guid.NewGuid().ToString());
+        var pensieriNotturni1 = new RoomFile("Pensieri notturni.txt", "txt", -1, 70, viaggio10Dcem, null,
+            Guid.NewGuid().ToString());
+        var viaggio10DCemFiles = new List<RoomFile> { luoghiEsplorati1, lingueLocali1, pensieriNotturni1 };
+        viaggio10Dcem.SetFiles(viaggio10DCemFiles);
+        var viaggioaCakdet2 = new Folder("Viaggio a Cakdet2", diariDiBordo, null, Guid.NewGuid().ToString());
+        var luoghiEsplorati2 = new RoomFile("Luoghi esplorati.docx", "doc", -1, 70, viaggioaCakdet2, null,
+            Guid.NewGuid().ToString());
+        var lingueLocali2 = new RoomFile("Lingue locali.docx", "doc", -1, 70, viaggioaCakdet2, null,
+            Guid.NewGuid().ToString());
+        var pensieriNotturni2 = new RoomFile("Pensieri notturni.txt", "txt", -1, 70, viaggioaCakdet2, null,
+            Guid.NewGuid().ToString());
+        var malicious3 = new RoomFile("010100.zip", "zip", -1, 70, viaggioaCakdet2, null, Guid.NewGuid().ToString());
+        var viaggioaCakdet2Files = new List<RoomFile>
+            { luoghiEsplorati2, lingueLocali2, pensieriNotturni2, malicious3 };
+        viaggioaCakdet2.SetFiles(viaggioaCakdet2Files);
+        var letteraturaTerrestre = new Folder("Letteratura Terrestre", personali, null, Guid.NewGuid().ToString());
+        var sullaStrada = new RoomFile("Sulla strada.pdf", "pdf", -1, 70, letteraturaTerrestre, null,
+            Guid.NewGuid().ToString());
+        var cuoreDiTenebre = new RoomFile("Cuore di tenebre.pdf", "pdf", -1, 70, letteraturaTerrestre, null,
+            Guid.NewGuid().ToString());
+        var ilDesertoDeiTartari = new RoomFile("Il deserto dei tartari.pdf", "pdf", -1, 70, letteraturaTerrestre, null,
+            Guid.NewGuid().ToString());
+        var letteraturaTerrestreFiles = new List<RoomFile> { sullaStrada, cuoreDiTenebre, ilDesertoDeiTartari };
+        letteraturaTerrestre.SetFiles(letteraturaTerrestreFiles);
+        diariDiBordo.GetChildren().Add(viaggio10Dcem);
+        diariDiBordo.GetChildren().Add(viaggioaCakdet2);
+        newEra1320.GetChildren().Add(newEra1320Luoghi);
+        newEra1320.GetChildren().Add(newEra1320Specie);
+        newEra1321.GetChildren().Add(newEra1321Luoghi);
+        newEra1321.GetChildren().Add(newEra1321Specie);
+        ricerche.GetChildren().Add(newEra1320);
+        ricerche.GetChildren().Add(newEra1321);
+        personali.GetChildren().Add(diariDiBordo);
+        personali.GetChildren().Add(letteraturaTerrestre);
+        lavoro.GetChildren().Add(ricerche);
+        lavoro.GetChildren().Add(articoliImportanti);
+        documenti.GetChildren().Add(lavoro);
+        documenti.GetChildren().Add(personali);
+        Folder.TriggerReloading(Operation.Nop);
     }
 
     private void EndDialogueOk()

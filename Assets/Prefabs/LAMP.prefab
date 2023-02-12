@@ -356,6 +356,7 @@ MonoBehaviour:
   ActorName: Lamp
   HouseManager: {fileID: 0}
   LookAtLamp: {fileID: 9079690250338815246}
+  FinalOptionsPrefab: {fileID: 4663971909621484781, guid: d987ea3379860864c9c72537c2ad7ae1, type: 3}
   Quest1Messages:
   - Bentornato nella tua casa computer, ti stavo aspettando!
   - "Mentre eri via un vento magnetico \xE8 entrato in casa e ha sparpagliato alcuni
@@ -412,6 +413,14 @@ MonoBehaviour:
     e facendo click con il tasto destro.
   - "A questo punto prova a consegnarla ad AD5L per mandarla a RAD4R. AD5L ti guider\xE0
     nel percorso!"
+  Quest7Messages:
+  - Dialogo missione 7
+  - Elimina i file
+  Quest8Messages:
+  - Dialogo missione 8
+  - Elimina definitivamente i file
+  FinalDialog:
+  - Final dialog
 --- !u!1 &5544208384248771020
 GameObject:
   m_ObjectHideFlags: 0
