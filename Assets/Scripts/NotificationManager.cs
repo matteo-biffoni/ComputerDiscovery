@@ -190,6 +190,11 @@ public class NotificationManager : MonoBehaviour
                 Instance.message.text = "Manca qualcosa... Controlla la lavagnetta!";
                 Instance.NotificationImage.sprite = Instance.ZipSprite;
                 break;
+            case Operation.NoSpaceInTrashBin:
+                AudioManager.Play(Instance.transform, AudioManager.Instance.NotAllowed, false);
+                Instance.message.text = "Il cestino è già pieno";
+                Instance.NotificationImage.sprite = Instance.NotAllowedSprite;
+                break;
         }
         Instance._notifyingTimer = Instance.StartCoroutine(CloseNotification(2f));
     }

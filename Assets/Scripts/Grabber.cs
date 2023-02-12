@@ -227,6 +227,10 @@ public class Grabber : MonoBehaviour
         Magnet0Raycaster.Operating = false;
         var type = _file is Folder;
         _file.Delete();
+        if (HouseManager.ActualQuest == 7)
+        {
+            QuestManager.Quest7FormatChecker();
+        }
         _ignoreRaycast = true;
         TriggerLabelRaycast(false);
         _ignoreRaycast = true;

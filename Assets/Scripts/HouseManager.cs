@@ -28,7 +28,7 @@ public class HouseManager : MonoBehaviour
     public GameObject[] EntrancesPrefabs;
 
     public string FileName = "FileSystem";
-    public string DefaultFileSystem = "FileSystemDefault";
+    private const string DefaultFileSystem = "FileSystemDefault";
 
     public PlayerNavigatorManager Player;
 
@@ -54,6 +54,13 @@ public class HouseManager : MonoBehaviour
     public GameObject[] PnGs;
     public GameObject[] DoCs;
     public GameObject[] TxTs;
+
+    public static void BackToMainMenu()
+    {
+        Debug.Log("Go to main menu");
+        RestoreFileSystemToDefault();
+        // Scene manager => Main menu
+    }
 
     private void Start()
     {
@@ -277,7 +284,7 @@ public class HouseManager : MonoBehaviour
     }
     
 
-    public void RestoreFileSystemToDefault()
+    private static void RestoreFileSystemToDefault()
     {
         var defaultFolderStructure = Folder.GenerateFolderStructureFromFile(DefaultFileSystem);
         Folder.WriteFolderStructureToFile(defaultFolderStructure);
@@ -562,10 +569,14 @@ public enum Operation
     FolderRestored,
     FolderFullOfSubfolders,
     FolderFullOfFiles,
+    Quest1Completed,
     Quest2Completed,
     Quest3Completed,
     Quest4Completed,
     Quest5Completed,
+    Quest6Completed,
+    Quest7Completed,
+    Quest8Completed,
     LockedFunctionality,
     RestoreRedirectedToDesktop,
     ReleaseIONotCopy,
@@ -574,7 +585,8 @@ public enum Operation
     ShouldBringScoperte,
     ShouldBringImmaginiEVideoFolder,
     ShouldBringImmaginiEVideoFolderToZip,
-    CompleteFirstHalfOfZip
+    CompleteFirstHalfOfZip,
+    NoSpaceInTrashBin
 }
 
 
@@ -594,6 +606,7 @@ public class Folder : Grabbable
     public static Folder ImmaginiEVideoFolder;
     public static GameObject MainRoomGo;
     private BachecaFileController _bacheca;
+    public static string DocumentiIndex = "8791e50f-033e-4497-a122-33fbee7c1bfb";
     //private static Operation _lastOperation = Operation.Nop;
     private string _parentOnDeletionAbsolutePath;
     public const int MaxNumberOfSubfolders = 9;
@@ -737,11 +750,23 @@ public class Folder : Grabbable
             }
             else
             {
+                TrashBin._files.Remove(TrashBin._files.FirstOrDefault(fileB => fileB.GetIndex() == file.GetIndex()));
                 file.SetParent(null);
                 TriggerReloading(Operation.FilePermDeleted);
                 if (TrashBinController.EmptyOperation == false)
                 {
                     NotificationManager.Notify(Operation.FilePermDeleted);
+                }
+
+                if (HouseManager.ActualQuest == 8)
+                {
+                    if (TrashBin.GetFiles().Count == 0)
+                    {
+                        HouseManager.ActualQuest = 9;
+                        GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonCharacterController>().MovementBackToNormal();
+                        NotificationManager.Instance.StartCoroutine(
+                            NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+                    }
                 }
             }
         }

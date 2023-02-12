@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
@@ -13,11 +14,21 @@ public class PauseManager : MonoBehaviour
     private GameObject _instantiatedPauseCanvas;
     private void Update()
     {
-        if (Magnet0Raycaster.ShowingMenus() || (!Input.GetKeyDown(PauseKey) && !Input.GetKeyDown(KeyCode.Escape))) return;
-        if (!_paused)
-            Pause();
-        else
-            UnPause();
+        if (Magnet0Raycaster.ShowingMenus()) return;
+        if (Input.GetKeyDown(PauseKey) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!_paused)
+                Pause();
+            else
+                UnPause();
+        }
+        else if (_paused && Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                UnPause();
+            }
+        }
     }
 
     private void Pause()
@@ -34,14 +45,14 @@ public class PauseManager : MonoBehaviour
         backMainMenuButton.onClick.AddListener(BackToMainMenu);
     }
 
-    private void ShowCommands()
+    private static void ShowCommands()
     {
         Debug.Log("Show commands");
     }
 
-    private void BackToMainMenu()
+    private static void BackToMainMenu()
     {
-        Debug.Log("Go to main menu");
+        HouseManager.BackToMainMenu();
     }
 
     private void UnPause()

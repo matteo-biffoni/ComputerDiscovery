@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class CameraShaker : MonoBehaviour
 {
     private bool _shake;
+    private float _shakeIntensity;
 
     private Vector3 _defaultPosition;
 
@@ -25,17 +26,19 @@ public class CameraShaker : MonoBehaviour
             }
             return;
         }
-        var shakeI = Random.Range(-0.5f, 0.5f);
+        var shakeI = Random.Range(-_shakeIntensity, _shakeIntensity);
         transform.localPosition = new Vector3(shakeI, transform.localPosition.y, transform.localPosition.z);
     }
 
-    public void Shake()
+    public void Shake(float intensity)
     {
+        _shakeIntensity = intensity;
         _shake = true;
     }
 
     public void Stabilize()
     {
         _shake = false;
+        _shakeIntensity = 0f;
     }
 }

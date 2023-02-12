@@ -4,6 +4,7 @@ public class FirstPersonCharacterController : MonoBehaviour
 {
     public Transform CameraT;
     public float Speed = 5f;
+    private float _defaultSpeed;
     public float MouseSensitivity = 100f;
 
     public float Gravity = -9.81f;
@@ -44,6 +45,7 @@ public class FirstPersonCharacterController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        _defaultSpeed = Speed;
     }
 
     private void Update()
@@ -79,7 +81,21 @@ public class FirstPersonCharacterController : MonoBehaviour
 
     public void EnableSlowMovementAndShakeCamera()
     {
-        Speed /= 2;
-        CameraT.GetComponent<CameraShaker>().Shake();
+        Speed = _defaultSpeed * 0.75f;
+        CameraT.GetComponent<CameraShaker>().Shake(0.25f);
+    }
+
+    public void BetterSlowMovementAndBetterShakeCamera()
+    {
+        Speed = _defaultSpeed * 0.9f;
+        var cameraShaker = CameraT.GetComponent<CameraShaker>();
+        cameraShaker.Stabilize();
+        cameraShaker.Shake(0.1f);
+    }
+
+    public void MovementBackToNormal()
+    {
+        Speed = _defaultSpeed;
+        CameraT.GetComponent<CameraShaker>().Stabilize();
     }
 }

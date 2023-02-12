@@ -410,6 +410,11 @@ public class Magnet0Raycaster : MonoBehaviour
 
     private void Delete(Grabber grabber)
     {
+        if (Folder.TrashBin.GetFiles().Count >= 5)
+        {
+            NotificationManager.Notify(Operation.NoSpaceInTrashBin);
+            return;
+        }
         grabber.Delete();
     }
 

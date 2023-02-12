@@ -152,68 +152,92 @@ public class QuestManager : MonoBehaviour
     }
     
     public static void Quest6FormatChecker()
+    {
+        var messages = new List<string>();
+        var info = "";
+        var Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "Viaggi");
+        if (Viaggio == null)
         {
-            var messages = new List<string>();
-            var info = "";
-            var Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "Viaggi");
-            if (Viaggio == null)
+            Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "viaggi");
+        }
+        if (!Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") && !Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video"))
+        {
+            info = "Crea una nuova cartella 'Immagini e video' nella cartella 'Viaggi'";
+            if (ZipperHandler.FirstHalfOfZipQuestCompleted)
             {
-                Viaggio = Folder.Root.GetChildren().Find(folder => folder.GetName() == "viaggi");
+                ZipperHandler.FirstHalfOfZipQuestCompleted = false;
             }
-            if (!Viaggio.GetChildren().Exists(folder => folder.GetName() == "immagini e video") && !Viaggio.GetChildren().Exists(folder => folder.GetName() == "Immagini e video"))
+        }
+        else
+        {
+            string[] possiblePath1 = { "Desktop", Viaggio.GetName(), "immagini e video"};
+            string[] possiblePath2 = { "Desktop", Viaggio.GetName(), "Immagini e video"};
+            var ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath1, Folder.Root);
+            if (ImmaginiVideo == null)
             {
-                info = "Crea una nuova cartella 'Immagini e video' nella cartella 'Viaggi'";
+                ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath2, Folder.Root);
+            }
+
+            if (Folder.ImmaginiEVideoFolder == null)
+            {
+                Folder.ImmaginiEVideoFolder = ImmaginiVideo;
+            }
+            foreach (var file in ImmaginiVideo.GetFiles().Where(file =>
+                         file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov"))
+            {
+                messages.Add($"Il file {file.GetName()} deve essere portato fuori dalla cartella 'Immagini e video'");
+                
+            }
+            var FilesToMove = Viaggio.GetFiles().Where(file => file.GetFormat() == "png" || file.GetFormat() == "jpeg" || file.GetFormat() == "mov");
+            foreach (var fileToMove in FilesToMove)
+            {
+                messages.Add(
+                    $"Il file {fileToMove.GetName()} deve essere spostato nella cartella 'Immagini e Video'");
+            }
+
+            info = $"Ancora {FilesToMove.Count() + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";
+
+            if (messages.Count == 0)
+            {
+                if (!ZipperHandler.FirstHalfOfZipQuestCompleted)
+                {
+                    ZipperHandler.FirstHalfOfZipQuestCompleted = true;
+                }
+                info = "E' ora di spedire in rete";
+                messages.Add("Crea una copia della cartella 'Immagini e video' e consegnala ad AD5L");
+            }
+            else
+            {
                 if (ZipperHandler.FirstHalfOfZipQuestCompleted)
                 {
                     ZipperHandler.FirstHalfOfZipQuestCompleted = false;
                 }
             }
-            else
-            {
-                string[] possiblePath1 = { "Desktop", Viaggio.GetName(), "immagini e video"};
-                string[] possiblePath2 = { "Desktop", Viaggio.GetName(), "Immagini e video"};
-                var ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath1, Folder.Root);
-                if (ImmaginiVideo == null)
-                {
-                    ImmaginiVideo = Folder.GetFolderFromAbsolutePath(possiblePath2, Folder.Root);
-                }
-
-                if (Folder.ImmaginiEVideoFolder == null)
-                {
-                    Folder.ImmaginiEVideoFolder = ImmaginiVideo;
-                }
-                foreach (var file in ImmaginiVideo.GetFiles().Where(file =>
-                             file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov"))
-                {
-                    messages.Add($"Il file {file.GetName()} deve essere portato fuori dalla cartella 'Immagini e video'");
-                    
-                }
-                var FilesToMove = Viaggio.GetFiles().Where(file => file.GetFormat() == "png" || file.GetFormat() == "jpeg" || file.GetFormat() == "mov");
-                foreach (var fileToMove in FilesToMove)
-                {
-                    messages.Add(
-                        $"Il file {fileToMove.GetName()} deve essere spostato nella cartella 'Immagini e Video'");
-                }
-
-                info = $"Ancora {FilesToMove.Count() + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";
-
-                if (messages.Count == 0)
-                {
-                    if (!ZipperHandler.FirstHalfOfZipQuestCompleted)
-                    {
-                        ZipperHandler.FirstHalfOfZipQuestCompleted = true;
-                    }
-                    info = "E' ora di spedire in rete";
-                    messages.Add("Crea una copia della cartella 'Immagini e video' e consegnala ad AD5L");
-                }
-                else
-                {
-                    if (ZipperHandler.FirstHalfOfZipQuestCompleted)
-                    {
-                        ZipperHandler.FirstHalfOfZipQuestCompleted = false;
-                    }
-                }
-            }
-            LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI", info);
         }
+        LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI", info);
+    }
+    
+    public static void Quest7FormatChecker()
+    {
+        var messages = new List<string>();
+        var info = "";
+        var Documenti = Folder.FindGrabbableWithIndexFromRoot(Folder.DocumentiIndex) as Folder;
+
+        var filesToBeDeleted = Documenti?.GetAllFiles().Where(file => file.GetFormat() == "zip");
+        info = $"Ancora {filesToBeDeleted.Count()} file zip da eliminare";
+        foreach (var file in filesToBeDeleted)
+            messages.Add($"Il file '{file.GetName()}' deve essere eliminato");
+        LavagnettaManager.WriteOnLavagnetta(messages, "INFORMAZIONI", info);
+        if (messages.Count == 0)
+        {
+            info =
+                "I file eliminati vengono spostati nel cestino, ma ne rimane ancora una traccia. Dal cestino puoi ripristinarli o eliminarli definitivamente.";
+            LavagnettaManager.WriteOnLavagnetta(messages, "Ben fatto!", info);
+            NotificationManager.Instance.StartCoroutine(
+                NotificationManager.QuestNotify("Lamp ti sta aspettando! :)"));
+            HouseManager.ActualQuest = 8;
+            GameObject.FindGameObjectWithTag("Player").transform.GetComponent<FirstPersonCharacterController>().BetterSlowMovementAndBetterShakeCamera();
+        }
+        
+    }
 }

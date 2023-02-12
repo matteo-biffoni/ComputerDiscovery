@@ -5,7 +5,9 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -28,6 +30,12 @@ public class DialogueTrigger : MonoBehaviour
     private bool _fourthQuestInstantiation;
     public static bool FifthQuestInstantiation;
     public static bool SixthQuestInstantiation;
+    private bool _seventhQuestInstantiation;
+    private bool _eighthQuestInstantiation;
+    private bool _showFinalOptions;
+
+    public GameObject FinalOptionsPrefab;
+    private GameObject _instantiatedFinalOptions;
 
 
     [FormerlySerializedAs("quest1Messages")] [SerializeField]
@@ -47,6 +55,15 @@ public class DialogueTrigger : MonoBehaviour
 
     [SerializeField] 
     private string[] Quest6Messages;
+    
+    [SerializeField] 
+    private string[] Quest7Messages;
+
+    [SerializeField]
+    private string[] Quest8Messages;
+
+    [SerializeField]
+    private string[] FinalDialog;
 
     private string _toReplace = "Scoperte.docx";
     
@@ -63,6 +80,9 @@ public class DialogueTrigger : MonoBehaviour
             4 => Quest4Messages,
             5 => Quest5Messages,
             6 => Quest6Messages,
+            7 => Quest7Messages,
+            8 => Quest8Messages,
+            9 => FinalDialog,
             _ => null
         };
         if (questNumber == 5)
@@ -110,6 +130,35 @@ public class DialogueTrigger : MonoBehaviour
         }
         Folder.TriggerReloading(operation);
         _checkInteraction = true;
+        if (_showFinalOptions)
+        {
+            ShowFinalOptions();
+        }
+    }
+
+    private void ShowFinalOptions()
+    {
+        _checkInteraction = false;
+        Cursor.lockState = CursorLockMode.None;
+        _instantiatedFinalOptions = Instantiate(FinalOptionsPrefab);
+        var continueToPlay = _instantiatedFinalOptions.transform.GetChild(0).GetChild(2).GetComponent<Button>();
+        continueToPlay.onClick.AddListener(BackToPlay);
+        var backToMenu = _instantiatedFinalOptions.transform.GetChild(0).GetChild(3).GetComponent<Button>();
+        backToMenu.onClick.AddListener(BackToMainMenu);
+    }
+
+    private void BackToMainMenu()
+    {
+        Debug.Log("Back to main menu");
+    }
+
+    private void BackToPlay()
+    {
+        Destroy(_instantiatedFinalOptions);
+        Cursor.lockState = CursorLockMode.Locked;
+        Player.ReactivateInput();
+        _showFinalOptions = false;
+        _checkInteraction = true;
     }
 
     private void EndDialogue()
@@ -118,7 +167,7 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 1 && !_firstQuestInstantiation)
         {
             _firstQuestInstantiation = true; 
-            List<string> messages = new List<string>(new string[]
+            List<string> messages = new List<string>(new []
             {
                 "1. Mira un oggetto e fai click con pulsante sinistro per afferrarlo",  
                 "2. Spostati verso la cartella in cui vuoi posizionare il file",
@@ -130,7 +179,7 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 2 && !_secondQuestInstantiation)
         {
             _secondQuestInstantiation = true;
-            List<string> messages = new List<string>(new string[]
+            List<string> messages = new List<string>(new []
             {
                 "1. Mira un file e fai click con pulsante destro per aprire il pannello 'Operazioni'",  
                 "2. Clicca su 'Rinomina'",
@@ -152,6 +201,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 QuestManager.ImageNamesAtQuest2Start.Add(roomFile.GetName());
             }
+            oper = Operation.Quest1Completed;
         }
 
         if (HouseManager.ActualQuest == 3 && !_thirdQuestInstantiation)
@@ -170,7 +220,7 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 4 && !_fourthQuestInstantiation)
         {
             _fourthQuestInstantiation = true;
-            List<string> messages = new List<string>(new string[]
+            List<string> messages = new List<string>(new []
             {
                 "1. Posizionati nel luogo in cui vuoi creare una nuova cartella",  
                 "2. Premi 'n', poi inserisci il nome della cartella e conferma",
@@ -184,7 +234,7 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 5 && !FifthQuestInstantiation)
         {
             FifthQuestInstantiation = true;
-            List<string> messages = new List<string>(new string[]
+            List<string> messages = new List<string>(new []
             {
                 "1. Cerca il file nella cartella 'Viaggi'",  
                 "2. Mira il file e fai click con il tasto destro per accedere alle operazioni",
@@ -198,7 +248,7 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 6 && !SixthQuestInstantiation)
         {
             SixthQuestInstantiation = true;
-            List<string> messages = new List<string>(new string[]
+            List<string> messages = new List<string>(new []
             {
                 "1. Posizionati dentro la cartella 'Viaggi'",  
                 "2. Crea una nuova sottocartella chiamata 'Immagini e video'",
@@ -207,6 +257,33 @@ public class DialogueTrigger : MonoBehaviour
             });
             LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Crea una nuova sotto cartella 'Immagini e video':", messages);
             oper = Operation.Quest5Completed;
+        }
+        if (HouseManager.ActualQuest == 7 && !_seventhQuestInstantiation)
+        {
+            _seventhQuestInstantiation = true;
+            List<string> messages = new List<string>(new []
+            {
+                "Per eliminare un file...",  
+                "1. Mira il file zip che vuoi eliminare ",
+                "2. Fai click con il tasto destro per accedere al menù operazioni ed elimina"
+                
+            });
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Cerca ed elimina i file pesanti di tipo Zip nella cartella 'Documenti'", messages);
+            oper = Operation.Quest6Completed;
+        }
+        
+        if (HouseManager.ActualQuest == 8 && !_eighthQuestInstantiation)
+        {
+            _eighthQuestInstantiation = true;
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Elimina definitivamente i file Zip all'interno del Cestino per ripristinare il corretto funzionamento magnetico della casa", null);
+            oper = Operation.Quest7Completed;
+        }
+
+        if (HouseManager.ActualQuest == 9)
+        {
+            LavagnettaManager.SpecialWriteOnLavagnetta("COMPLIMENTI", "Hai completato tutte le missioni, goditi la tua casa computer!", null);
+            oper = Operation.Quest8Completed;
+            _showFinalOptions = true;
         }
         DialogueCanvas.SetActive(false);
         InteractCanvas.SetActive(true);
@@ -239,14 +316,24 @@ public class DialogueTrigger : MonoBehaviour
         var lookAtPlayer = Player.transform.position;
         lookAtPlayer.y = transform.position.y;
         transform.LookAt(lookAtPlayer);
-        if (!_checkInteraction) return;
-
-        if (Input.GetKeyDown(KeyPressed))
+        if (_checkInteraction && Input.GetKeyDown(KeyPressed))
         {
             _checkInteraction = false;
             StartCoroutine(StartDialogue(HouseManager.ActualQuest));
         }
-        
+        else if (_showFinalOptions)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                BackToPlay();
+            else if (Input.GetMouseButtonDown(0))
+            {
+                if (EventSystem.current.currentSelectedGameObject == null)
+                {
+                    BackToPlay();
+                }
+            }
+        }
+
     }
     
 }
