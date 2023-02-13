@@ -41,6 +41,12 @@ public class NetworkManager : MonoBehaviour
     public static bool SendingScoperte;
     public static bool SendingImmaginiEVideoFolder;
 
+    private void Awake()
+    {
+        SendingScoperte = false;
+        SendingImmaginiEVideoFolder = false;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {

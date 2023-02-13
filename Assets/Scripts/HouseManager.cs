@@ -37,11 +37,11 @@ public class HouseManager : MonoBehaviour
 
     public TrashBinController TrashBinController;
 
-    public static int ActualQuest = 1;
+    public static int ActualQuest;
 
-    private static readonly List<string> ImageFileNames = new() { "IimMaAggGiInE", "FfooTOoGRaFia", "IiCCcoONNnAa", "RrriItTRraTtTOo" };
-    private static readonly List<string> DocFileNames = new () { "Appunti", "Itinerari Solari", "Regolamento Intergalattico", "Archivio Storico", "Diario Personale", "Racconti Galassia X34", "Elenco Contatti", "Ricette Terrestri" };
-    private static readonly List<string> MultimediaFileNames = new () { "Buco Nero Yu85", "Passaggio della Cometa R47U2", "Orchestra Galattica", "Tempesta di Meteoriti", "Cascata Terrestre", "Terra: Shakira", "Terra: Beethoven", "Terra: John Lennon" };
+    private static List<string> ImageFileNames;
+    private static List<string> DocFileNames;
+    private static List<string> MultimediaFileNames;
 
 
     public float MediumSizeMin = 10.0f;
@@ -58,8 +58,30 @@ public class HouseManager : MonoBehaviour
 
     public static void BackToMainMenu()
     {
-        RestoreFileSystemToDefault();
         SceneManager.LoadScene("mainmenu");
+    }
+
+    private void OnDestroy()
+    {
+        RestoreFileSystemToDefault();
+    }
+
+    private void Awake()
+    {
+        ActualQuest = 1;
+        ImageFileNames = new List<string> { "IimMaAggGiInE", "FfooTOoGRaFia", "IiCCcoONNnAa", "RrriItTRraTtTOo" };
+        DocFileNames = new List<string> { "Appunti", "Itinerari Solari", "Regolamento Intergalattico", "Archivio Storico", "Diario Personale", "Racconti Galassia X34", "Elenco Contatti", "Ricette Terrestri" }; 
+        MultimediaFileNames = new List<string> { "Buco Nero Yu85", "Passaggio della Cometa R47U2", "Orchestra Galattica", "Tempesta di Meteoriti", "Cascata Terrestre", "Terra: Shakira", "Terra: Beethoven", "Terra: John Lennon" };
+        RoomFile.ScoperteFile = null;
+        Folder.DirtyAfterInsertion = false;
+        Folder.CurrentFileName = null;
+        Folder.Root = null;
+        Folder.TrashBin = new Folder("TrashBin", null, null, Guid.NewGuid().ToString());
+        Folder.MainRoom = new Folder("Main Room", null, null, Guid.NewGuid().ToString());
+        Folder.Garage = new Folder("Garage", null, null, Guid.NewGuid().ToString());
+        Folder.MainRoomGo = null;
+        Folder.DocumentiIndex =  "8791e50f-033e-4497-a122-33fbee7c1bfb";
+        Folder.ShouldDoorsHaveGrabberAttached = false;
     }
 
     private void Start()
@@ -595,19 +617,18 @@ public class Folder : Grabbable
     public static bool DirtyAfterInsertion;
     public static string CurrentFileName;
     public static Folder Root;
-    public static readonly Folder TrashBin = new("TrashBin", null, null, Guid.NewGuid().ToString());
+    public static Folder TrashBin;
     private GameObject _container;
     private Folder _father;
     private readonly List<Folder> _children;
     private List<RoomFile> _files;
     private string _name;
-    public static readonly Folder MainRoom = new("Main Room", null, null, Guid.NewGuid().ToString());
-    public static readonly Folder Garage = new("Garage", null, null, Guid.NewGuid().ToString());
+    public static Folder MainRoom;
+    public static Folder Garage;
     public static Folder ImmaginiEVideoFolder;
     public static GameObject MainRoomGo;
     private BachecaFileController _bacheca;
-    public static string DocumentiIndex = "8791e50f-033e-4497-a122-33fbee7c1bfb";
-    //private static Operation _lastOperation = Operation.Nop;
+    public static string DocumentiIndex;
     private string _parentOnDeletionAbsolutePath;
     public const int MaxNumberOfSubfolders = 9;
     public const int MaxNumberOfFilesPerFolder = 10;

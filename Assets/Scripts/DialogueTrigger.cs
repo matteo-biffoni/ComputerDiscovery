@@ -66,7 +66,13 @@ public class DialogueTrigger : MonoBehaviour
     private string[] FinalDialog;
 
     private string _toReplace = "Scoperte.docx";
-    
+
+    private void Awake()
+    {
+        FifthQuestInstantiation = false;
+        SixthQuestInstantiation = false;
+    }
+
     private IEnumerator StartDialogue(int questNumber)
     {
         InteractCanvas.SetActive(false);
@@ -241,7 +247,7 @@ public class DialogueTrigger : MonoBehaviour
                 "3. Copia il file e consegnalo ad ADSL"
                 
             });
-            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Invia una copia del file 'Scoperte.docx' in rete:", messages);
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", $"Invia una copia del file '{RoomFile.ScoperteFile.GetName()}' in rete:", messages);
             oper = Operation.Quest4Completed;
         }
 
@@ -252,7 +258,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 "1. Posizionati dentro la cartella 'Viaggi'",  
                 "2. Crea una nuova sottocartella chiamata 'Immagini e video'",
-                "3. Sposta dentro la cartella tutti i file di formato Immagine e video"
+                "3. Sposta dentro la cartella tutti i file di formato immagine e video"
                 
             });
             LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Crea una nuova sotto cartella 'Immagini e video':", messages);
@@ -265,7 +271,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 "Per eliminare un file...",  
                 "1. Mira il file zip che vuoi eliminare ",
-                "2. Fai click con il tasto destro per accedere al menù operazioni ed elimina"
+                "2. Fai click con il tasto destro per accedere al menu operazioni ed elimina"
                 
             });
             LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Cerca ed elimina i file pesanti di tipo Zip nella cartella 'Documenti'", messages);
@@ -275,7 +281,7 @@ public class DialogueTrigger : MonoBehaviour
         if (HouseManager.ActualQuest == 8 && !_eighthQuestInstantiation)
         {
             _eighthQuestInstantiation = true;
-            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Elimina definitivamente i file Zip all'interno del Cestino per ripristinare il corretto funzionamento magnetico della casa", null);
+            LavagnettaManager.SpecialWriteOnLavagnetta("GUIDA", "Elimina definitivamente i file zip all'interno del Cestino per ripristinare il corretto funzionamento magnetico della casa", null);
             oper = Operation.Quest7Completed;
         }
 

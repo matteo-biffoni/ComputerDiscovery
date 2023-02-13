@@ -362,23 +362,22 @@ MonoBehaviour:
   - "Mentre eri via un vento magnetico \xE8 entrato in casa e ha sparpagliato alcuni
     file in giro per l\u2019atrio\u2026"
   - Aiutami a rimettere tutto in ordine, riportando i file che trovi in giro nelle
-    rispettive cartelle. Ad esempio i file immagine nella cartella immagini e i file
-    documento nella cartella documenti.
+    rispettive cartelle. Ad esempio i file immagine nella cartella 'Immagini' e i
+    file documento nella cartella 'Documenti'.
   - Per prendere un file devi mirarlo e poi fare click con il tasto sinistro. Per
     rilasciarlo in una cartella fai di nuovo click con il tasto sinistro quando ti
     trovi al suo interno.
   - "Ti ricordo che ogni file ha un nome ed un formato. Ad esempio in \u201Cluna.png\u201D
     il nome \xE8 \u201Cluna\u201D mentre il formato \xE8 \u201Cpng\u201D."
-  - "Alla tua destra troverai una lavagnetta che ti aiuter\xE0 se avrai problemi.
-    Buon lavoro!"
+  - Se hai dubbi guarda la lavagnetta che trovi qui alla tua destra. Buon lavoro!
   Quest2Messages:
   - Grande, hai riportato correttamente i file nelle loro cartelle.
   - "Ora che ci sei tu in casa posso rigenerare alcune cartelle che avevo nascosto\u2026"
   - "Purtroppo ho notato che il vento magnetico \xE8 riuscito a modificare tutti
-    i nomi dei file che si trovavano all\u2019interno della cartella \u201CImmagini\u201D
-    e nelle sue sotto cartelle\u2026"
-  - "Rinomina tutti i file nella cartella \u201CImmagini\u201D e nelle sue sotto
-    cartelle in base a quello che vedi."
+    i nomi dei file che si trovavano all\u2019interno della cartella 'Immagini' e
+    nelle sue sotto cartelle\u2026"
+  - Rinomina tutti i file nella cartella 'Immagini' e nelle sue sotto cartelle in
+    base a quello che vedi nell'oggetto.
   - Per farlo devi mirare un file e poi fare click con il tasto destro.
   - Se hai qualche dubbio, guarda sempre la lavagnetta. Buon lavoro!
   Quest3Messages:
@@ -387,9 +386,9 @@ MonoBehaviour:
     viaggio dalla macchina USB"
   - Recati al piano di sopra e scarica i file, ti aspetto qui!
   Quest4Messages:
-  - "Un consiglio? non lasciare i file del Desktop\u2026"
-  - "Crea una nuova cartella dal nome \u201CViaggi\u201D mentre sei nel Desktop premendo
-    il tasto \u201Cn\u201D"
+  - "Un consiglio? Non lasciare i file nel Desktop\u2026"
+  - "Crea una nuova cartella dal nome 'Viaggi' mentre sei nel Desktop premendo il
+    tasto \u201Cn\u201D"
   - Una volta fatto porta dentro tutti i file del tuo ultimo viaggio
   - Se hai bisogno di consigli guarda la lavagnetta!
   Quest5Messages:
@@ -399,28 +398,42 @@ MonoBehaviour:
     rete da parte della tua collega ELECTR4\u2026"
   - Vorrebbe conoscere le scoperte che hai fatto sul pianeta che hai esplorato nel
     tuo ultimo viaggio
-  - "Crea una copia del file \u201CScoperte.docx\u201D e portala da AD5L in garage,
-    si occuper\xE0 lui del resto."
+  - "Crea una copia del file 'Scoperte.docx' e portala da AD5L in garage, si occuper\xE0
+    lui del resto."
   - "Per copiare il file mira l\u2019oggetto e fai click con il tasto destro."
   Quest6Messages:
   - "Ben fatto, il file \xE8 stato inviato ad ELECTR4!"
   - "A quanto pare sono tutti interessati al tuo viaggio\u2026 AD5L mi ha inoltrato
     un messaggio dal tuo amico RAD4R che vorrebbe vedere tutte le foto e i video
     del tuo viaggio."
-  - "Dentro la cartella \u201CViaggio\u201D crea una sottocartella chiamata \u201CImmagini
-    e video\u201D e porta dentro tutte le immagini e i video che hai raccolto."
-  - Una volta fatto questo crea una copia della cartella mirando la porta di ingresso
-    e facendo click con il tasto destro.
+  - Dentro la cartella 'Viaggio' crea una sottocartella chiamata 'Immagini e video'
+    e porta dentro tutte le immagini e i video che hai raccolto.
+  - Una volta fatto questo crea una copia della cartella mirando la maniglia della
+    porta di ingresso e facendo click con il tasto destro.
   - "A questo punto prova a consegnarla ad AD5L per mandarla a RAD4R. AD5L ti guider\xE0
     nel percorso!"
   Quest7Messages:
-  - Dialogo missione 7
-  - Elimina i file
+  - "Ben fatto, il file zip \xE8 stato consegnato a RAD4R."
+  - Hai notato qualcosa di strano?
+  - "Purtroppo mentre stavo rigenerando altre cartelle ho notato che il vento magnetico
+    ha posizionato 3 file zip molto pesanti tra le tue cose dentro la cartella \u2018Documenti\u2019"
+  - "Presto, trova i 3 file zip esplorando la cartella \u2018Documenti\u2019 e le
+    sue sottocartelle ed eliminali!"
+  - I file si riconoscono facilmente, i loro nomi sono sequenza di 0 e 1.
+  - "In questo modo potremo ristabilire l\u2019equilibrio magnetico della casa."
   Quest8Messages:
-  - Dialogo missione 8
-  - Elimina definitivamente i file
+  - "Ben fatto, i 3 file zip sono stati spostati nel cestino e le cose iniziano ad
+    andare un po\u2019 meglio\u2026"
+  - "Per ristabilire completamente l\u2019equilibrio magnetico per\xF2 devi eliminarli
+    definitivamente dalla casa"
+  - Recati nella stanza cestino al piano di sopra e svuotalo
   FinalDialog:
-  - Final dialog
+  - Complimenti! Adesso tutto funziona di nuovo correttamente!
+  - "Il computer \xE8 uno strumento meraviglioso che permette di esplorare il mondo,
+    scoprire cose nuove e divertirsi."
+  - "Imparare a usarlo ti aprir\xE0 molte porte e ti dar\xE0 infinite possibilit\xE0
+    per esprimere la tua creativit\xE0 e realizzare i tuoi sogni."
+  - Buona fortuna!
 --- !u!1 &5544208384248771020
 GameObject:
   m_ObjectHideFlags: 0
