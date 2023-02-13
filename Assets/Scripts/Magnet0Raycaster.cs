@@ -22,8 +22,11 @@ public class Magnet0Raycaster : MonoBehaviour
     private CarDownloader _previousCarDownloader;
     private ZipperHandler _previousZipperHandler;
     private Transform _boxObjHolderT;
+    public GameObject CursorCanvas;
 
     public static bool Operating = true;
+
+    public PauseManager PauseManager;
 
     public bool ShowingMenus()
     {
@@ -34,7 +37,7 @@ public class Magnet0Raycaster : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (!Operating) return;
+        if (!Operating || PauseManager.Paused) return;
         if (_showingObjMenu)
         {
             if (_showingRenameMenu)
@@ -53,6 +56,7 @@ public class Magnet0Raycaster : MonoBehaviour
                         _showingRenameMenu = false;
                         Cursor.lockState = CursorLockMode.Locked;
                         Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                        CursorCanvas.SetActive(true);
                     }
                 }
             }
@@ -64,6 +68,7 @@ public class Magnet0Raycaster : MonoBehaviour
                     _showingObjMenu = false;
                     Cursor.lockState = CursorLockMode.Locked;
                     Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                    CursorCanvas.SetActive(true);
                 }
                 else if (Input.GetMouseButtonDown(0))
                 {
@@ -73,6 +78,7 @@ public class Magnet0Raycaster : MonoBehaviour
                         _showingObjMenu = false;
                         Cursor.lockState = CursorLockMode.Locked;
                         Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                        CursorCanvas.SetActive(true);
                     }
                 }
             }
@@ -121,10 +127,12 @@ public class Magnet0Raycaster : MonoBehaviour
                         _showingObjMenu = true;
                         if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
                         {
+                            CursorCanvas.SetActive(false);
                             _objMenu = fileGrabber.ShowTrashItemMenu(Player.transform);
                             var recover = _objMenu.transform.GetChild(0).Find("RecoverButton").GetComponent<Button>();
                             recover.onClick.AddListener(delegate
                             {
+                                AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                 Recover(fileGrabber);
                                 Destroy(_objMenu);
                                 _showingObjMenu = false;
@@ -134,6 +142,7 @@ public class Magnet0Raycaster : MonoBehaviour
                             var permDelete = _objMenu.transform.GetChild(0).Find("PermDeleteButton").GetComponent<Button>();
                             permDelete.onClick.AddListener(delegate
                             {
+                                AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                 PermDelete(fileGrabber);
                                 Destroy(_objMenu);
                                 _showingObjMenu = false;
@@ -144,6 +153,7 @@ public class Magnet0Raycaster : MonoBehaviour
                         }
                         else
                         {
+                            CursorCanvas.SetActive(false);
                             _objMenu = fileGrabber.ShowObjectMenu(Player.transform);
                             var copyButton = _objMenu.transform.GetChild(0).Find("CopyButton").GetComponent<Button>();
                             if (HouseManager.ActualQuest < 5)
@@ -163,6 +173,7 @@ public class Magnet0Raycaster : MonoBehaviour
                             {
                                 copyButton.onClick.AddListener(delegate
                                 {
+                                    AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                     Copy(fileGrabber);
                                     Destroy(_objMenu);
                                     _showingObjMenu = false;
@@ -173,17 +184,20 @@ public class Magnet0Raycaster : MonoBehaviour
                             var renameButton = _objMenu.transform.GetChild(0).Find("RenameButton").GetComponent<Button>();
                             renameButton.onClick.AddListener(delegate
                             {
+                                AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                 _showingRenameMenu = true;
                                 _renameMenu = fileGrabber.ShowRenameMenu(renameButton.transform.parent);
                                 var cancelButton = _renameMenu.transform.Find("CancelButton").GetComponent<Button>();
                                 cancelButton.onClick.AddListener(delegate
                                 {
+                                    AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                     Destroy(_renameMenu);
                                     _showingRenameMenu = false;
                                 });
                                 var confirmButton = _renameMenu.transform.Find("ConfirmButton").GetComponent<Button>();
                                 confirmButton.onClick.AddListener(delegate
                                 {
+                                    AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                     var error = false;
                                     var fileNameInputField = _renameMenu.transform.Find("RenameFileNameInputField")
                                         .GetComponent<TMP_InputField>();
@@ -230,6 +244,7 @@ public class Magnet0Raycaster : MonoBehaviour
                             {
                                 deleteButton.onClick.AddListener(delegate
                                 {
+                                    AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                     Delete(fileGrabber);
                                     Destroy(_objMenu);
                                     _showingObjMenu = false;

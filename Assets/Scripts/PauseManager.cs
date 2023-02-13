@@ -10,19 +10,40 @@ public class PauseManager : MonoBehaviour
     public FirstPersonCharacterController Player;
     public Magnet0Raycaster Magnet0Raycaster;
     public KeyCode PauseKey;
-    private bool _paused;
+    public bool Paused;
+    private bool _showingCommands;
     private GameObject _instantiatedPauseCanvas;
+    public GameObject CommandsPrefab;
+    private GameObject _instantiatedCommandsPanel;
     private void Update()
     {
         if (Magnet0Raycaster.ShowingMenus()) return;
-        if (Input.GetKeyDown(PauseKey) || Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(PauseKey))
         {
-            if (!_paused)
+            if (!Paused)
                 Pause();
             else
                 UnPause();
         }
-        else if (_paused && Input.GetMouseButtonDown(0))
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!Paused)
+            {
+                Pause();
+            }
+            else
+            {
+                if (_showingCommands)
+                {
+                    HideCommands();
+                }
+                else
+                {
+                    UnPause();
+                }
+            }
+        }
+        else if (Paused && Input.GetMouseButtonDown(0) && !_showingCommands)
         {
             if (EventSystem.current.currentSelectedGameObject == null)
             {
@@ -33,7 +54,8 @@ public class PauseManager : MonoBehaviour
 
     private void Pause()
     {
-        _paused = true;
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
+        Paused = true;
         Cursor.lockState = CursorLockMode.None;
         Player.IgnoreInput();
         _instantiatedPauseCanvas = Instantiate(PauseCanvas);
@@ -45,23 +67,40 @@ public class PauseManager : MonoBehaviour
         backMainMenuButton.onClick.AddListener(BackToMainMenu);
     }
 
-    private static void ShowCommands()
+    private void ShowCommands()
     {
-        Debug.Log("Show commands");
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
+        _instantiatedCommandsPanel = Instantiate(CommandsPrefab, _instantiatedPauseCanvas.transform);
+        _instantiatedCommandsPanel.SetActive(true);
+        _showingCommands = true;
+        var backButton = _instantiatedCommandsPanel.transform.GetChild(0).GetComponent<Button>();
+        backButton.onClick.AddListener(HideCommands);
     }
 
-    private static void BackToMainMenu()
+    private void HideCommands()
     {
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
+        if (_instantiatedCommandsPanel != null)
+            Destroy(_instantiatedCommandsPanel);
+        _instantiatedCommandsPanel = null;
+        _showingCommands = false;
+    }
+
+    private void BackToMainMenu()
+    {
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
         HouseManager.BackToMainMenu();
     }
 
     private void UnPause()
     {
-        _paused = false;
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
+        Paused = false;
+        if (_instantiatedCommandsPanel != null)
+            Destroy(_instantiatedCommandsPanel);
         if (_instantiatedPauseCanvas != null)
             Destroy(_instantiatedPauseCanvas);
         Cursor.lockState = CursorLockMode.Locked;
         Player.ReactivateInput();
-        Debug.Log("UnPause");
     }
 }

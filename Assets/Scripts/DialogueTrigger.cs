@@ -147,9 +147,9 @@ public class DialogueTrigger : MonoBehaviour
         backToMenu.onClick.AddListener(BackToMainMenu);
     }
 
-    private void BackToMainMenu()
+    private static void BackToMainMenu()
     {
-        Debug.Log("Back to main menu");
+        HouseManager.BackToMainMenu();
     }
 
     private void BackToPlay()

@@ -8,6 +8,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
 using Object = UnityEngine.Object;
@@ -57,9 +58,8 @@ public class HouseManager : MonoBehaviour
 
     public static void BackToMainMenu()
     {
-        Debug.Log("Go to main menu");
         RestoreFileSystemToDefault();
-        // Scene manager => Main menu
+        SceneManager.LoadScene("mainmenu");
     }
 
     private void Start()
