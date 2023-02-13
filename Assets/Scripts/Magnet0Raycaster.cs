@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,6 +32,11 @@ public class Magnet0Raycaster : MonoBehaviour
     public bool ShowingMenus()
     {
         return _showingObjMenu || _showingRenameMenu;
+    }
+
+    private void Awake()
+    {
+        Operating = true;
     }
 
 

@@ -32,6 +32,12 @@ public class ZipperHandler : MonoBehaviour
     private static bool _immaginiEVideoZipped;
     public static bool FirstHalfOfZipQuestCompleted;
 
+    private void Awake()
+    {
+        _immaginiEVideoZipped = false;
+        FirstHalfOfZipQuestCompleted = false;
+    }
+
     private void Start()
     {
         _outline = transform.GetComponent<Outline>();

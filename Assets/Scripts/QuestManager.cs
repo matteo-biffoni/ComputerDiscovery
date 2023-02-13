@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,11 @@ public class QuestManager : MonoBehaviour
 {
 
     public static List<string> ImageNamesAtQuest2Start;
+
+    private void Awake()
+    {
+        ImageNamesAtQuest2Start = new List<string>();
+    }
 
     public static void Quest1FormatChecker(Folder actualFolderStructure)
     {
@@ -21,43 +27,43 @@ public class QuestManager : MonoBehaviour
                 case "png":
                     if (parentName != "Immagini")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Immagini");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Immagini'");
                     }
                     break;
                 case "jpeg":
                     if (parentName != "Immagini")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Immagini");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Immagini'");
                     }
                     break;
                 case "doc":
                     if (parentName != "Documenti")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Documenti");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Documenti'");
                     }
                     break;
                 case "pdf":
                     if (parentName != "Documenti")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Immagini");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Immagini'");
                     }
                     break;
                 case "txt":
                     if (parentName != "Documenti")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Documenti");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Documenti'");
                     }
                     break;
                 case "mp3":
                     if (parentName != "Audio")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Audio");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Audio'");
                     }
                     break;
                 case "mov":
                     if (parentName != "Video")
                     {
-                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella Video");
+                        wrongAllocatedFilesList.Add($"- Il file '{fileName}' deve essere posizionato nella cartella 'Video'");
                     }
                     break;
             }
@@ -71,7 +77,7 @@ public class QuestManager : MonoBehaviour
             //messaggio fine quest
             List<string> messages = new List<string>(new string[]
             {
-                "I formati '.png' e '.jpeg' sono Immagini, il formato '.mp3' è audio, i formati '.docx' e '.txt' sono documenti e infine il '.mov' è un formato video",
+                "I formati '.png' e '.jpeg' sono Immagini, il formato '.mp3' è audio, i formati '.docx', '.pdf' e '.txt' sono documenti e infine il '.mov' è un formato video",
             });
             LavagnettaManager.SpecialWriteOnLavagnetta( "BEN FATTO!", "Ricorda...", messages); //messaggio fine quest
             
@@ -185,14 +191,14 @@ public class QuestManager : MonoBehaviour
             foreach (var file in ImmaginiVideo.GetFiles().Where(file =>
                          file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov"))
             {
-                messages.Add($"Il file {file.GetName()} deve essere portato fuori dalla cartella 'Immagini e video'");
+                messages.Add($"Il file {file.GetName()} deve essere portato fuori dalla cartella '{Folder.ImmaginiEVideoFolder.GetName()}'");
                 
             }
             var FilesToMove = Viaggio.GetFiles().Where(file => file.GetFormat() == "png" || file.GetFormat() == "jpeg" || file.GetFormat() == "mov");
             foreach (var fileToMove in FilesToMove)
             {
                 messages.Add(
-                    $"Il file {fileToMove.GetName()} deve essere spostato nella cartella 'Immagini e Video'");
+                    $"Il file {fileToMove.GetName()} deve essere spostato nella cartella '{Folder.ImmaginiEVideoFolder.GetName()}'");
             }
 
             info = $"Ancora {FilesToMove.Count() + ImmaginiVideo.GetFiles().FindAll(file => file.GetFormat() != "png" && file.GetFormat() != "jpeg" && file.GetFormat() != "mov").Count} file da posizionare correttamente";
@@ -204,7 +210,7 @@ public class QuestManager : MonoBehaviour
                     ZipperHandler.FirstHalfOfZipQuestCompleted = true;
                 }
                 info = "E' ora di spedire in rete";
-                messages.Add("Crea una copia della cartella 'Immagini e video' e consegnala ad AD5L");
+                messages.Add($"Crea una copia della cartella '{Folder.ImmaginiEVideoFolder.GetName()}' e consegnala ad AD5L");
             }
             else
             {

@@ -18,7 +18,12 @@ public class CreateFolderManager : MonoBehaviour
     private GameObject _menu;
     public static bool EnabledByQuest;
     public GameObject CursorCanvas;
-    
+
+    private void Awake()
+    {
+        EnabledByQuest = false;
+    }
+
     private void Start()
     {
         _fps = Player.transform.GetComponent<FirstPersonCharacterController>();
