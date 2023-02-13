@@ -17,6 +17,7 @@ public class CreateFolderManager : MonoBehaviour
     private bool _showingMenu;
     private GameObject _menu;
     public static bool EnabledByQuest;
+    public GameObject CursorCanvas;
     
     private void Start()
     {
@@ -26,8 +27,10 @@ public class CreateFolderManager : MonoBehaviour
 
     private void GetLockAndShowMenu()
     {
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
         Cursor.lockState = CursorLockMode.None;
         _fps.IgnoreInput();
+        CursorCanvas.SetActive(false);
         _menu = Instantiate(CreateFolderCanvas);
         _showingMenu = true;
         var cancelButton = _menu.transform.GetChild(0).Find("CancelButton").GetComponent<Button>();
@@ -71,10 +74,12 @@ public class CreateFolderManager : MonoBehaviour
 
     private void GoBackToGame()
     {
+        AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
         Destroy(_menu);
         _showingMenu = false;
         Cursor.lockState = CursorLockMode.Locked;
         _fps.ReactivateInput();
+        CursorCanvas.SetActive(true);
     }
 
     private void Update()

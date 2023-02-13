@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip RobotTalking;
     public AudioClip DeleteNotification;
     public AudioClip NotAllowed;
+    public AudioClip OperationSound;
     [FormerlySerializedAs("Lamp_Calling")] [FormerlySerializedAs("LAMP_Calling")] [FormerlySerializedAs("ConfirmNotification")] 
     public AudioClip LampCalling;
 

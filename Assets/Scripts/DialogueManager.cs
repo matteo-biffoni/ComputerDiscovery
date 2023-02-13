@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
     private int _activeMessage;
     private bool _dialogRunning;
     private Coroutine _runningPauseTimer;
-    
+    public GameObject CursorCanvas;
 
     public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
     {
@@ -24,6 +24,7 @@ public class DialogueManager : MonoBehaviour
         ActorImage.sprite = sprite;
         _endDialogCallback = endDialogCallback;
         _activeMessage = 0;
+        CursorCanvas.SetActive(false);
         StartCoroutine(ScaleAndStartDialogue());
     }
 
@@ -85,6 +86,7 @@ public class DialogueManager : MonoBehaviour
         _dialogRunning = false;
         AudioManager.StopRobotTalking(transform);
         _endDialogCallback();
+        CursorCanvas.SetActive(true);
     }
 
     // Update is called once per frame
