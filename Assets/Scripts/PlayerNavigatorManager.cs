@@ -7,7 +7,7 @@ public class PlayerNavigatorManager : MonoBehaviour
 
     public bool CanCreateFolder()
     {
-        return _roomIn != null && _roomIn != Folder.MainRoom && _roomIn != Folder.Garage;
+        return _roomIn != null && _roomIn != Folder.Garage;
     }
 
     public Folder GetRoomIn()

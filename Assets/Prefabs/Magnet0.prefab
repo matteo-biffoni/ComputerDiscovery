@@ -4441,7 +4441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c15c18322e31c1478294cc987868c12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RaycastDistance: 1
+  RaycastDistance: 1.4
   Player: {fileID: 168877636051713396}
   Explosion: {fileID: 1141330259687333427, guid: 6718dc24203da53468af9ada8fef7d6d, type: 3}
   CursorCanvas: {fileID: 0}

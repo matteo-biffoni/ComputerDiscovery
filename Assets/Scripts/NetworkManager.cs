@@ -40,11 +40,13 @@ public class NetworkManager : MonoBehaviour
     private bool _shouldListenForRaycastChanges = true;
     public static bool SendingScoperte;
     public static bool SendingImmaginiEVideoFolder;
+    public static bool ShouldGrabBack;
 
     private void Awake()
     {
         SendingScoperte = false;
         SendingImmaginiEVideoFolder = false;
+        ShouldGrabBack = false;
     }
 
     // Start is called before the first frame update
@@ -131,6 +133,7 @@ public class NetworkManager : MonoBehaviour
             cameraT.localRotation = Quaternion.Slerp(cameraT.localRotation, cameraTo, Time.deltaTime * 8f);
             yield return null;
         }
+        _startDialog = _actualRaycast;
     }
 
     private IEnumerator SmoothReturnToPreviousOrientation()
@@ -344,13 +347,19 @@ public class NetworkManager : MonoBehaviour
     private void EndDialogueErr()
     {
         DialogueCanvas.SetActive(false);
-        if (_currentInserted.GetReferred().GetParent() != null)
+        /*if (_currentInserted.GetReferred().GetParent() != null)
         {
             _currentInserted.GetReferred().SetParentOnDeletionAbsolutePath(_currentInserted.GetReferred().GetParent().GetAbsolutePath());
             _currentInserted.Recover();
         }
         Destroy(_currentInserted.transform.parent.parent.parent.parent.gameObject);
+        */
         NetworkBox.ReOpenBox();
+        if (ShouldGrabBack)
+        {
+            ShouldGrabBack = false;
+            GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Magnet0Raycaster>().Grab(_currentInserted);
+        }
         _currentInserted = null;
         StartCoroutine(SmoothReturnToPreviousOrientation());
     }

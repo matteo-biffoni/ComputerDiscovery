@@ -292,18 +292,30 @@ public class Grabber : MonoBehaviour
         switch (_file)
         {
             case Folder folder:
-                folder.GetParent().RemoveChild(folder, Operation.FolderMoving);
-                t = transform.parent.parent.parent.parent;
-                t.GetComponent<BoxCollider>().enabled = false;
-                // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
-                t.GetComponent<Animator>().SetBool("closeDoor", true);
-                // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
-                t.GetComponent<Animator>().SetBool("openDoor", false);
-                t.GetComponent<DoorController>().enabled = false;
-                t.SetParent(objHolder);
-                t.localPosition = new Vector3(0f, 0f, 2f);
-                t.localRotation = Quaternion.Euler(180f, -90f, 120f);
-                t.localScale *= 0.15f;
+                if (folder.GetParent() != null)
+                {
+                    folder.GetParent().RemoveChild(folder, Operation.FolderMoving);
+                    t = transform.parent.parent.parent.parent;
+                    t.GetComponent<BoxCollider>().enabled = false;
+                    // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+                    t.GetComponent<Animator>().SetBool("closeDoor", true);
+                    // ReSharper disable once Unity.PreferAddressByIdToGraphicsParams
+                    t.GetComponent<Animator>().SetBool("openDoor", false);
+                    t.GetComponent<DoorController>().enabled = false;
+                    t.SetParent(objHolder);
+                    t.localPosition = new Vector3(0f, 0f, 2f);
+                    t.localRotation = Quaternion.Euler(180f, -90f, 120f);
+                    t.localScale *= 0.15f;
+                }
+                else
+                {
+                    t = transform.parent.parent.parent.parent;
+                    t.SetParent(objHolder);
+                    t.localPosition = new Vector3(0f, 0f, 2f);
+                    t.localRotation = Quaternion.Euler(180f, -90f, 120f);
+                    t.localScale /= 0.75f;
+                    TriggerLabelGrabbed(true, _file.GetName().Trim());
+                }
                 break;
             case RoomFile:
                 t = transform;

@@ -24,6 +24,8 @@ public class Magnet0Raycaster : MonoBehaviour
     private ZipperHandler _previousZipperHandler;
     private Transform _boxObjHolderT;
     public GameObject CursorCanvas;
+    private TMP_InputField _fileNameInputField;
+    private Grabber _showingOperationForGrabber;
 
     public static bool Operating = true;
 
@@ -43,7 +45,7 @@ public class Magnet0Raycaster : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (!Operating || PauseManager.Paused) return;
+        if (!Operating || PauseManager.Paused || DialogueManager.DialogRunning) return;
         if (_showingObjMenu)
         {
             if (_showingRenameMenu)
@@ -63,6 +65,34 @@ public class Magnet0Raycaster : MonoBehaviour
                         Cursor.lockState = CursorLockMode.Locked;
                         Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
                         CursorCanvas.SetActive(true);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
+                    var error = false;
+                    var fileNameError = _renameMenu.transform.Find("FileNameError").gameObject;
+                    if (_fileNameInputField.text.Trim().Equals("") ||
+                        _fileNameInputField.text.Trim().Contains("."))
+                    {
+                        fileNameError.SetActive(true);
+                        error = true;
+                    }
+                    else
+                    {
+                        fileNameError.SetActive(false);
+                    }
+
+                    if (!error)
+                    {
+                        var newName = _fileNameInputField.text.Trim();
+                        _showingOperationForGrabber.Rename(newName);
+                        Destroy(_objMenu);
+                        _showingObjMenu = false;
+                        _showingRenameMenu = false;
+                        Cursor.lockState = CursorLockMode.Locked;
+                        Player.transform.GetComponent<FirstPersonCharacterController>()
+                            .ReactivateInput();
                     }
                 }
             }
@@ -90,6 +120,7 @@ public class Magnet0Raycaster : MonoBehaviour
             }
             return;
         }
+        _showingOperationForGrabber = null;
         var t = transform;
         var ray = new Ray(t.position, t.forward);
 
@@ -123,14 +154,12 @@ public class Magnet0Raycaster : MonoBehaviour
                     fileGrabber.TriggerLabelRaycast(true);
                     if (Input.GetMouseButtonDown(0))
                     {
-                        if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
-                        fileGrabber.Outlined.OutlineWidth = 0f;
-                        _grabbedFile = fileGrabber;
-                        _grabbedFile.GrabReferred(transform.Find("ObjHolder"));
+                        Grab(fileGrabber);
                     }
                     else if (Input.GetMouseButtonDown(1) && HouseManager.ActualQuest >= 2)
                     {
                         _showingObjMenu = true;
+                        _showingOperationForGrabber = fileGrabber;
                         if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin)
                         {
                             CursorCanvas.SetActive(false);
@@ -193,6 +222,10 @@ public class Magnet0Raycaster : MonoBehaviour
                                 AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                 _showingRenameMenu = true;
                                 _renameMenu = fileGrabber.ShowRenameMenu(renameButton.transform.parent);
+                                _fileNameInputField = _renameMenu.transform.Find("RenameFileNameInputField")
+                                    .GetComponent<TMP_InputField>();
+                                _fileNameInputField.Select();
+                                _fileNameInputField.ActivateInputField();
                                 var cancelButton = _renameMenu.transform.Find("CancelButton").GetComponent<Button>();
                                 cancelButton.onClick.AddListener(delegate
                                 {
@@ -205,11 +238,9 @@ public class Magnet0Raycaster : MonoBehaviour
                                 {
                                     AudioManager.Play(transform, AudioManager.Instance.OperationSound, false);
                                     var error = false;
-                                    var fileNameInputField = _renameMenu.transform.Find("RenameFileNameInputField")
-                                        .GetComponent<TMP_InputField>();
                                     var fileNameError = _renameMenu.transform.Find("FileNameError").gameObject;
-                                    if (fileNameInputField.text.Trim().Equals("") ||
-                                        fileNameInputField.text.Trim().Contains("."))
+                                    if (_fileNameInputField.text.Trim().Equals("") ||
+                                        _fileNameInputField.text.Trim().Contains("."))
                                     {
                                         fileNameError.SetActive(true);
                                         error = true;
@@ -221,7 +252,7 @@ public class Magnet0Raycaster : MonoBehaviour
 
                                     if (!error)
                                     {
-                                        var newName = fileNameInputField.text.Trim();
+                                        var newName = _fileNameInputField.text.Trim();
                                         fileGrabber.Rename(newName);
                                         Destroy(_objMenu);
                                         _showingObjMenu = false;
@@ -407,6 +438,14 @@ public class Magnet0Raycaster : MonoBehaviour
         }
     }
 
+    public void Grab(Grabber fileGrabber)
+    {
+        if (fileGrabber.GetReferred().GetParent() == Folder.TrashBin) return;
+        fileGrabber.Outlined.OutlineWidth = 0f;
+        _grabbedFile = fileGrabber;
+        _grabbedFile.GrabReferred(transform.Find("ObjHolder"));
+    }
+
     public void SetGrabbedFile(Grabber grabber)
     {
         _grabbedFile = grabber;
@@ -500,9 +539,9 @@ public class Magnet0Raycaster : MonoBehaviour
                 {
                     if (HouseManager.ActualQuest == 6 && DialogueTrigger.SixthQuestInstantiation)
                     {
+                        NetworkManager.ShouldGrabBack = true;
                         _grabbedFile.DropInBox(Player.transform, _boxObjHolderT);
                         _previousNetworkBox.FileInserted(_grabbedFile);
-                        //qui
                         _grabbedFile = null;
                     }
                     else if (HouseManager.ActualQuest < 6 || !DialogueTrigger.SixthQuestInstantiation)
