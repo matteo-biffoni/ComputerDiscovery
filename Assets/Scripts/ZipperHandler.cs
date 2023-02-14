@@ -86,7 +86,7 @@ public class ZipperHandler : MonoBehaviour
                 {
                     if (_immaginiEVideoZipped || 
                             (_grabber.GetReferred() is Folder && 
-                                (_grabber.GetReferred().GetIndex() == Folder.ImmaginiEVideoFolder.GetIndex() 
+                                (_grabber.GetReferred().GetIndex() == Folder.ImmaginiEVideoFolder?.GetIndex() 
                                 || _grabber.GetReferred().IsACopyOf(Folder.ImmaginiEVideoFolder))))
                     {
                         if (!_immaginiEVideoZipped)

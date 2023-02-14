@@ -38,14 +38,16 @@ public class CreateFolderManager : MonoBehaviour
         CursorCanvas.SetActive(false);
         _menu = Instantiate(CreateFolderCanvas);
         _showingMenu = true;
+        var folderNameInputField =
+            _menu.transform.GetChild(0).Find("NewFolderInputField").GetComponent<TMP_InputField>();
+        folderNameInputField.Select();
+        folderNameInputField.ActivateInputField();
         var cancelButton = _menu.transform.GetChild(0).Find("CancelButton").GetComponent<Button>();
         cancelButton.onClick.AddListener(GoBackToGame);
         var confirmButton = _menu.transform.GetChild(0).Find("CreateButton").GetComponent<Button>();
         confirmButton.onClick.AddListener(delegate
         {
             bool error;
-            var folderNameInputField =
-                _menu.transform.GetChild(0).Find("NewFolderInputField").GetComponent<TMP_InputField>();
             var folderNameError = _menu.transform.GetChild(0).Find("NewFolderError").gameObject;
             if (folderNameInputField.text.Trim().Equals("") || folderNameInputField.text.Trim().Contains("."))
             {
@@ -62,7 +64,15 @@ public class CreateFolderManager : MonoBehaviour
             {
                 var newFolderName = folderNameInputField.text.Trim();
 
-                _pnm.GetRoomIn().InsertFileOrFolder(new Folder(newFolderName, null, null, Guid.NewGuid().ToString()), false);
+                if (_pnm.GetRoomIn() == Folder.MainRoom)
+                {
+                    Folder.Root.InsertFileOrFolder(new Folder(newFolderName, null, null, Guid.NewGuid().ToString()), false);
+                }
+                else
+                {
+                    _pnm.GetRoomIn()
+                        .InsertFileOrFolder(new Folder(newFolderName, null, null, Guid.NewGuid().ToString()), false);
+                }
                 if (HouseManager.ActualQuest == 4)
                 {
                     QuestManager.Quest4FormatChecker();
@@ -116,6 +126,48 @@ public class CreateFolderManager : MonoBehaviour
             {
                 if (EventSystem.current.currentSelectedGameObject == null)
                 {
+                    GoBackToGame();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                bool error;
+                var folderNameInputField =
+                    _menu.transform.GetChild(0).Find("NewFolderInputField").GetComponent<TMP_InputField>();
+                var folderNameError = _menu.transform.GetChild(0).Find("NewFolderError").gameObject;
+                if (folderNameInputField.text.Trim().Equals("") || folderNameInputField.text.Trim().Contains("."))
+                {
+                    folderNameError.SetActive(true);
+                    error = true;
+                }
+                else
+                {
+                    folderNameError.SetActive(false);
+                    error = false;
+                }
+
+                if (!error)
+                {
+                    var newFolderName = folderNameInputField.text.Trim();
+
+                    if (_pnm.GetRoomIn() == Folder.MainRoom)
+                    {
+                        Folder.Root.InsertFileOrFolder(new Folder(newFolderName, null, null, Guid.NewGuid().ToString()), false);
+                    }
+                    else
+                    {
+                        _pnm.GetRoomIn()
+                            .InsertFileOrFolder(new Folder(newFolderName, null, null, Guid.NewGuid().ToString()), false);
+                    }
+                    if (HouseManager.ActualQuest == 4)
+                    {
+                        QuestManager.Quest4FormatChecker();
+                    }
+                    if (HouseManager.ActualQuest == 6)
+                    {
+                        QuestManager.Quest6FormatChecker();
+                    }
+                    NotificationManager.Notify(Operation.FolderCreated);
                     GoBackToGame();
                 }
             }

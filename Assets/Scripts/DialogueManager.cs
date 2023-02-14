@@ -13,9 +13,14 @@ public class DialogueManager : MonoBehaviour
     private Action _endDialogCallback;
     private string[] _currentMessages;
     private int _activeMessage;
-    private bool _dialogRunning;
+    public static bool DialogRunning;
     private Coroutine _runningPauseTimer;
     public GameObject CursorCanvas;
+
+    private void Awake()
+    {
+        DialogRunning = false;
+    }
 
     public void OpenDialogue(Action endDialogCallback, string[] messages, string actorName, Sprite sprite)
     {
@@ -36,7 +41,7 @@ public class DialogueManager : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, Time.deltaTime * 8f);
             yield return null;
         }
-        _dialogRunning = true;
+        DialogRunning = true;
     }
 
     private void DisplayMessage()
@@ -83,7 +88,7 @@ public class DialogueManager : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.zero, Time.deltaTime * 8f);
             yield return null;
         }
-        _dialogRunning = false;
+        DialogRunning = false;
         AudioManager.StopRobotTalking(transform);
         _endDialogCallback();
         CursorCanvas.SetActive(true);
@@ -92,7 +97,7 @@ public class DialogueManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (!_dialogRunning) return;
+        if (!DialogRunning) return;
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             NextMessage();
