@@ -68,7 +68,7 @@ public class HouseManager : MonoBehaviour
 
     private void Awake()
     {
-        ActualQuest = 3;
+        ActualQuest = 1;
         ImageFileNames = new List<string> { "IimMaAggGiInE", "FfooTOoGRaFia", "IiCCcoONNnAa", "RrriItTRraTtTOo" };
         DocFileNames = new List<string> { "Appunti", "Itinerari Solari", "Regolamento Intergalattico", "Archivio Storico", "Diario Personale", "Racconti Galassia X34", "Elenco Contatti", "Ricette Terrestri" }; 
         MultimediaFileNames = new List<string> { "Buco Nero Yu85", "Passaggio della Cometa R47U2", "Orchestra Galattica", "Tempesta di Meteoriti", "Cascata Terrestre", "Terra: Shakira", "Terra: Beethoven", "Terra: John Lennon" };

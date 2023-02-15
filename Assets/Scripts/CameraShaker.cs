@@ -10,6 +10,7 @@ public class CameraShaker : MonoBehaviour
     private float _shakeIntensity;
 
     private Vector3 _defaultPosition;
+    private bool _shakeInterval = true;
 
     private void Start()
     {
@@ -26,14 +27,35 @@ public class CameraShaker : MonoBehaviour
             }
             return;
         }
-        var shakeI = Random.Range(-_shakeIntensity, _shakeIntensity);
-        transform.localPosition = new Vector3(shakeI, transform.localPosition.y, transform.localPosition.z);
+        if (_shakeInterval) { 
+            var shakeI = Random.Range(-_shakeIntensity, _shakeIntensity);
+            transform.localPosition = new Vector3(shakeI, transform.localPosition.y, transform.localPosition.z);
+        }
+    }
+
+    private IEnumerator SetShakeInterval()
+    {
+        while (_shake)
+        {
+            if (_shakeInterval)
+            {
+                yield return new WaitForSeconds(3);
+                _shakeInterval = false;
+            }
+            else
+            {
+                yield return new WaitForSeconds(10);
+                _shakeInterval = true;
+            }
+        }
+        _shakeInterval = true;
     }
 
     public void Shake(float intensity)
     {
         _shakeIntensity = intensity;
         _shake = true;
+        StartCoroutine(SetShakeInterval());
     }
 
     public void Stabilize()

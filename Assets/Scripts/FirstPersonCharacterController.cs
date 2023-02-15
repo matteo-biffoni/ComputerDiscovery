@@ -20,6 +20,8 @@ public class FirstPersonCharacterController : MonoBehaviour
     private bool _ignoreInput;
     private bool _ignoreMovement;
 
+    public bool CameraInPosition;
+
     public bool IsMagnet0Free()
     {
         return !_ignoreInput;
@@ -50,6 +52,7 @@ public class FirstPersonCharacterController : MonoBehaviour
 
     private void Update()
     {
+        if (!CameraInPosition) return;
         _isGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask);
         if (_isGrounded && _velocity.y < 0f)
         {

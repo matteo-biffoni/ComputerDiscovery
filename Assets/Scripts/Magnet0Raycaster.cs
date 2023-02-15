@@ -173,6 +173,7 @@ public class Magnet0Raycaster : MonoBehaviour
                                 _showingObjMenu = false;
                                 Cursor.lockState = CursorLockMode.Locked;
                                 Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                CursorCanvas.SetActive(true);
                             });
                             var permDelete = _objMenu.transform.GetChild(0).Find("PermDeleteButton").GetComponent<Button>();
                             permDelete.onClick.AddListener(delegate
@@ -183,6 +184,7 @@ public class Magnet0Raycaster : MonoBehaviour
                                 _showingObjMenu = false;
                                 Cursor.lockState = CursorLockMode.Locked;
                                 Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                CursorCanvas.SetActive(true);
                             });
                             _objMenu.SetActive(true);
                         }
@@ -214,6 +216,7 @@ public class Magnet0Raycaster : MonoBehaviour
                                     _showingObjMenu = false;
                                     Cursor.lockState = CursorLockMode.Locked;
                                     Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                    CursorCanvas.SetActive(true);
                                 });
                             }
                             var renameButton = _objMenu.transform.GetChild(0).Find("RenameButton").GetComponent<Button>();
@@ -260,6 +263,8 @@ public class Magnet0Raycaster : MonoBehaviour
                                         Cursor.lockState = CursorLockMode.Locked;
                                         Player.transform.GetComponent<FirstPersonCharacterController>()
                                             .ReactivateInput();
+                                        CursorCanvas.SetActive(true);
+
                                     }
                                 });
                             });
@@ -287,6 +292,7 @@ public class Magnet0Raycaster : MonoBehaviour
                                     _showingObjMenu = false;
                                     Cursor.lockState = CursorLockMode.Locked;
                                     Player.transform.GetComponent<FirstPersonCharacterController>().ReactivateInput();
+                                    CursorCanvas.SetActive(true);
                                 });
                             }
                             _objMenu.SetActive(true);
