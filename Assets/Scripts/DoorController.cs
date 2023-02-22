@@ -21,6 +21,7 @@ public class DoorController : MonoBehaviour
     private static readonly int CloseDoor = Animator.StringToHash("closeDoor");
 
     public TMP_Text DirectionFrontText;
+    public TMP_Text BackText;
 
     private void Awake()
     {
@@ -71,6 +72,7 @@ public class DoorController : MonoBehaviour
     public void SetRoom(Folder folder)
     {
         _room = folder;
+        BackText.text = folder.GetName() + "\n../";
     }
 
     public void SetRoomTo(Folder folder)

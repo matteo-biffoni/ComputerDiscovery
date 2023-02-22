@@ -32,6 +32,7 @@ public class GarageDoorOpener : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             StopAllCoroutines();
+            AudioManager.Play(transform, AudioManager.Instance.Serranda, false);
             StartCoroutine(MoveDoorTo(OpenedPosition.position));
             if (other.transform.GetComponent<PlayerNavigatorManager>().GetRoomIn() == Folder.Garage)
             {
@@ -51,6 +52,7 @@ public class GarageDoorOpener : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             StopAllCoroutines();
+            AudioManager.Play(transform, AudioManager.Instance.Serranda, false);
             StartCoroutine(MoveDoorTo(ClosedPosition.position));
             StartCoroutine(RotateDoorTo(Quaternion.Euler(0f, Door.localRotation.eulerAngles.y,
                 Door.localRotation.eulerAngles.z)));

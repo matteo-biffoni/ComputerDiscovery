@@ -278,6 +278,7 @@ MonoBehaviour:
   RenameCanvasPrefab: {fileID: 2729442980673021621, guid: 8b7c014763c2ded4bab6af9c5e572e04, type: 3}
   Outline: {fileID: 5991147208694494975}
   DirectionFrontText: {fileID: 3231960330147602841}
+  BackText: {fileID: 1475988099485581582}
 --- !u!1 &2850927271682063797
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,8 +390,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294309365
+  m_fontColor: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

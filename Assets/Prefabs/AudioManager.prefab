@@ -55,6 +55,9 @@ MonoBehaviour:
   NotAllowed: {fileID: 8300000, guid: 8bd7df9bf01d9624fb674a7ae89af494, type: 3}
   OperationSound: {fileID: 8300000, guid: d09251fda13172e419286ce3ee7aadc7, type: 3}
   LampCalling: {fileID: 8300000, guid: 76dfbc9509dc23d438985e1f03058bb9, type: 3}
+  Downloading: {fileID: 8300000, guid: 397fe392fc477f648a24e10cd360f83b, type: 3}
+  DownloadDone: {fileID: 8300000, guid: af912caad58ac814f8f37c6479ddbf60, type: 3}
+  Serranda: {fileID: 8300000, guid: 5270888149ec9424b870d9b236942154, type: 3}
   StopIfLooping: 0
 --- !u!82 &3929272595365396716
 AudioSource:
@@ -68,7 +71,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 3e026562c740df6489af33b73fab5781, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0

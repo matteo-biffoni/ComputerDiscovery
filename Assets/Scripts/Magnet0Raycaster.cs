@@ -93,6 +93,7 @@ public class Magnet0Raycaster : MonoBehaviour
                         Cursor.lockState = CursorLockMode.Locked;
                         Player.transform.GetComponent<FirstPersonCharacterController>()
                             .ReactivateInput();
+                        CursorCanvas.SetActive(true);
                     }
                 }
             }

@@ -19,6 +19,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip OperationSound;
     [FormerlySerializedAs("Lamp_Calling")] [FormerlySerializedAs("LAMP_Calling")] [FormerlySerializedAs("ConfirmNotification")] 
     public AudioClip LampCalling;
+    public AudioClip Downloading;
+    public AudioClip DownloadDone;
+    public AudioClip Serranda;
 
     public bool StopIfLooping;
 
