@@ -56,6 +56,7 @@ public class CarDownloader : MonoBehaviour
 
     private IEnumerator Operate(float duration)
     {
+        AudioManager.Play(transform, AudioManager.Instance.Downloading, false);
         var i = 0f;
         var activeTime = 0f;
         while (i < 100)
@@ -74,6 +75,7 @@ public class CarDownloader : MonoBehaviour
 
     private void FinishAndDestroy()
     {
+        AudioManager.Play(transform, AudioManager.Instance.DownloadDone, false);
         DownloadFileInDesktop();
         DownloadText.text = "File scaricati nel Desktop";
         InteractCanvasText.text = "Premi E per interagire";

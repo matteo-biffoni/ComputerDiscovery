@@ -72,7 +72,6 @@ public class Grabber : MonoBehaviour
                 yield return null;
             }
         }
-
         Instantiate(_explosion, transform);
         yield return new WaitForSeconds(0.3f);
         switch (_file)
